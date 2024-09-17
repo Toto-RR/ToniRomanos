@@ -5,4 +5,6 @@ import robotsTxt from 'astro-robots-txt';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), robotsTxt()],
+  site: 'https://toto-rr.github.io',
+  base: 'toto-rr.github.io',
 });
