@@ -9,6 +9,7 @@ import Unity from "./icons/Unity.astro"
 import Csharp from "./icons/Csharp.astro"
 import Flutter from "./icons/Flutter.astro"
 import Dart from "./icons/Dart.astro"
+import Maya from "./icons/Maya.astro"
 
 const TAGS = {
   NEXT: {
@@ -46,31 +47,37 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Dart,
   },
+  MAYA: {
+    name: "Maya",
+    class: "bg-[#003159] text-white",
+    icon: Maya,
+  },
 }
 const PROJECTS = [
   {
     title: "ALIEN: EXTRACTION",
     description:
       "Videojuego desarrollado por el estudio ficticio CLAPCOM STUDIOS. Durante este proyecto me encargué del perfeccionado del apartado de VFX en el Motor propio y las implementaciones de estos",
-    link: "https://svgl.vercel.app/",
-    github: "https://github.com/pheralb/svgl",
-    image: "./projects/alienextraction.png",
+    link: "https://clapcom-studios.github.io/Website/index.html",
+    github: "https://github.com/Clapcom-Studios/Alien-Extraction",
+    image: "./projects/alienextraction.webp",
     tags: [TAGS.CPP],
   },
   {
     title: "CITM FIGHTERS",
     description:
       "En este proyecto se creó un videojuego de lucha en vista lateral en el cual dos personajes debían enfrentarse. Me encargué de todo lo relacionado con la creación y producción del videojuego. Así como de todas las animaciones 3D de los personajes.",
-    link: "https://adventjs.dev",
-    image: "./projects/citmfigthers.JPG",
-    tags: [TAGS.UNITY, TAGS.CSHARP],
+    github: "https://github.com/Toto-RR/CITM-FIGHTERS",
+    image: "./projects/citmfigthers.webp",
+    tags: [TAGS.UNITY, TAGS.CSHARP, TAGS.MAYA],
   },
   {
     title: "POKÉDEX",
     description:
       "Un proyecto en el cual, utilizando Flutter, se hizo una aplicación para Android que simula una Pokédex (Pokémon), dónde también se utilizaba la API de Pokémon PokeApi.",
-    link: "https://adventjs.dev",
-    image: "./projects/pokedex.JPG",
+    github: "https://github.com/Toto-RR/Pokedex_Flutter",
+    link: "https://pokedex-flutter.vercel.app/",
+    image: "./projects/pokedex-2024.webp",
     tags: [TAGS.FLUTTER, TAGS.DART],
   },
 ]
@@ -81,6 +88,7 @@ const PROJECTS = [
     height: 300px;
     object-fit: cover;
     width: 100%;
+    object-position: top;
   }
 </style>
 
@@ -123,7 +131,7 @@ const PROJECTS = [
               {link && (
                 <LinkButton href={link}>
                   <Link class="size-4" />
-                  Preview
+                  Web
                 </LinkButton>
               )}
             </footer>

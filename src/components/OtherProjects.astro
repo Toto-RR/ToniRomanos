@@ -1,0 +1,166 @@
+---
+import GitHub from "./icons/GitHub.astro";
+import Link from "./icons/Link.astro";
+import Cpp from "./icons/Cpp.astro";
+import Unity from "./icons/Unity.astro";
+import Csharp from "./icons/Csharp.astro";
+import Flutter from "./icons/Flutter.astro";
+import Dart from "./icons/Dart.astro";
+import Maya from "./icons/Maya.astro";
+
+const TAGS = {
+    CPP: {
+        name: "C++",
+        class: "bg-[#003159] text-white",
+        icon: Cpp,
+    },
+    UNITY: {
+        name: "Unity",
+        class: "bg-[#003159] text-white",
+        icon: Unity,
+    },
+    CSHARP: {
+        name: "C#",
+        class: "bg-[#003159] text-white",
+        icon: Csharp,
+    },
+    FLUTTER: {
+        name: "FLUTTER",
+        class: "bg-[#003159] text-white",
+        icon: Flutter,
+    },
+    DART: {
+        name: "Dart",
+        class: "bg-[#003159] text-white",
+        icon: Dart,
+    },
+    MAYA: {
+        name: "Maya",
+        class: "bg-[#003159] text-white",
+        icon: Maya,
+    },
+};
+const PROJECTS = [
+    {
+        title: "NIGHTMARES OF THE NIGHT",
+        github: "https://github.com/ericlr1/7a-Gran-CITM-Game-Jam",
+        description:
+            "Un juego hecho en Unity para la 7a Gran CITM Game Jam junto a 5 compañeros.",
+        image: "./projects/nightmaresofthenight.webp",
+    },
+    {
+        title: "DRAGGED OFF TIME",
+        github: "https://github.com/francesctr4/Nexus-Studios",
+        description:
+            "Un juego hecho a partir de C++ con SDL por un grupo de 10 personas.",
+        image: "./projects/DOTLogo.webp",
+    },
+    {
+        title: "FINITE STATES MACHINE",
+        github: "https://github.com/Toto-RR/AI-FiniteStatesMachine",
+        description:
+            "Un proyecto donde una IA se esconde de otra IA que le busca.",
+        image: "./projects/IA.webp",
+    },
+];
+---
+
+<div class="project-grid">
+    {
+        PROJECTS.map(({ image, title, description, github }) => (
+            <div class="project-card dark:bg-gray-900">
+                <img
+                    alt="Imagen del proyecto"
+                    class="project-image"
+                    loading="lazy"
+                    src={image}
+                />
+                <div class="project-title">
+                    <h3 class="text-sm font-bold text-gray-800 dark:text-gray-100">
+                        {title}
+                    </h3>
+                    {github && (
+                        <a href={github} target="_blank" class="icon-link">
+                            <GitHub class="size-4" />
+                        </a>
+                    )}
+                </div>
+                <div class="project-description text-xs text-gray-600 dark:text-gray-300 mb-2">
+                    {description}
+                </div>
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        align-items:;
+        gap: 16px;
+    }
+
+    .project-image {
+        height: 200px;
+        object-fit: fill;
+        width: 100%;
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
+        justify-content: space-between;
+    }
+
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px;
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .icon-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        padding: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .icon-link:hover {
+        background-color: #e0e0e0;
+    }
+
+    .project-card .project-description {
+        color: currentColor;
+        padding: 15px;
+    }
+</style>
+<!-- <a
+  {...Astro.props}
+  target="_blank"
+  rel="noopener noreferrer"
+  role="link"
+  class="inline-flex items-center justify-center gap-2 px-4 py-1 text-gray-800 transition bg-gray-100 border border-gray-300 rounded-full dark:bg-gray-800 dark:border-gray-600 dark:text-white focus-visible:ring-yellow-500/80 text-md hover:bg-gray-900 hover:border-gray-700 hover:text-white dark:hover:bg-gray-100 dark:hover:border-gray-300 dark:hover:text-black group max-w-fit focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 active:bg-black"
+>
+  <slot />
+</a> -->

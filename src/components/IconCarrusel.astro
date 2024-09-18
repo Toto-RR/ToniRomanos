@@ -1,0 +1,113 @@
+---
+import GitHub from "./icons/GitHub.astro";
+import Maya from "./icons/Maya.astro";
+import Cpp from "./icons/Cpp.astro";
+import Unity from "./icons/Unity.astro";
+import Csharp from "./icons/Csharp.astro";
+import Flutter from "./icons/Flutter.astro";
+import Dart from "./icons/Dart.astro";
+import HTML from "./icons/HTML.astro"
+import Git from "./icons/Git.astro"
+import Photoshop from "./icons/Photoshop.astro"
+import Illustrator from "./icons/Illustrator.astro"
+import VisualStudio from "./icons/VisualStudio.astro"
+import VSCode from "./icons/VSCode.astro"
+import CSS from "./icons/CSS.astro"
+import AstroIcon from "./icons/AstroIcon.astro"
+---
+
+<div class="skills">
+    <div class="skills-grid">
+        <div class="skill-card">
+            <GitHub class="size-12" />
+            <p class="skill-title">GitHub</p>
+        </div>
+        <div class="skill-card">
+            <Unity class="size-12" />
+            <p class="skill-title">Unity</p>
+        </div>
+        <div class="skill-card">
+            <Maya class="size-12" />
+            <p class="skill-title">Maya</p>
+        </div>
+        <div class="skill-card">
+            <Photoshop class="size-12" />
+            <p class="skill-title">Photoshop</p>
+        </div>
+        <div class="skill-card">
+            <Illustrator class="size-12" />
+            <p class="skill-title">Illustrator</p>
+        </div>
+        <div class="skill-card">
+            <Git class="size-12" />
+            <p class="skill-title">Git</p>
+        </div>
+        <div class="skill-card">
+            <Flutter class="size-12" />
+            <p class="skill-title">Flutter</p>
+        </div>
+        <div class="skill-card">
+            <Cpp class="size-12" />
+            <p class="skill-title">C++</p>
+        </div>
+        <div class="skill-card">
+            <Csharp class="size-12" />
+            <p class="skill-title">C#</p>
+        </div>
+        <div class="skill-card">
+            <Dart class="size-12" />
+            <p class="skill-title">Dart</p>
+        </div>
+        <div class="skill-card">
+            <HTML class="size-12" />
+            <p class="skill-title">HTML</p>
+        </div>
+        <div class="skill-card">
+            <CSS class="size-12" />
+            <p class="skill-title">CSS</p>
+        </div>
+        <div class="skill-card">
+            <VisualStudio class="size-12" />
+            <p class="skill-title">Visual Studio</p>
+        </div>
+        <div class="skill-card">
+            <VSCode class="size-12" />
+            <p class="skill-title">VSCode</p>
+        </div>
+        <div class="skill-card">
+            <AstroIcon class="size-12" />
+            <p class="skill-title">Astro</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .skills {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .skill-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .skill-title {
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        color:"currentColor";
+    }
+</style>

@@ -10,6 +10,9 @@ import Projects from "@/components/Projects.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
 import Hero from "@/components/Hero.astro"
 import TitleSection from "@/components/TitleSection.astro"
+import OtherProjects from "@/components/OtherProjects.astro"
+import IconCarrusel from "@/components/IconCarrusel.astro"
+import LittleTitleSection from "@/components/LittleTitleSection.astro"
 ---
 
 <Layout
@@ -27,15 +30,29 @@ import TitleSection from "@/components/TitleSection.astro"
     <SectionContainer id="proyectos">
       <TitleSection>
         <CodeIcon class="size-7" />
-        Proyectos
+        Proyectos Destacados
       </TitleSection>
       <Projects />
+      
+      <LittleTitleSection>
+        <CodeIcon class="size-7" />
+        Otros proyectos interesantes
+      </LittleTitleSection>
+      <OtherProjects />
     </SectionContainer>
     
+    <SectionContainer id="habilidades">
+      <TitleSection>
+        <CodeIcon class="size-7" />
+        Habilidades
+      </TitleSection>
+      <IconCarrusel />
+    </SectionContainer>
+
     <SectionContainer id="experiencia">
       <TitleSection>
         <Briefcase class="size-8" />
-        Experiencia laboral
+        Estudios
       </TitleSection>
       <Experience />
     </SectionContainer>
@@ -47,6 +64,7 @@ import TitleSection from "@/components/TitleSection.astro"
       </TitleSection>
       <AboutMe />
     </SectionContainer>
+
   </div>
   </main>
 </Layout>
