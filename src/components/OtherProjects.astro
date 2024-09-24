@@ -40,34 +40,42 @@ const TAGS = {
         icon: Maya,
     },
 };
+
 const PROJECTS = [
     {
         title: "NIGHTMARES OF THE NIGHT",
         github: "https://github.com/ericlr1/7a-Gran-CITM-Game-Jam",
-        description:
-            "Un juego hecho en Unity para la 7a Gran CITM Game Jam junto a 5 compañeros, en el que la temática era 'Sueños y Pesadillas'.",
+        description: "Un juego hecho en Unity para la 7a Gran CITM Game Jam junto a 5 compañeros, en el que la temática era 'Sueños y Pesadillas'.",
         image: "./projects/nightmaresofthenight.webp",
+        icon: GitHub,
     },
     {
         title: "DRAGGED OFF TIME",
         github: "https://github.com/francesctr4/Nexus-Studios",
-        description:
-            "Un RPG con elementos Roguelike ambientado en diferentes épocas. Hecho a partir de C++ con SDL por un grupo de 10 personas.",
+        description: "Un RPG con elementos Roguelike ambientado en diferentes épocas. Hecho a partir de C++ con SDL por un grupo de 10 personas.",
         image: "./projects/DOTLogo.webp",
+        icon: GitHub,
     },
     {
         title: "FINITE STATES MACHINE",
         github: "https://github.com/Toto-RR/AI-FiniteStatesMachine",
-        description:
-            "Un proyecto donde una IA se esconde de otra IA que le busca utilizando Máquinas de Estado, desarrollado en Unity.",
+        description: "Un proyecto donde una IA se esconde de otra IA que le busca utilizando Máquinas de Estado, desarrollado en Unity.",
         image: "./projects/IA.webp",
+        icon: GitHub,
+    },
+    {
+        title: "'ABOUT US' SECTION",
+        github: "https://clapcom-studios.github.io/Website/aboutus.html",
+        description: "Hice este apartado de la web para el proyecto de Alien: Extraction, donde se daba a conocer a los integrantes sus respectivos roles.",
+        image: "./projects/AboutUs.webp",
+        icon: Link,
     },
 ];
 ---
 
 <div class="project-grid">
     {
-        PROJECTS.map(({ image, title, description, github }) => (
+        PROJECTS.map(({ image, title, description, github, icon: Icon }) => (
             <div class="project-card dark:bg-gray-900">
                 <img
                     alt="Imagen del proyecto"
@@ -81,7 +89,7 @@ const PROJECTS = [
                     </h3>
                     {github && (
                         <a href={github} target="_blank" class="icon-link">
-                            <GitHub class="size-4" />
+                            <Icon class="size-4" /> {/* Renderiza el icono aquí */}
                         </a>
                     )}
                 </div>
