@@ -1,0 +1,75 @@
+---
+import Layout from "@/layouts/Layout.astro"
+
+import AboutMe from "@/components/AboutMe.astro"
+import Briefcase from "@/components/icons/Briefcase.astro"
+import CodeIcon from "@/components/icons/Code.astro"
+import Experience from "@/components/Experience.astro"
+import ProfileCheck from "@/components/icons/ProfileCheck.astro"
+import Projects from "@/components/Projects.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
+import Hero from "@/components/Hero.astro"
+import TitleSection from "@/components/TitleSection.astro"
+import OtherProjects from "@/components/OtherProjects.astro"
+import IconCarrusel from "@/components/IconCarrusel.astro"
+import LittleTitleSection from "@/components/LittleTitleSection.astro"
+
+import { getI18N } from "@/i18n"
+
+const {currentLocale} = Astro
+const i18n = getI18N({currentLocale})
+---
+
+<Layout
+  title={i18n.SEO_TITLE}
+  description={i18n.SEO_DESCRIPTION}
+>
+  <main class="px-4">
+    <SectionContainer class="py-16 md:py-36">
+      <Hero>
+      </slot>
+    </Hero>
+    </SectionContainer>
+    <div class="space-y-24">
+    
+    <SectionContainer id="proyectos">
+      <TitleSection>
+        <CodeIcon class="size-7" />
+        {i18n.HIGHLIGHTED_PROJECTS}
+      </TitleSection>
+      <Projects />
+      
+      <LittleTitleSection>
+        <CodeIcon class="size-7" />
+        {i18n.OTHER_PROJECTS}
+      </LittleTitleSection>
+      <OtherProjects />
+    </SectionContainer>
+    
+    <SectionContainer id="habilidades">
+      <TitleSection>
+        <CodeIcon class="size-7" />
+        {i18n.SKILLS}
+      </TitleSection>
+      <IconCarrusel />
+    </SectionContainer>
+
+    <SectionContainer id="experiencia">
+      <TitleSection>
+        <Briefcase class="size-8" />
+        {i18n.STUDIES}
+      </TitleSection>
+      <Experience />
+    </SectionContainer>
+
+    <SectionContainer id="sobre-mi">
+      <TitleSection>
+        <ProfileCheck class="size-8" />
+        {i18n.ABOUT_ME}
+      </TitleSection>
+      <AboutMe />
+    </SectionContainer>
+
+  </div>
+  </main>
+</Layout>

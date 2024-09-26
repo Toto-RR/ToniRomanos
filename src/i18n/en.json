@@ -1,0 +1,53 @@
+{
+    "SEO_TITLE": "Toni Romanos",
+    "SEO_DESCRIPTION": "Video Game Developer.",
+
+    "HIGHLIGHTED_PROJECTS": "Highlighted Projects",
+    "OTHER_PROJECTS": "Other interesting projects",
+    "SKILLS": "Skills",
+    "STUDIES": "Studies",
+    "ABOUT_ME": "About me",
+
+    "ABLE_TO_WORK": "Open to work",
+    "NAME": "Hey! I'm Toni",
+    "GREETING": "<strong>Video Game Design and Development</strong> student from Barcelona, Spain 🇪🇸. <br>Focused on <strong>Programming and 3D Modeling</strong>.",
+
+    "CONTACT_ME": "Contact me",
+
+    "PROJECT_1_TITLE": "ALIEN: EXTRACTION",
+    "PROJECT_1_DESCRIPTION": "Video game inspired by the 'Alien' Saga. Created by the fictitious studio Clapcom Studios, developed with its own Ymir Engine. In this project, I was in charge of developing the VFX section within the engine and applying them to the game.",
+
+    "PROJECT_2_TITLE": "CITM FIGHTERS",
+    "PROJECT_2_DESCRIPTION": "Side-view fighting game where two characters face each other, developed in Unity. In this solo project, I handled all programming and 3D animation.",
+
+    "PROJECT_3_TITLE": "POKÉDEX",
+    "PROJECT_3_DESCRIPTION": "Application developed with Flutter that simulates a Pokédex (Pokémon). The PokeApi is used to gather all kinds of information about each Pokémon.",
+
+    "OTHER_PROJECT_1_TITLE": "NIGHTMARES OF THE NIGHT",
+    "OTHER_PROJECT_1_DESCRIPTION": "A game made in Unity for the 7th Great CITM Game Jam together with 5 teammates, where the theme was 'Dreams and Nightmares'.",
+
+    "OTHER_PROJECT_2_TITLE": "DRAGGED OFF TIME",
+    "OTHER_PROJECT_2_DESCRIPTION": "An RPG with Roguelike elements set in different eras. Made using C++ with SDL by a group of 10 people.",
+
+    "OTHER_PROJECT_3_TITLE": "FINITE STATES MACHINE",
+    "OTHER_PROJECT_3_DESCRIPTION": "A project where one AI hides from another AI that is searching for it, using State Machines, developed in Unity.",
+
+    "OTHER_PROJECT_4_TITLE": "'ABOUT US' SECTION",
+    "OTHER_PROJECT_4_DESCRIPTION": "I made this section of the website for the Alien: Extraction project, where the team members and their respective roles were introduced.",
+
+    "PRESENT": "Present",
+
+    "EXPERIENCE_TITLE_1": "Student in Video Game Design and Development",
+    "EXPERIENCE_DESCRIPTION_1": "I study all the fundamentals of how to design and develop video games at all levels, from indie projects to AAA games, learning and developing all the facets that compose them.",
+
+    "EXPERIENCE_TITLE_2": "E.S.O and Technological Baccalaureate",
+    "EXPERIENCE_DESCRIPTION_2": "This institute shaped me as a person and helped me develop most of my facets as a student. It also prepared me for the leap into further studies and working life.",
+
+    "KNOW_MORE": "Know more",
+
+    "ABOUT_ME_1": "My name is Toni Romanos, but my friends call me Toto. I started in the programming world when I began my university degree in <strong>Video Game Design and Development</strong>.",
+    "ABOUT_ME_2": "My specialty is <strong>Video Game Development</strong>, but I also have experience in <strong>Mobile Application Development and 3D Modeling</strong>.",
+    "ABOUT_ME_3": "I consider myself a <strong>responsible and proactive</strong> person, who adapts to any environment, with a <strong>great ability to work in a team</strong> and a focus on <strong>problem-solving</strong>.",
+
+    "CONTACT": "Contact"
+}

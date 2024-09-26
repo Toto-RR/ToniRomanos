@@ -1,20 +1,24 @@
 ---
 import ExperienceItem from "./ExperienceItem.astro"
+
+import { getI18N } from "@/i18n"
+
+const {currentLocale} = Astro
+const i18n = getI18N({currentLocale})
+
 const EXPERIENCE = [
   {
-    date: "2021 - Actualidad",
-    title: "Estudiante en Diseño y Desarrollo de Videojuegos",
+    date: "2021 - " + i18n.PRESENT,
+    title: i18n.EXPERIENCE_TITLE_1,
     company: "CITM",
-    description:
-      "Estudio todos los fundamentos sobre cómo diseñar y desarrollar videojuegos a todos los niveles, desde proyectos indie hasta juegos AAA, aprendiendo y desarrollando todas las facetas que los componen",
+    description: i18n.EXPERIENCE_DESCRIPTION_1,
     link: "https://www.citm.upc.edu/esp/estudis/grau-videojocs-terrassa/",
   },
   {
     date: "2015 - 2021",
-    title: "E.S.O y Bachillerato Tecnológico",
+    title: i18n.EXPERIENCE_TITLE_2,
     company: "IES Palau Ausit",
-    description:
-      "Este insituto me formó como persona y me hizo desarrollar la gran mayoria de facetas como estudiante. Además, también me preparó para el salto a los estudios posteriores y la vida laboral.",
+    description: i18n.EXPERIENCE_DESCRIPTION_2,
   },
 ]
 ---

@@ -10,7 +10,14 @@ interface Props {
 }
 
 const { title, company, description, link, date } = Astro.props
+
+import { getI18N } from "@/i18n";
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+
 ---
+
 
 <div
   class="relative mx-12 pb-12 grid before:absolute before:left-[-35px] before:block before:h-full before:border-l-2 before:border-black/20 dark:before:border-white/15 before:content-[''] md:grid-cols-5 md:gap-10 md:space-x-4]"
@@ -31,7 +38,7 @@ const { title, company, description, link, date } = Astro.props
     {
       link && (
         <LinkInline href={link}>
-          Saber más{" "}
+          {i18n.KNOW_MORE}{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 icon icon-tabler icon-tabler-chevron-right"
