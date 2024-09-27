@@ -6,11 +6,5 @@ import robotsTxt from 'astro-robots-txt';
 export default defineConfig({
   integrations: [tailwind(), robotsTxt()],
   site: 'https://toto-rr.github.io',
-  i18n: {
-    defaultLocale: 'es',
-    locales: [ 'es', 'en', 'ca'],
-    routing: {
-      prefixDefaultLocale: false
-    }
-  }
+  base: '/ToniRomanos/',
 });

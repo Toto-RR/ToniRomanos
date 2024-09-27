@@ -14,7 +14,6 @@
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/onest": "5.0.2",
     "astro": "^4.15.8",
-    "astro-i18next": "^1.0.0-beta.21",
     "astro-robots-txt": "1.0.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",

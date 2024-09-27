@@ -59,34 +59,31 @@ const TAGS = {
     icon: YmirEngine,
   },
 }
-
-import { getI18N } from "@/i18n";
-
-const { currentLocale } = Astro;
-const i18n = getI18N({ currentLocale });
-
 const PROJECTS = [
   {
-    title: i18n.PROJECT_1_TITLE,
-    description: i18n.PROJECT_1_DESCRIPTION,
+    title: "ALIEN: EXTRACTION",
+    description:
+      "Videojuego inspirado en la Saga 'Alien'. Creado por el estudio ficticio Clapcom Studios, desarrollado con su propio motor Ymir Engine. En este proyecto me encargué de desarrollar el apartado de VFX dentro del motor y aplicarlos en el juego.",
     link: "https://clapcom-studios.github.io/Website/index.html",
     github: "https://github.com/Clapcom-Studios/Alien-Extraction",
-    image: "/projects/alienextraction.webp",
+    image: "./projects/alienextraction.webp",
     tags: [TAGS.CPP, TAGS.YMIR],
   },
   {
-    title: i18n.PROJECT_2_TITLE,
-    description: i18n.PROJECT_2_DESCRIPTION,
+    title: "CITM FIGHTERS",
+    description:
+      "Juego de lucha en vista lateral en el cual dos personajes se enfrentan, desarrollado en Unity. En este proyecto en solitario me encargué de toda la programación y la animación 3D.",
     github: "https://github.com/Toto-RR/CITM-FIGHTERS",
-    image: "/projects/citmfigthers.webp",
+    image: "./projects/citmfigthers.webp",
     tags: [TAGS.UNITY, TAGS.CSHARP, TAGS.MAYA],
   },
   {
-    title: i18n.PROJECT_3_TITLE,
-    description: i18n.PROJECT_3_DESCRIPTION,
+    title: "POKÉDEX",
+    description:
+      "Aplicación desarrollada con Flutter en la cual se simula una Pokédex (Pokémon). Se utiliza la API PokeApi para recoger todo tipo de información acerca de cada Pokémon.",
     github: "https://github.com/Toto-RR/Pokedex_Flutter",
     link: "https://pokedex-flutter.vercel.app/",
-    image: "/projects/pokedex-2024.webp",
+    image: "./projects/pokedex-2024.webp",
     tags: [TAGS.FLUTTER, TAGS.DART],
   },
 ]
