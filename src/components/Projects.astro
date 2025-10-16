@@ -11,6 +11,8 @@ import Flutter from "./icons/Flutter.astro"
 import Dart from "./icons/Dart.astro"
 import Maya from "./icons/Maya.astro"
 import YmirEngine from "./icons/YmirEngine.astro"
+import Fusion360 from "./icons/Fusion360.astro"
+import Arduino from "./icons/Arduino.astro"
 
 const TAGS = {
   NEXT: {
@@ -58,8 +60,26 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: YmirEngine,
   },
+  FUSION: {
+    name: "Fusion 360",
+    class: "bg-[#003159] text-white",
+    icon: Fusion360,
+  },
+  ARDUINO: {
+    name: "Arduino",
+    class: "bg-[#003159] text-white",
+    icon: Arduino,
+  },
 }
 const PROJECTS = [
+  {
+    title: "JOINED! NEOPARTY",
+    description:
+      "Videojuego en Unity con controladores dedicados diseñados en Fusion 360 y programado con Arduino IDE. Trabajo de Fin de Grado desarrollado para el grado en Diseño y Desarrollo de Videojuegos.",
+    github: "https://github.com/Toto-RR/Joined-NeoParty",
+    image: "./projects/NeoParty.webp",
+    tags: [TAGS.UNITY, TAGS.FUSION, TAGS.ARDUINO],
+  },
   {
     title: "ALIEN: EXTRACTION",
     description:
@@ -68,14 +88,6 @@ const PROJECTS = [
     github: "https://github.com/Clapcom-Studios/Alien-Extraction",
     image: "./projects/alienextraction.webp",
     tags: [TAGS.CPP, TAGS.YMIR],
-  },
-  {
-    title: "CITM FIGHTERS",
-    description:
-      "Juego de lucha en vista lateral en el cual dos personajes se enfrentan, desarrollado en Unity. En este proyecto en solitario me encargué de toda la programación y la animación 3D.",
-    github: "https://github.com/Toto-RR/CITM-FIGHTERS",
-    image: "./projects/citmfigthers.webp",
-    tags: [TAGS.UNITY, TAGS.CSHARP, TAGS.MAYA],
   },
   {
     title: "POKÉDEX",

@@ -1,0 +1,30 @@
+---
+import EstudiosItem from "./EstudiosItem.astro"
+const ESTUDIOS = [
+  {
+    date: "2021 - 2025",
+    title: "Estudiante en Diseño y Desarrollo de Videojuegos",
+    company: "CITM",
+    description:
+      "Estudié todos los fundamentos sobre cómo diseñar y desarrollar videojuegos a todos los niveles, desde proyectos indie hasta juegos AAA, aprendiendo y desarrollando todas las facetas que los componen.",
+    link: "https://www.citm.upc.edu/esp/estudis/grau-videojocs-terrassa/",
+  },
+  {
+    date: "2015 - 2021",
+    title: "E.S.O y Bachillerato Tecnológico",
+    company: "IES Palau Ausit",
+    description:
+      "Este insituto me formó como persona y me hizo desarrollar la gran mayoria de facetas como estudiante. Además, también me preparó para el salto a los estudios posteriores y la vida laboral.",
+  },
+]
+---
+
+<ol class="relative mt-16">
+  {
+    ESTUDIOS.map((estudios) => (
+      <li class="">
+        <EstudiosItem {...estudios} />
+      </li>
+    ))
+  }
+</ol>
