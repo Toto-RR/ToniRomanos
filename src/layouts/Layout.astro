@@ -22,6 +22,19 @@ const { description, title } = Astro.props
     <link rel="icon" type="image/svg+xml" href="ToniRomanos/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Toni Romanos",
+        "url": "https://toniromanos.dev",
+        "jobTitle": "Desarrollador de Videojuegos",
+        "sameAs": [
+          "https://github.com/toto-rr"
+          "Https://www.linkedin.com/in/toniromanos/"
+        ]
+      }
+    </script>
     <ViewTransitions />
   </head>
 
