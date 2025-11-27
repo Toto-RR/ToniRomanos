@@ -19,7 +19,11 @@ const { description, title } = Astro.props
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="ToniRomanos/favicon.svg" />
+    <!-- Favicon para modo claro -->
+    <link rel="icon" type="image/svg+xml" href="/gamepad_light.svg" media="(prefers-color-scheme: dark)">
+
+    <!-- Favicon para modo oscuro -->
+    <link rel="icon" type="image/svg+xml" href="/gamepad.svg" media="(prefers-color-scheme: light)">
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script type="application/ld+json">
