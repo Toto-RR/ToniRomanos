@@ -1,0 +1,243 @@
+---
+---
+<style is:global>
+  #project-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+  }
+  #project-modal[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #project-modal .panel {
+    width: min(1440px, 100%);
+    max-height: 86vh;
+    overflow: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    transform: translateY(10px) scale(0.98);
+    transition: transform 220ms ease;
+  }
+  .dark #project-modal .panel {
+    background: rgba(17, 24, 39, 0.92);
+    border-color: rgba(255,255,255,0.10);
+  }
+  #project-modal[data-open="true"] .panel { transform: translateY(0) scale(1); }
+
+  #project-modal .header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    background: inherit;
+    backdrop-filter: blur(10px);
+  }
+  .dark #project-modal .header { border-bottom-color: rgba(255,255,255,0.08); }
+
+  #project-modal .close-btn {
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.7);
+  }
+  .dark #project-modal .close-btn {
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(17,24,39,0.7);
+    color: white;
+  }
+
+  .modal-lock { overflow: hidden !important; }
+
+  #project-modal .content { padding: 1.25rem; }
+
+  /* vídeo */
+  #project-modal .video-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+  .dark #project-modal .video-wrap { border-color: rgba(255,255,255,0.10); }
+  #project-modal video { width: 100%; height: auto; display: block; }
+
+  /* Tipografía del HTML de description */
+  #project-modal .desc p { margin: 0 0 0.9rem 0; line-height: 1.65; }
+  #project-modal .desc p:last-child { margin-bottom: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #project-modal, #project-modal .panel { transition: none !important; }
+  }
+</style>
+
+<div
+  id="project-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  data-open="false"
+>
+  <div class="panel" tabindex="-1">
+    <div class="header">
+      <div>
+        <h2 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-gray-100"></h2>
+        <p id="modal-subtitle" class="text-sm text-gray-600 dark:text-gray-300"></p>
+      </div>
+      <button class="close-btn" type="button" aria-label="Cerrar modal">✕</button>
+    </div>
+
+    <div class="content space-y-6">
+      <div class="video-wrap">
+        <video id="modal-video" controls playsinline preload="metadata"></video>
+      </div>
+
+      <div id="modal-meta" class="grid gap-4 md:grid-cols-2"></div>
+
+      <div id="modal-desc" class="desc text-gray-700 dark:text-gray-300"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type TagLite = { name: string; class: string };
+  type ProjectModalInfo = {
+    subtitle?: string;
+    role?: string;
+    duration?: string;
+    highlights?: string[];
+    techDetails?: string[];
+  };
+
+  type Project = {
+    title: string;
+    description: string;
+    image?: string;
+    trailer?: string;
+    github?: string;
+    link?: string;
+    tags?: TagLite[];
+    modal?: ProjectModalInfo | null;
+  };
+
+  const modal = document.getElementById("project-modal") as HTMLDivElement | null;
+  const panel = modal?.querySelector(".panel") as HTMLDivElement | null;
+  const titleEl = document.getElementById("modal-title") as HTMLHeadingElement | null;
+  const subtitleEl = document.getElementById("modal-subtitle") as HTMLParagraphElement | null;
+  const descEl = document.getElementById("modal-desc") as HTMLDivElement | null;
+  const metaEl = document.getElementById("modal-meta") as HTMLDivElement | null;
+  const videoEl = document.getElementById("modal-video") as HTMLVideoElement | null;
+  const closeBtn = modal?.querySelector(".close-btn") as HTMLButtonElement | null;
+
+  if (!modal || !panel || !titleEl || !subtitleEl || !descEl || !metaEl || !videoEl || !closeBtn) {
+    console.warn("ProjectModal: elementos no encontrados.");
+  } else {
+    let lastFocused: HTMLElement | null = null;
+
+    const renderList = (title: string, items: string[]) => {
+      const li = items.map(x => `<li class="ml-4 list-disc">${x}</li>`).join("");
+      return `
+        <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">${title}</h3>
+          <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">${li}</ul>
+        </div>
+      `;
+    };
+
+    const renderKeyValue = (label: string, value: string) => `
+      <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">${label}</div>
+        <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">${value}</div>
+      </div>
+    `;
+
+    const open = (project: Project) => {
+      lastFocused = document.activeElement as HTMLElement;
+
+      titleEl.textContent = project.title;
+      subtitleEl.textContent = project.modal?.subtitle ?? "";
+
+      // ✅ vídeo con controles
+      // Si no hay trailer, puedes esconder el bloque o poner imagen
+      if (project.trailer) {
+        videoEl.src = project.trailer;
+        videoEl.poster = project.image ?? "";
+      } else {
+        videoEl.removeAttribute("src");
+        videoEl.load();
+      }
+
+      // ✅ descripción (HTML)
+      descEl.innerHTML = project.description ?? "";
+
+      // ✅ meta extra (solo modal)
+      const parts: string[] = [];
+
+      if (project.modal?.role) parts.push(renderKeyValue("Rol", project.modal.role));
+      if (project.modal?.duration) parts.push(renderKeyValue("Duración", project.modal.duration));
+
+      if (project.tags?.length) {
+        const chips = project.tags
+          .map(t => `<span class="inline-flex rounded-full text-xs px-2 py-1 mr-2 mb-2 ${t.class}">${t.name}</span>`)
+          .join("");
+        parts.push(`
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+            <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">Tags</div>
+            <div>${chips}</div>
+          </div>
+        `);
+      }
+
+      if (project.modal?.highlights?.length) parts.push(renderList("Highlights", project.modal.highlights));
+      if (project.modal?.techDetails?.length) parts.push(renderList("Detalles técnicos", project.modal.techDetails));
+
+      metaEl.innerHTML = parts.join("");
+
+      modal.setAttribute("data-open", "true");
+      document.documentElement.classList.add("modal-lock");
+      requestAnimationFrame(() => panel.focus());
+    };
+
+    const close = () => {
+      modal.setAttribute("data-open", "false");
+      document.documentElement.classList.remove("modal-lock");
+
+      // Para que no siga sonando al cerrar
+      videoEl.pause();
+      videoEl.currentTime = 0;
+
+      lastFocused?.focus?.();
+    };
+
+    window.addEventListener("open-project", (ev) => {
+      const e = ev as CustomEvent<{ project: Project }>;
+      open(e.detail.project);
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) close();
+    });
+
+    closeBtn.addEventListener("click", close);
+
+    window.addEventListener("keydown", (e) => {
+      const isOpen = modal.getAttribute("data-open") === "true";
+      if (!isOpen) return;
+      if (e.key === "Escape") close();
+    });
+  }
+</script>

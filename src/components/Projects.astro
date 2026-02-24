@@ -1,18 +1,20 @@
 ---
-import GitHub from "./icons/GitHub.astro"
-import NextJS from "./icons/NextJS.astro"
-import Tailwind from "./icons/Tailwind.astro"
-import Link from "./icons/Link.astro"
-import LinkButton from "./LinkButton.astro"
-import Cpp from "./icons/Cpp.astro"
-import Unity from "./icons/Unity.astro"
-import Csharp from "./icons/Csharp.astro"
-import Flutter from "./icons/Flutter.astro"
-import Dart from "./icons/Dart.astro"
-import Maya from "./icons/Maya.astro"
-import YmirEngine from "./icons/YmirEngine.astro"
-import Fusion360 from "./icons/Fusion360.astro"
-import Arduino from "./icons/Arduino.astro"
+import GitHub from "./icons/GitHub.astro";
+import NextJS from "./icons/NextJS.astro";
+import Tailwind from "./icons/Tailwind.astro";
+import Link from "./icons/Link.astro";
+import LinkButton from "./LinkButton.astro";
+import Cpp from "./icons/Cpp.astro";
+import Unity from "./icons/Unity.astro";
+import Csharp from "./icons/Csharp.astro";
+import Flutter from "./icons/Flutter.astro";
+import Dart from "./icons/Dart.astro";
+import Maya from "./icons/Maya.astro";
+import YmirEngine from "./icons/YmirEngine.astro";
+import Fusion360 from "./icons/Fusion360.astro";
+import Arduino from "./icons/Arduino.astro";
+
+import ProjectModal from "./ProjectModal.astro";
 
 const TAGS = {
   NEXT: {
@@ -70,20 +72,43 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Arduino,
   },
-}
+};
+
 const PROJECTS = [
   {
     title: "JOINED! NEOPARTY",
-    description:
-      "Videojuego en Unity con controladores dedicados diseñados en Fusion 360 y programado con Arduino IDE. Trabajo de Fin de Grado desarrollado para el grado en Diseño y Desarrollo de Videojuegos.",
+    description: `
+    <p>Videojuego en <strong>Unity</strong> con controladores dedicados diseñados en <strong>Fusion 360</strong> y programado con <strong>Arduino IDE</strong>. Trabajo de Fin de Grado desarrollado para el grado en Diseño y Desarrollo de Videojuegos.</p>
+    <p>En este proyecto <strong>me encargué de todo el desarrollo del juego</strong>, desde la programación hasta el diseño de los controladores físicos, incluyendo el modelado 3D y la integración de ambos aspectos para crear una experiencia de juego única.</p>
+    `,
     github: "https://github.com/Toto-RR/Joined-NeoParty",
-    image: "./projects/NeoParty.webp",
-    tags: [TAGS.UNITY, TAGS.FUSION, TAGS.ARDUINO],
+    image: "/projects/NeoParty.webp",
+    trailer: "/videos/NeoParty_Trailer.mp4",
+    tags: [TAGS.UNITY, TAGS.CSHARP, TAGS.FUSION, TAGS.ARDUINO],
+
+     modal: {
+      subtitle: "TFG · Multijugador local · Controladores físicos (Arduino)",
+      role: "Diseño y desarrollo completo (juego + hardware)",
+      duration: "2–3 min",
+      highlights: [
+        "Diseño y fabricación de controladores dedicados (Fusion 360 + Arduino)",
+        "Integración HW ↔ Unity",
+        "Gameplay multijugador tipo party-game",
+      ],
+      techDetails: [
+        "Unity (C#), Input System",
+        "Arduino IDE, comunicación con el juego",
+        "Modelado 3D / prototipado",
+      ],
+    },
+  
   },
   {
     title: "ALIEN: EXTRACTION",
-    description:
-      "Videojuego inspirado en la Saga 'Alien'. Creado por el estudio ficticio Clapcom Studios, desarrollado con su propio motor Ymir Engine. En este proyecto me encargué de desarrollar el apartado de VFX dentro del motor y aplicarlos en el juego.",
+    description: `
+      <p>Videojuego inspirado en la Saga 'Alien'. Creado por el estudio ficticio Clapcom Studios mediante el motor propio <strong>Ymir Engine</strong>, desarrollado en <strong>C++.</strong></p>
+      <p>En este proyecto <strong>fui el principal encargado de crear e integrar el modulo de partículas en el motor</strong>, desarrollando herramientas para que el resto del equipo pudiese integrar todo tipo de efectos visuales en el proyecto.</p>
+      `,
     link: "https://clapcom-studios.github.io/Website/index.html",
     github: "https://github.com/Clapcom-Studios/Alien-Extraction",
     image: "./projects/alienextraction.webp",
@@ -98,34 +123,105 @@ const PROJECTS = [
     image: "./projects/pokedex-2024.webp",
     tags: [TAGS.FLUTTER, TAGS.DART],
   },
-]
+];
+
+const handleVideoPlay = (article: HTMLElement) => {
+  const video = article.querySelector("video");
+  if (!video) return;
+
+  video.currentTime = 0;
+  video.play().catch(() => {});
+};
+
+const handleVideoPause = (article: HTMLElement) => {
+  const video = article.querySelector("video");
+  if (!video) return;
+
+  video.pause();
+  video.currentTime = 0;
+};
 ---
 
 <style is:global>
   .project-image {
-    height: 270px;
-    object-fit: fill;
+    height: 410px;
+    object-fit: cover;
     width: 100%;
-    object-position: top;
+    object-position: center;
+  }
+
+  :root {
+    --accent-strong: #006699;
+  }
+
+  .dark {
+    --accent-strong: #38bdf8;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--accent-strong);
+  }
+
+  .project-card[data-playing="true"] .trailer {
+    opacity: 1;
+  }
+
+  .project-card[data-playing="true"] .cover {
+    opacity: 0;
   }
 </style>
 
-<div class="flex flex-col gap-y-16">
+<div class="flex flex-col gap-y-16 mx-auto max-w-full">
   {
-    PROJECTS.map(({ image, title, description, tags, link, github }) => (
-    <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
-      <div class="w-full md:w-1/2">
-        <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-          <img alt="Imagen no disponible" class="project-image" loading="lazy" src={image} />
-        </div>
-      </div>
+    PROJECTS.map(
+      ({ image, title, description, tags, link, github, trailer }) => (
+        <article 
+        class="project-card flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0 border border-gray-300 dark:border-gray-700 rounded-xl p-6 text-left transition hover:transform hover:scale-[1.02]"
+        data-project={JSON.stringify({ image, title, description, tags, link, github, trailer })}>
+          <div class="w-full md:w-1/2">
+            <div class="border border-gray-300 dark:border-gray-700 rounded-xl overflow-hidden">
+              <div class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
+                <img
+                  src={image}
+                  alt="Imagen no disponible"
+                  class="cover absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out"
+                  loading="lazy"
+                />
 
-      <div class="w-full md:w-1/2 md:max-w-lg">
-        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-          {title}
-        </h3>
-        <div class="flex flex-wrap mt-2">
-          <ul class="flex flex-row mb-2 gap-x-2">
+                {trailer && (
+                  <video
+                    class="trailer absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 ease-out"
+                    muted
+                    playsinline
+                    preload="metadata"
+                    poster={image}
+                  >
+                    <source src={trailer} type="video/mp4" />
+                  </video>
+                  
+                  <button
+                    class="audio-toggle absolute bottom-3 right-3 z-20 
+                          bg-black/60 backdrop-blur-sm 
+                          text-white text-sm 
+                          px-3 py-1.5 rounded-full 
+                          opacity-0 group-hover:opacity-100 
+                          transition-all duration-200 
+                          hover:bg-black/80"
+                    type="button"
+                  >
+                    🔇
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full md:w-1/2 flex flex-col">
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              {title}
+            </h3>
+            <ul class="flex flex-wrap gap-2 mb-2 mt-2">
               {tags.map((tag) => (
                 <li>
                   <span
@@ -138,8 +234,10 @@ const PROJECTS = [
               ))}
             </ul>
 
-          <div class="mt-2 text-gray-700 dark:text-gray-400">{description}</div>
-          <footer class="flex items-end justify-start mt-4 gap-x-4">
+            <div class="mt-2 text-gray-700 dark:text-gray-400 space-y-4 [&>p]:mb-4 [&>p]:last-child:mb-0">
+              <Fragment set:html={description} />
+            </div>
+            <footer class="flex justify-end mt-auto pt-4 gap-x-4 ">
               {github && (
                 <LinkButton href={github}>
                   <GitHub class="size-6" />
@@ -153,9 +251,96 @@ const PROJECTS = [
                 </LinkButton>
               )}
             </footer>
-        </div>
-      </div>
-    </article>
-    ))
+          </div>
+        </article>
+      ),
+    )
   }
 </div>
+
+<ProjectModal />
+
+<script>
+  const cards = document.querySelectorAll<HTMLElement>(".project-card");
+
+  const play = (card: HTMLElement) => {
+    const video = card.querySelector<HTMLVideoElement>("video");
+    if (!video) return;
+
+    video.muted = true;
+    video.currentTime = 0;
+    video.play().catch(() => {});
+    card.setAttribute("data-playing", "true");
+  };
+
+  const pause = (card: HTMLElement) => {
+    const video = card.querySelector<HTMLVideoElement>("video");
+    if (!video) return;
+
+    video.pause();
+    video.currentTime = 0;
+    card.setAttribute("data-playing", "false");
+  };
+
+  cards.forEach((card) => {
+    const video = card.querySelector<HTMLVideoElement>("video");
+    const button = card.querySelector<HTMLButtonElement>(".audio-toggle");
+
+    card.addEventListener("mouseenter", () => play(card));
+    card.addEventListener("mouseleave", () => {
+      pause(card);
+      if (video) 
+      {
+        video.muted = true; // Asegura que el video se mutee al perder el foco, por si el usuario lo había activado
+        if(button) button.textContent = "🔇"; // Actualiza el texto del botón para reflejar el estado muteado
+      }
+    });
+
+    // Accesible con teclado
+    card.addEventListener("focusin", () => play(card));
+    card.addEventListener("focusout", () => 
+    {
+      pause(card);
+      if (video) 
+      {
+        video.muted = true; // Asegura que el video se mutee al perder el foco, por si el usuario lo había activado
+        if(button) button.textContent = "🔇"; // Actualiza el texto del botón para reflejar el estado muteado
+      }
+    });
+
+      if (!video || !button) return;
+
+      button.addEventListener("click", (e) => {
+        e.stopPropagation(); // evita activar otras cosas
+
+        video.muted = !video.muted;
+
+        button.textContent = video.muted ? "🔇" : "🔊";
+      });
+  });
+
+  document.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
+  card.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("a, button")) return;
+
+    const raw = card.getAttribute("data-project");
+    if (!raw) return;
+
+    const project = JSON.parse(raw);
+
+    // ✅ pausa el preview de la card antes de abrir el modal
+    const preview = card.querySelector<HTMLVideoElement>("video");
+    if (preview) {
+      preview.pause();
+      preview.currentTime = 0;
+      preview.muted = true;
+      card.setAttribute("data-playing", "false");
+      const btn = card.querySelector<HTMLButtonElement>(".audio-toggle");
+      if (btn) btn.textContent = "🔇";
+    }
+
+    window.dispatchEvent(new CustomEvent("open-project", { detail: { project } }));
+  });
+});
+</script>
