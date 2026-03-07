@@ -1,173 +1,208 @@
 ---
 import GitHub from "./icons/GitHub.astro";
 import Link from "./icons/Link.astro";
-import Cpp from "./icons/Cpp.astro";
-import Unity from "./icons/Unity.astro";
-import Csharp from "./icons/Csharp.astro";
-import Flutter from "./icons/Flutter.astro";
-import Dart from "./icons/Dart.astro";
-import Maya from "./icons/Maya.astro";
+import LinkButton from "./LinkButton.astro";
 
-const TAGS = {
-    CPP: {
-        name: "C++",
-        class: "bg-[#003159] text-white",
-        icon: Cpp,
-    },
-    UNITY: {
-        name: "Unity",
-        class: "bg-[#003159] text-white",
-        icon: Unity,
-    },
-    CSHARP: {
-        name: "C#",
-        class: "bg-[#003159] text-white",
-        icon: Csharp,
-    },
-    FLUTTER: {
-        name: "FLUTTER",
-        class: "bg-[#003159] text-white",
-        icon: Flutter,
-    },
-    DART: {
-        name: "Dart",
-        class: "bg-[#003159] text-white",
-        icon: Dart,
-    },
-    MAYA: {
-        name: "Maya",
-        class: "bg-[#003159] text-white",
-        icon: Maya,
-    },
-};
+import { OTHER_PROJECTS } from "@/data/projects";
 
 const PROJECTS = [
-    {
-        title: "NIGHTMARES OF THE NIGHT",
-        github: "https://github.com/ericlr1/7a-Gran-CITM-Game-Jam",
-        description: "Un juego hecho en Unity para la 7a Gran CITM Game Jam junto a 5 compañeros, en el que la temática era 'Sueños y Pesadillas'.",
-        image: "./projects/nightmaresofthenight.webp",
-        icon: GitHub,
-    },
-    {
-        title: "DRAGGED OFF TIME",
-        github: "https://github.com/francesctr4/Nexus-Studios",
-        description: "Un RPG con elementos Roguelike ambientado en diferentes épocas. Hecho a partir de C++ con SDL por un grupo de 10 personas.",
-        image: "./projects/DOTLogo.webp",
-        icon: GitHub,
-    },
-    {
-        title: "CITM FIGHTERS",
-        description:
-        "Juego de lucha en vista lateral. En este proyecto en solitario me encargué de toda la programación y la animación 3D.",
-        github: "https://github.com/Toto-RR/CITM-FIGHTERS",
-        image: "./projects/citmfigthers.webp",
-        icon: GitHub,
-    },
-    {
-        title: "FINITE STATES MACHINE",
-        github: "https://github.com/Toto-RR/AI-FiniteStatesMachine",
-        description: "Un proyecto donde una IA se esconde de otra IA que le busca utilizando Máquinas de Estado, desarrollado en Unity.",
-        image: "./projects/IA.webp",
-        icon: GitHub,
-    },
-    {
-        title: "'ABOUT US' SECTION",
-        github: "https://clapcom-studios.github.io/Website/aboutus.html",
-        description: "Hice este apartado de la web para el proyecto de Alien: Extraction, donde se daba a conocer a los integrantes sus respectivos roles.",
-        image: "./projects/AboutUs.webp",
-        icon: Link,
-    },
+  {
+    slug: "joined-neoparty",
+    title: "NIGHTMARES OF THE NIGHT",
+    github: "https://github.com/ericlr1/7a-Gran-CITM-Game-Jam",
+    description:
+      "Un juego hecho en <strong>Unity</strong> para la <strong>7a Gran CITM Game Jam</strong> junto a 5 compañeros, en el que la temática era <strong>'Sueños y Pesadillas'</strong>.",
+    image: "./projects/nightmaresofthenight.webp",
+    icon: GitHub,
+  },
+  {
+    title: "DRAGGED OFF TIME",
+    github: "https://github.com/francesctr4/Nexus-Studios",
+    description:
+      "Un <strong>RPG con elementos Roguelike</strong> ambientado en diferentes épocas. Hecho a partir de <strong>C++ con SDL</strong> por un grupo de <strong>10 personas</strong>.",
+    image: "./projects/DOTLogo.webp",
+    icon: GitHub,
+  },
+  {
+    title: "CITM FIGHTERS",
+    description:
+      "Juego de lucha en vista lateral hecho en <strong>Unity</strong>, modelos de <strong>Sketchfab</strong> y animaciones hechas a mano con <strong>Maya</strong>.",
+    github: "https://github.com/Toto-RR/CITM-FIGHTERS",
+    image: "./projects/citmfigthers.webp",
+    icon: GitHub,
+  },
+  {
+    title: "FINITE STATES MACHINE",
+    github: "https://github.com/Toto-RR/AI-FiniteStatesMachine",
+    description:
+      "Pequeño proyecto donde una <strong>IA</strong> se esconde de otra IA que le busca utilizando <strong>Máquinas de Estado</strong>, desarrollado en <strong>Unity</strong>.",
+    image: "./projects/IA.webp",
+    icon: GitHub,
+  },
+  {
+    title: "'ABOUT US' SECTION",
+    github: "https://clapcom-studios.github.io/Website/aboutus.html",
+    description:
+      "Apartado de la web para el proyecto de <strong>Alien: Extraction</strong>, donde se daba a conocer a los integrantes sus respectivos roles.",
+    image: "./projects/AboutUs.webp",
+    icon: Link,
+  },
 ];
+
+const firstParagraph = (html: string) => {
+  // coge el primer <p ...>...</p>
+  const match = html.match(/<p\b[^>]*>[\s\S]*?<\/p>/i);
+  return match ? match[0] : html;
+};
 ---
 
 <div class="project-grid">
-    {
-        PROJECTS.map(({ image, title, description, github, icon: Icon }) => (
-            <div class="project-card dark:bg-gray-900">
-                <img
-                    alt="Imagen del proyecto"
-                    class="project-image"
-                    loading="lazy"
-                    src={image}
-                />
-                <div class="project-title">
-                    <h3 class="text-sm font-bold text-gray-800 dark:text-gray-100">
-                        {title}
-                    </h3>
-                    {github && (
-                        <a href={github} target="_blank" class="icon-link">
-                            <Icon class="size-4" /> {/* Renderiza el icono aquí */}
-                        </a>
-                    )}
-                </div>
-                <div class="project-description text-xs text-gray-600 dark:text-gray-300 mb-2">
-                    {description}
-                </div>
-            </div>
-        ))
-    }
+  {
+    OTHER_PROJECTS.map(({ slug, image, title, description, github, link }) => (
+      <div class="project-card dark:bg-gray-900">
+        <a
+          href={`/projects/${slug}`}
+          class="card-overlay"
+          aria-label={`Abrir proyecto ${title}`}
+        />
+
+        <img
+          alt="Imagen del proyecto"
+          class="project-image card-no-click"
+          loading="lazy"
+          src={image}
+        />
+
+        <div class="project-title">
+          <h3 class="card-no-click">{title}</h3>
+
+          <div class="card-actions">
+            {github && (
+              <LinkButton href={github}>
+                <GitHub class="size-6" />
+              </LinkButton>
+            )}
+            {link && (
+              <LinkButton href={link}>
+                <Link class="size-6" />
+              </LinkButton>
+            )}
+          </div>
+        </div>
+
+        <div
+          class="project-description card-no-click text-s text-gray-600 dark:text-gray-300 mb-2"
+          set:html={firstParagraph(description)}
+        />
+      </div>
+    ))
+  }
 </div>
 
 <style>
-    .project-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        align-items:;
-        gap: 16px;
-    }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-items: stretch;
+    gap: 16px;
+  }
 
-    .project-image {
-        height: 200px;
-        object-fit: fill;
-        width: 100%;
-    }
+  .project-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+  }
 
-    .project-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition:
-            transform 0.3s,
-            box-shadow 0.3s;
-        justify-content: space-between;
-    }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: 8px;
+  }
 
-    .project-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    }
+  
+  .card-no-click {
+    pointer-events: none;
+  }
 
-    .project-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 8px;
-        text-align: center;
-        font-weight: bold;
-        color: #333;
-    }
+  .card-actions {
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
+    display: flex;
+    gap: 16px;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    background-color: rgba(85, 137, 214, 0.2);
+  }
 
-    .icon-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f0f0f0;
-        border-radius: 50%;
-        padding: 4px;
-        transition: background-color 0.3s;
-    }
+  .project-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 15px;
+    text-align: start;
+    font-weight: bold;
+    color: #333;
+    width: 100%;
+  }
 
-    .icon-link:hover {
-        background-color: #e0e0e0;
-    }
+  .icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    padding: 4px;
+    transition: background-color 0.3s;
+  }
 
-    .project-card .project-description {
-        color: currentColor;
-        padding: 15px;
-    }
+  .icon-link:hover {
+    background-color: #e0e0e0;
+  }
+
+  .project-card .project-description {
+    color: currentColor;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+  }
+
+  :global(.project-title h3) {
+    color: #006699;
+    font-weight: 800;
+    font-size: 120%;
+  }
+
+  :global(.dark .project-title h3) {
+    color: #38bdf8;
+    font-weight: 800;
+    font-size: 120%;
+  }
+
+  :global(.dark .project-description strong) {
+    color: #36b6ee;
+  }
+
+  :global(.project-description strong) {
+    color: #006699;
+  }
 </style>

@@ -3,14 +3,15 @@ import "@fontsource-variable/onest"
 
 import Header from "../components/Header.astro"
 import Footer from "../components/Footer.astro"
-import { ViewTransitions } from "astro:transitions"
+import { ClientRouter } from "astro:transitions"
 
-interface Props {
-  title: string
-  description: string
+export interface Props {
+  title: string;
+  description?: string;
+  headerVariant?: "default" | "minimal" | "none";
 }
 
-const { description, title } = Astro.props
+const { description, title, headerVariant = "default" } = Astro.props
 ---
 
 <!doctype html>
@@ -39,7 +40,7 @@ const { description, title } = Astro.props
         ]
       }
     </script>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
 
   <body class="relative text-black dark:text-white">
@@ -130,3 +131,57 @@ const { description, title } = Astro.props
     </style>
   </body>
 </html>
+
+<script is:inline>
+  const keyFor = (url) => `scroll:${new URL(url, location.origin).pathname}${new URL(url, location.origin).search}`;
+
+  const saveScroll = () => {
+    try {
+      sessionStorage.setItem(keyFor(location.href), String(window.scrollY));
+    } catch {}
+  };
+
+  const restoreScroll = () => {
+    // Si hay hash (#seccion), prioriza ir a esa sección
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ block: "start" });
+      return;
+    }
+
+    try {
+      const saved = sessionStorage.getItem(keyFor(location.href));
+      if (saved != null) window.scrollTo(0, Number(saved));
+    } catch {}
+  };
+
+  // Guarda scroll mientras haces scroll (suave y barato)
+  let raf = 0;
+  window.addEventListener("scroll", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(saveScroll);
+  }, { passive: true });
+
+  // Antes de salir por enlaces
+  document.addEventListener("click", (e) => {
+    const a = e.target?.closest?.("a");
+    if (!a) return;
+    // solo enlaces normales (evita new tab, etc.)
+    if (a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    saveScroll();
+  });
+
+  // Astro: cuando carga una página o hace swap con transiciones
+  document.addEventListener("astro:page-load", restoreScroll);
+  document.addEventListener("astro:after-swap", restoreScroll);
+
+  // Al volver/avanzar en historial
+  window.addEventListener("popstate", () => {
+    // Espera un tick para que el DOM esté listo
+    setTimeout(restoreScroll, 0);
+  });
+
+  // Evita que el navegador intente gestionar scroll a su bola en SPA
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+</script>
