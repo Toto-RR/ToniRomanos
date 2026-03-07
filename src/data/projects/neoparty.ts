@@ -13,7 +13,7 @@ export const joinedNeoParty: Project = {
   github: "https://github.com/Toto-RR/Joined-NeoParty",
   youtubeChannel: "https://www.youtube.com/@JoinedEntertainment",
   image: "/projects/NeoParty.webp",
-  trailer: "/videos/neoparty/NeoParty_Trailer.mp4",
+  trailer: "/videos/NeoParty_Trailer.mp4",
   tags: [TAGS.UNITY, TAGS.CSHARP, TAGS.FUSION, TAGS.ARDUINO],
 
   detail: {
@@ -77,15 +77,15 @@ export const joinedNeoParty: Project = {
     },
     {
       type: "image",
-      src: "/videos/neoparty/pres1.jpg",
-      title: "Charla del proyecto",
-      description: "Presentación pública explicando el desarrollo de Joined! NeoParty."
-    },
-    {
-      type: "image",
       src: "/videos/neoparty/pres2.jpg",
       title: "Ponencia",
       description: "Otro momento de la charla y exposición del proceso de trabajo."
+    },
+    {
+      type: "image",
+      src: "/videos/neoparty/pres1.jpg",
+      title: "Charla del proyecto",
+      description: "Presentación pública explicando el desarrollo de Joined! NeoParty."
     },
     {
       type: "image",

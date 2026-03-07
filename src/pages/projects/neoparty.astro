@@ -62,6 +62,16 @@ const cleanDescription = project.description
     color: #38bdf8;
   }
 
+  :global(.role-text ul) {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  :global(.role-text li + li) {
+    margin-top: 0.5rem;
+  }
+
   .section-card {
     border: 1px solid rgb(55 65 81 / 1);
     border-radius: 1rem;
@@ -91,7 +101,14 @@ const cleanDescription = project.description
 
   @media (max-width: 768px) {
     .section-card {
-      padding: 1rem;
+      padding: 0.9rem;
+      border-radius: 0.85rem;
+    }
+
+    .code-block pre {
+      padding: 0.85rem 1rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
     }
   }
 </style>
@@ -101,19 +118,25 @@ const cleanDescription = project.description
   description={`Detalles del proyecto ${project.title}. ${cleanDescription}...`}
   headerVariant="minimal"
 >
-  <main class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 space-y-20">
+  <main
+    class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-8 sm:py-10 md:py-12 space-y-12 sm:space-y-16 md:space-y-20"
+  >
     <!-- HERO -->
     <section class="space-y-8">
-      <div class="space-y-4 text-center">
-        <p class="uppercase tracking-[0.3em] text-sm text-cyan-300">
+      <div class="space-y-3 sm:space-y-4 text-center">
+        <p
+          class="uppercase tracking-[0.2em] sm:tracking-[0.3em] text-xs sm:text-sm text-cyan-300"
+        >
           Proyecto destacado
         </p>
-        <h1 class="text-4xl md:text-6xl font-bold text-yellow-200">
+        <h1
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-200 leading-tight"
+        >
           {project.title}
         </h1>
       </div>
 
-      <div class="max-w-6xl mx-auto space-y-8">
+      <div class="max-w-6xl mx-auto space-y-6 sm:space-y-8">
         <div class="section-card">
           {
             project.youtubeVideoId ? (
@@ -151,12 +174,14 @@ const cleanDescription = project.description
 
         <aside class="section-card space-y-6">
           <div
-            class="project-rich-text text-lg text-gray-200"
+            class="project-rich-text text-base sm:text-lg text-gray-200"
             set:html={project.description}
           />
 
           <div class="space-y-3">
-            <h2 class="text-2xl font-bold text-cyan-200">Tecnologías</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-cyan-200">
+              Tecnologías
+            </h2>
             <ul class="flex flex-wrap gap-2">
               {
                 technologies.map((tag: any) => (
@@ -208,15 +233,17 @@ const cleanDescription = project.description
     </section>
 
     <!-- INFORMACIÓN + ROL -->
-    <section class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
       {
         project.detail?.explication && (
           <div class="section-card space-y-5">
-            <h2 class="text-3xl font-bold text-cyan-200">Sobre el proyecto</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-cyan-200">
+              Sobre el proyecto
+            </h2>
 
-            <div class="project-rich-text text-lg text-gray-300 space-y-4">
+            <div class="project-rich-text text-base sm:text-lg text-gray-300 space-y-4">
               {project.detail.explication.map((paragraph: string) => (
-                <p set:html={paragraph} />
+                <div set:html={paragraph} />
               ))}
             </div>
           </div>
@@ -226,10 +253,10 @@ const cleanDescription = project.description
       {
         project.detail?.myRole && (
           <div class="section-card space-y-5">
-            <h2 class="text-3xl font-bold text-cyan-200">Mi rol</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-cyan-200">Mi rol</h2>
 
             <div
-              class="role-text text-lg text-gray-300 leading-relaxed py-2"
+              class="role-text text-base sm:text-lg text-gray-300 leading-relaxed py-1 sm:py-2"
               set:html={project.detail.myRole}
             />
           </div>
@@ -241,7 +268,9 @@ const cleanDescription = project.description
     {
       recognitions.length > 0 && (
         <section class="section-card space-y-5">
-          <h2 class="text-3xl font-bold text-cyan-200">Reconocimientos</h2>
+          <h2 class="text-2xl sm:text-3xl font-bold text-cyan-200">
+            Reconocimientos
+          </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {recognitions.map((item) => (
@@ -259,35 +288,29 @@ const cleanDescription = project.description
       media.length > 0 && (
         <section class="space-y-8">
           <div class="text-center space-y-2">
-            <h2 class="text-3xl md:text-4xl font-bold text-cyan-200">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-200">
               Galería multimedia
             </h2>
-            <p class="text-gray-400">
+            <p class="text-sm sm:text-base text-gray-400">
               Capturas, vídeos, material de presentación y otros recursos del
               proyecto.
             </p>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-start">
             {media.map((item) => (
-              <article class="section-card space-y-4">
+              <article class="section-card space-y-4 self-start">
                 {item.title && (
-                  <h3 class="text-xl font-semibold text-yellow-200">
+                  <h3 class="text-lg sm:text-xl font-semibold text-yellow-200">
                     {item.title}
                   </h3>
-                )}
-
-                {item.description && (
-                  <div class="media-caption text-gray-400 leading-relaxed">
-                    <p>{item.description}</p>
-                  </div>
                 )}
 
                 {item.type === "image" && (
                   <img
                     src={item.src}
                     alt={item.title ?? "Media del proyecto"}
-                    class="w-full rounded-xl object-cover"
+                    class="w-full rounded-xl"
                     loading="lazy"
                   />
                 )}
@@ -310,6 +333,12 @@ const cleanDescription = project.description
                     />
                   </div>
                 )}
+
+                {item.description && (
+                  <div class="media-caption text-sm sm:text-base text-gray-400 leading-relaxed">
+                    <p>{item.description}</p>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -322,10 +351,10 @@ const cleanDescription = project.description
       snippets.length > 0 && (
         <section class="space-y-8">
           <div class="text-center space-y-2">
-            <h2 class="text-3xl md:text-4xl font-bold text-cyan-200">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-200">
               Snippets de código
             </h2>
-            <p class="text-gray-400">
+            <p class="text-sm sm:text-base text-gray-400">
               Fragmentos concretos que muestran partes técnicas relevantes del
               proyecto.
             </p>
@@ -335,19 +364,19 @@ const cleanDescription = project.description
             {snippets.map((snippet) => (
               <article class="section-card">
                 <div class="space-y-2">
-                  <div class="flex flex-wrap items-center justify-between gap-3">
-                    <h3 class="text-2xl font-semibold text-yellow-200">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <h3 class="text-xl sm:text-2xl font-semibold text-yellow-200">
                       {snippet.title}
                     </h3>
                     {snippet.language && (
-                      <span class="rounded-full border border-cyan-700 px-3 py-1 text-sm text-cyan-300">
+                      <span class="w-fit rounded-full border border-cyan-700 px-3 py-1 text-sm text-cyan-300">
                         {snippet.language}
                       </span>
                     )}
                   </div>
 
                   {snippet.description && (
-                    <p class="text-gray-400 leading-relaxed">
+                    <p class="text-sm sm:text-base text-gray-400 leading-relaxed">
                       {snippet.description}
                     </p>
                   )}

@@ -1,9 +1,9 @@
 ---
-import "@fontsource-variable/onest"
+import "@fontsource-variable/onest";
 
-import Header from "../components/Header.astro"
-import Footer from "../components/Footer.astro"
-import { ClientRouter } from "astro:transitions"
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { ClientRouter } from "astro:transitions";
 
 export interface Props {
   title: string;
@@ -11,7 +11,7 @@ export interface Props {
   headerVariant?: "default" | "minimal" | "none";
 }
 
-const { description, title, headerVariant = "default" } = Astro.props
+const { description, title, headerVariant = "default" } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,10 +21,20 @@ const { description, title, headerVariant = "default" } = Astro.props
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <!-- Favicon para modo claro -->
-    <link rel="icon" type="image/svg+xml" href="/gamepad_light.svg" media="(prefers-color-scheme: dark)">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/gamepad_light.svg"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <!-- Favicon para modo oscuro -->
-    <link rel="icon" type="image/svg+xml" href="/gamepad.svg" media="(prefers-color-scheme: light)">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/gamepad.svg"
+      media="(prefers-color-scheme: light)"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script type="application/ld+json">
@@ -57,7 +67,7 @@ const { description, title, headerVariant = "default" } = Astro.props
       :root {
         color-scheme: light dark;
       }
-
+      
       html {
         font-family: "Onest Variable", system-ui, sans-serif;
         scroll-behavior: smooth;
@@ -133,7 +143,8 @@ const { description, title, headerVariant = "default" } = Astro.props
 </html>
 
 <script is:inline>
-  const keyFor = (url) => `scroll:${new URL(url, location.origin).pathname}${new URL(url, location.origin).search}`;
+  const keyFor = (url) =>
+    `scroll:${new URL(url, location.origin).pathname}${new URL(url, location.origin).search}`;
 
   const saveScroll = () => {
     try {
@@ -158,17 +169,28 @@ const { description, title, headerVariant = "default" } = Astro.props
 
   // Guarda scroll mientras haces scroll (suave y barato)
   let raf = 0;
-  window.addEventListener("scroll", () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(saveScroll);
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(saveScroll);
+    },
+    { passive: true },
+  );
 
   // Antes de salir por enlaces
   document.addEventListener("click", (e) => {
     const a = e.target?.closest?.("a");
     if (!a) return;
     // solo enlaces normales (evita new tab, etc.)
-    if (a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (
+      a.target === "_blank" ||
+      e.metaKey ||
+      e.ctrlKey ||
+      e.shiftKey ||
+      e.altKey
+    )
+      return;
     saveScroll();
   });
 
