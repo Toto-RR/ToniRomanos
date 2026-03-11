@@ -1,30 +1,440 @@
 ---
-import EstudiosItem from "./EstudiosItem.astro"
-const ESTUDIOS = [
+const studies = [
   {
-    date: "2021 - 2025",
-    title: "Estudiante en Diseño y Desarrollo de Videojuegos",
-    company: "CITM",
+    title: "Grado en Diseño y Desarrollo de Videojuegos",
+    center: "Centre de la Imatge i Tecnología Multimèdia - CITM",
+    period: "2021 — 2025",
+    status: "Formación principal",
     description:
-      "Estudié todos los fundamentos sobre cómo diseñar y desarrollar videojuegos a todos los niveles, desde proyectos indie hasta juegos AAA, aprendiendo y desarrollando todas las facetas que los componen.",
-    link: "https://www.citm.upc.edu/esp/estudis/grau-videojocs-terrassa/",
+      "Etapa centrada en programación, diseño de videojuegos, desarrollo técnico y construcción de sistemas interactivos. Aquí he consolidado mi perfil como developer orientado a gameplay, herramientas y prototipado.",
+    highlights: [
+      "Programación aplicada a videojuegos",
+      "Unity y desarrollo de sistemas interactivos",
+      "Motores de juego y arquitectura técnica",
+      "Gameplay y diseño orientado a prototipos",
+      "Modelado, gráficos 3D y pipelines creativos",
+    ],
   },
   {
-    date: "2015 - 2021",
-    title: "E.S.O y Bachillerato Tecnológico",
-    company: "IES Palau Ausit",
+    title: "Bachillerato Tecnológico",
+    center: "IES Palau Ausit",
+    period: "2019 — 2021",
+    status: "Base técnica",
     description:
-      "Este insituto me formó como persona y me hizo desarrollar la gran mayoria de facetas como estudiante. Además, también me preparó para el salto a los estudios posteriores y la vida laboral.",
+      "Formación orientada al razonamiento lógico, matemático y tecnológico. Fue la etapa en la que reforcé la base analítica que después he aplicado al desarrollo, la informática y la resolución técnica de problemas.",
+    highlights: [
+      "Matemáticas y lógica",
+      "Física y tecnología",
+      "Capacidad analítica",
+      "Base para programación y desarrollo técnico",
+    ],
   },
-]
+];
+
+const pillars = [
+  "Programación",
+  "Game Dev",
+  "Unity",
+  "Sistemas interactivos",
+  "Tecnología",
+  "3D",
+];
 ---
 
-<ol class="relative mt-16">
-  {
-    ESTUDIOS.map((estudios) => (
-      <li class="">
-        <EstudiosItem {...estudios} />
-      </li>
-    ))
+<section class="studies-section section" id="studies">
+  <div class="studies-shell">
+    <div class="section-heading studies-heading">
+      <h2>Estudios</h2>
+      <p>
+        Mi recorrido académico ha estado muy ligado a la tecnología y al desarrollo
+        de videojuegos. Más allá de los títulos, esta etapa me ha servido para
+        construir una base técnica sólida y definir el tipo de developer que quiero ser.
+      </p>
+    </div>
+<!-- 
+    <div class="studies-hero-card">
+      <div class="studies-hero-copy">
+        <p class="studies-hero-label">Base académica</p>
+        <h3>Una formación enfocada en crear, entender y construir experiencias interactivas.</h3>
+        <p>
+          He combinado estudios reglados con una forma de aprender muy práctica:
+          probar, desmontar, iterar y convertir ideas en sistemas funcionales.
+        </p>
+      </div>
+
+      <div class="studies-pillars" aria-label="Áreas clave de formación">
+        {pillars.map((pillar) => (
+          <span>{pillar}</span>
+        ))}
+      </div>
+    </div> -->
+
+    <div class="studies-timeline">
+      {studies.map((study, index) => (
+        <article class={`study-card ${index === 0 ? "study-card--featured" : ""}`}>
+          <div class="study-line" aria-hidden="true">
+            <span class="study-dot"></span>
+          </div>
+
+          <div class="study-card-inner">
+            <div class="study-card-top">
+              <div class="study-card-titleblock">
+                <span class="study-status">{study.status}</span>
+                <h3>{study.title}</h3>
+                <p class="study-center">{study.center}</p>
+              </div>
+
+              <div class="study-period-wrap">
+                <span class="study-period">{study.period}</span>
+              </div>
+            </div>
+
+            <p class="study-description">{study.description}</p>
+
+            <ul class="study-highlights">
+              {study.highlights.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .studies-section {
+    position: relative;
   }
-</ol>
+
+  .studies-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .studies-heading {
+    max-width: 840px;
+  }
+
+  .studies-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: fit-content;
+    margin-bottom: 0.85rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 26, 41, 0.22);
+    background: rgba(245, 26, 41, 0.08);
+    color: #ffd6da;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .studies-hero-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at top right, rgba(245, 26, 41, 0.14), transparent 32%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+      rgba(10, 10, 12, 0.92);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    isolation: isolate;
+  }
+
+  .studies-hero-card::before {
+    content: "";
+    position: absolute;
+    inset: auto auto -60px -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(245, 26, 41, 0.16), transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .studies-hero-copy,
+  .studies-pillars {
+    position: relative;
+    z-index: 1;
+  }
+
+  .studies-hero-label {
+    margin: 0 0 0.7rem;
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .studies-hero-copy h3 {
+    max-width: 18ch;
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+
+  .studies-hero-copy p:last-child {
+    max-width: 62ch;
+    margin: 1rem 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.75;
+  }
+
+  .studies-pillars {
+    display: flex;
+    align-content: flex-start;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .studies-pillars span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 26, 41, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font-size: 0.88rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .studies-timeline {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .studies-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 23px;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      rgba(245, 26, 41, 0.28),
+      rgba(255, 255, 255, 0.08)
+    );
+    pointer-events: none;
+  }
+
+  .study-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .study-line {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 1.4rem;
+  }
+
+  .study-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow:
+      0 0 0 6px rgba(245, 26, 41, 0.12),
+      0 0 24px rgba(245, 26, 41, 0.28);
+    z-index: 1;
+  }
+
+  .study-card-inner {
+    position: relative;
+    overflow: hidden;
+    padding: 1.45rem 1.45rem 1.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.022)),
+      rgba(10, 10, 12, 0.88);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .study-card:hover .study-card-inner {
+    transform: translateY(-4px);
+    border-color: rgba(245, 26, 41, 0.28);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.028)),
+      rgba(10, 10, 12, 0.92);
+  }
+
+  .study-card--featured .study-card-inner {
+    border-color: rgba(245, 26, 41, 0.22);
+    background:
+      linear-gradient(180deg, rgba(245, 26, 41, 0.09), rgba(255, 255, 255, 0.02)),
+      rgba(10, 10, 12, 0.92);
+  }
+
+  .study-card-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .study-card-titleblock {
+    min-width: 0;
+  }
+
+  .study-status {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 26, 41, 0.18);
+    background: rgba(245, 26, 41, 0.08);
+    color: #ffd7db;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .study-card h3 {
+    margin: 0;
+    font-size: clamp(1.3rem, 2.3vw, 1.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .study-center {
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .study-period-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .study-period {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 26, 41, 0.2);
+    background: rgba(245, 26, 41, 0.12);
+    color: #ffe1e4;
+    font-size: 0.84rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .study-description {
+    max-width: 74ch;
+    margin: 1rem 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.75;
+  }
+
+  .study-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 1.15rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .study-highlights li {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 0.85rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--text);
+    font-size: 0.84rem;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 980px) {
+    .studies-hero-card {
+      grid-template-columns: 1fr;
+    }
+
+    .studies-hero-copy h3 {
+      max-width: none;
+    }
+
+    .studies-pillars {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .studies-timeline::before {
+      left: 18px;
+    }
+
+    .study-card {
+      grid-template-columns: 38px 1fr;
+      gap: 0.8rem;
+    }
+
+    .study-card-top {
+      grid-template-columns: 1fr;
+    }
+
+    .study-period-wrap {
+      justify-content: flex-start;
+    }
+
+    .study-card-inner {
+      padding: 1.2rem 1rem 1.1rem;
+      border-radius: 20px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .studies-hero-card {
+      padding: 1.2rem 1rem;
+      border-radius: 22px;
+    }
+
+    .studies-pillars span,
+    .study-highlights li {
+      font-size: 0.8rem;
+    }
+
+    .study-period {
+      white-space: normal;
+    }
+  }
+</style>

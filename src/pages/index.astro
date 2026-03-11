@@ -1,81 +1,35 @@
 ---
-import Layout from "@/layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import FeaturedProjects from "../components/ProjectCard.astro";
+import OtherProjects from "../components/OtrosProyectos.astro";
+import Experience from "../components/Experience.astro";
+import TechStack from "../components/TechStack.astro";
+import ContactCard from "../components/ContactCard.astro";
 
-import AboutMe from "@/components/AboutMe.astro"
-import Briefcase from "@/components/icons/Briefcase.astro"
-import CodeIcon from "@/components/icons/Code.astro"
-import Experience from "@/components/Experience.astro"
-import Estudios from "@/components/Estudios.astro"
-import ProfileCheck from "@/components/icons/ProfileCheck.astro"
-import Projects from "@/components/Projects.astro"
-import SectionContainer from "@/components/SectionContainer.astro"
-import Hero from "@/components/Hero.astro"
-import TitleSection from "@/components/TitleSection.astro"
-import OtherProjects from "@/components/OtherProjects.astro"
-import IconCarrusel from "@/components/IconCarrusel.astro"
-import LittleTitleSection from "@/components/LittleTitleSection.astro"
+import { featuredProjects } from "../data/projects";
+import { otherProjects } from "../data/otherprojects";
+import { experience } from "../data/experience";
+import { tech } from "../data/tech";
+import Estudios from "../components/Estudios.astro";
 ---
 
-<Layout
-  title="Toni Romanos - GameDev"
-  description="Portfolio oficial de Toni Romanos. Game Developer / Desarrollador de videojuegos, aplicaciones y experiencias interactivas."
->
-  <main class="px-4 mx-auto max-w-9xl">
-    <SectionContainer class="py-16 md:py-36">
-      <Hero>
-      </slot>
-    </Hero>
-    </SectionContainer>
-    <div class="space-y-24">
+<Layout>
+  <Hero />
+
+  <main class="container">
+    <Experience items={experience} />
     
-    <SectionContainer id="proyectos">
-      <TitleSection>
-        <CodeIcon class="size-9" />
-        Proyectos Destacados
-      </TitleSection>
-      <Projects />
-    </SectionContainer>
-    
-    <SectionContainer id="otros-proyectos">
-      <LittleTitleSection>
-        <CodeIcon class="size-7" />
-        Otros proyectos interesantes
-      </LittleTitleSection>
-      <OtherProjects />
-    </SectionContainer>
+    <FeaturedProjects items={featuredProjects} />
+    <OtherProjects items={otherProjects} />
+    <Estudios/>
 
-    <SectionContainer id="habilidades">
-      <TitleSection>
-        <CodeIcon class="size-7" />
-        Habilidades
-      </TitleSection>
-      <IconCarrusel />
-    </SectionContainer>
+    <section id="stack" class="section">
+      <TechStack items={tech} />
+    </section>
 
-    <SectionContainer id="experiencia">
-      <TitleSection>
-        <Briefcase class="size-8" />
-        Experiencia
-      </TitleSection>
-      <Experience />
-    </SectionContainer>
-
-    <SectionContainer id="estudios">
-      <TitleSection>
-        <Briefcase class="size-8" />
-        Estudios
-      </TitleSection>
-      <Estudios />
-    </SectionContainer>
-
-    <SectionContainer id="sobre-mi">
-      <TitleSection>
-        <ProfileCheck class="size-8" />
-        Sobre mí
-      </TitleSection>
-      <AboutMe />
-    </SectionContainer>
-
-  </div>
+    <section class="section">
+      <ContactCard />
+    </section>
   </main>
 </Layout>

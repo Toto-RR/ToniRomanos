@@ -1,209 +1,46 @@
 ---
-import "@fontsource-variable/onest";
+import "../styles/global.css";
+import { ClientRouter } from 'astro:transitions';
 
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { ClientRouter } from "astro:transitions";
-
-export interface Props {
-  title: string;
+interface Props {
+  title?: string;
   description?: string;
-  headerVariant?: "default" | "minimal" | "none";
 }
 
-const { description, title, headerVariant = "default" } = Astro.props;
+const {
+  title = "Toni Romanos | Game Developer",
+  description = "Portfolio de Toni Romanos, Game Developer especializado en Unity, gameplay y experiencias interactivas.",
+} = Astro.props;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <!-- Favicon para modo claro -->
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/gamepad_light.svg"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <!-- Favicon para modo oscuro -->
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/gamepad.svg"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Toni Romanos",
-        "url": "https://www.toniromanos.dev",
-        "jobTitle": "Desarrollador de Videojuegos",
-        "sameAs": [
-          "https://github.com/toto-rr",
-          "https://www.linkedin.com/in/toniromanos/"
-        ]
-      }
-    </script>
-    <ClientRouter />
+    <ClientRouter/>
   </head>
 
-  <body class="relative text-black dark:text-white">
-    <div
-      class="absolute top-0 bottom-0 z-[-2] min-h-screen w-full bg-gray-50 dark:bg-gray-950
-      bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(217,216,255,0.5),rgba(255,255,255,0.9))]
-      dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
-    >
-    </div>
-    <Header />
+  <body>
+    <div class="page-bg"></div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand">Toni Romanos</a>
+
+        <nav class="nav">
+          <a href="#experience">Experiencia</a>
+          <a href="#projects">Proyectos</a>
+          <a href="#other-projects">Otros Proyectos</a>
+          <a href="#studies">Estudios</a>
+          <a href="#stack">Stack</a>
+          <a href="#aboutme">About me</a>
+        </nav>
+      </div>
+    </header>
+
     <slot />
-    <Footer />
-    <style is:global>
-      :root {
-        color-scheme: light dark;
-      }
-      
-      html {
-        font-family: "Onest Variable", system-ui, sans-serif;
-        scroll-behavior: smooth;
-      }
-
-      body {
-        color: rgba(17, 17, 17, 0.9);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        overscroll-behavior: none;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-      }
-
-      @media (prefers-color-scheme: dark) {
-        body {
-          color: rgba(255, 255, 255, 0.9);
-        }
-      }
-
-      #header-nav {
-        animation: blur linear both 0.5s;
-        animation-timeline: scroll();
-        animation-range: 0 500px;
-      }
-
-      @keyframes blur {
-        to {
-          backdrop-filter: blur(20px);
-          border-width: 1px;
-          border-color: rgba(0, 0, 0);
-          padding: 0.25rem 0.75rem;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          background-color: rgb(229, 229, 229);
-          border-radius: 9999px;
-        }
-      }
-
-      @media (prefers-color-scheme: dark) {
-        @keyframes blur {
-          from {
-            border: 0px;
-          }
-          to {
-            box-shadow:
-              0px 5px 50px -5px rgba(0, 0, 0, 0.1),
-              0px 0px 0 1px rgba(0, 0, 0, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            border-width: 1px;
-            border-color: rgba(0, 0, 0);
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 9999px;
-          }
-        }
-      }
-    </style>
   </body>
 </html>
-
-<script is:inline>
-  const keyFor = (url) =>
-    `scroll:${new URL(url, location.origin).pathname}${new URL(url, location.origin).search}`;
-
-  const saveScroll = () => {
-    try {
-      sessionStorage.setItem(keyFor(location.href), String(window.scrollY));
-    } catch {}
-  };
-
-  const restoreScroll = () => {
-    // Si hay hash (#seccion), prioriza ir a esa sección
-    if (location.hash) {
-      const id = location.hash.slice(1);
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ block: "start" });
-      return;
-    }
-
-    try {
-      const saved = sessionStorage.getItem(keyFor(location.href));
-      if (saved != null) window.scrollTo(0, Number(saved));
-    } catch {}
-  };
-
-  // Guarda scroll mientras haces scroll (suave y barato)
-  let raf = 0;
-  window.addEventListener(
-    "scroll",
-    () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(saveScroll);
-    },
-    { passive: true },
-  );
-
-  // Antes de salir por enlaces
-  document.addEventListener("click", (e) => {
-    const a = e.target?.closest?.("a");
-    if (!a) return;
-    // solo enlaces normales (evita new tab, etc.)
-    if (
-      a.target === "_blank" ||
-      e.metaKey ||
-      e.ctrlKey ||
-      e.shiftKey ||
-      e.altKey
-    )
-      return;
-    saveScroll();
-  });
-
-  // Astro: cuando carga una página o hace swap con transiciones
-  document.addEventListener("astro:page-load", restoreScroll);
-  document.addEventListener("astro:after-swap", restoreScroll);
-
-  // Al volver/avanzar en historial
-  window.addEventListener("popstate", () => {
-    // Espera un tick para que el DOM esté listo
-    setTimeout(restoreScroll, 0);
-  });
-
-  // Evita que el navegador intente gestionar scroll a su bola en SPA
-  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-</script>

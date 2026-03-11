@@ -1,0 +1,124 @@
+---
+import GitHub from "../assets/icons/GitHub.astro";
+import Link from "../assets/icons/Link.astro";
+import Youtube from "../assets/icons/Youtube.astro";
+import { otherProjects } from "../data/otherprojects";
+---
+
+<section class="section" id="other-projects">
+  <div class="section-heading">
+    <h2>Otros proyectos</h2>
+    <p>Prototipos, pruebas técnicas y pequeños experimentos.</p>
+  </div>
+
+  <div class="other-projects-grid">
+    {
+      otherProjects.map(({ title, description, image, tags, links }) => (
+        <article class="other-project-card">
+          {image && (
+            <div class="other-project-image">
+              <img src={image} alt={title} />
+            </div>
+          )}
+
+          <div class="other-project-content">
+            <div>
+              <h3>{title}</h3>
+              <p set:html={description} />
+            </div>
+
+            <div class="other-project-footer">
+              <div class="other-project-tags">
+                {tags?.filter(Boolean).map((tag) => (
+                  typeof tag === "string" ? (
+                    <span>{tag}</span>
+                  ) : (
+                    <span class="other-project-tag-icon-wrap">
+                      <tag.icon class="featured-project-tag-icon" />
+                      {tag.name}
+                    </span>
+                  )
+                ))}
+              </div>
+
+              <div class="other-project-links">
+                {links?.web && (
+                  <a href={links.web} class="other-project-link" target="_blank" rel="noopener noreferrer" aria-label="Ver proyecto">
+                    <Link />
+                  </a>
+                )}
+                {links?.github && (
+                  <a href={links.github} class="other-project-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <GitHub />
+                  </a>
+                )}
+                {links?.youtube && (
+                  <a href={links.youtube} class="other-project-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <Youtube />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .other-project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .other-project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .other-project-tags span,
+  .other-project-tag-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--accent-soft);
+    border-radius: 14px;
+    background: var(--bg-soft);
+    color: #ffd6da;
+    font-size: 0.78rem;
+  }
+
+  .other-project-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    width: max-content;
+  }
+
+  .other-project-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--accent-soft);
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--muted);
+    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  .other-project-links a:hover {
+    color: var(--text);
+    border-color: rgba(245, 26, 41, 0.45);
+    transform: translateY(-2px);
+  }
+</style>

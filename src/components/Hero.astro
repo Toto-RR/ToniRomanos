@@ -1,58 +1,147 @@
 ---
-const personalImageAlt = "Toni Romanos";
-import Badge from "@/components/Badge.astro";
-import LinkedInIcon from "@/components/icons/LinkedIn.astro";
-import MailIcon from "@/components/icons/Mail.astro";
-import SocialPill from "@/components/SocialPill.astro";
-import GitHub from "./icons/GitHub.astro";
-import Descargar from "./icons/Descargar.astro"
+const videos = [
+  "/media/hero/clip1.mp4",
+  "/media/hero/clip2.mp4",
+  "/media/hero/clip3.mp4",
+  "/media/hero/clip4.mp4",
+  "/media/hero/clip5.mp4",
+];
 ---
 
-<div class="max-w-4xl mt-6">
-  <div class="flex gap-4 mb-4">
-    <img
-      class="rounded-full shadow-lg size-16"
-      src="./profile.webp"
-      alt={personalImageAlt}
-    />
-    <a
-      href="https://www.linkedin.com/in/toniromanos/"
-      target="_blank"
-      rel="noopener"
-      class="flex items-center transition md:justify-center md:hover:scale-105"
-    >
-      <Badge>Disponible para trabajar</Badge>
-    </a>
+<section class="hero" id="top">
+  <div class="hero-media" aria-hidden="true">
+    {
+      videos.map((video, index) => (
+        <video
+          class={`hero-video ${index === 0 ? "is-active" : ""}`}
+          src={video}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-hero-video
+        />
+      ))
+    }
   </div>
-  <h1
-    class="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl dark:text-white"
-  >
-    Hola! Soy Toni Romanos
-  </h1>
-  <p
-    class="mt-6 text-xl text-gray-800 dark:[&>strong]:text-yellow-200 [&>strong]:text-yellow-500 [&>strong]:font-semibold dark:text-gray-300"
-  >
-    <strong>Game Developer</strong> graduado en 
-    <strong>Diseño y Desarrollo de Videojuegos</strong>
-    de Barcelona, España 🇪🇸. <br>Enfocado en la <strong>programación</strong>. Especializado en <strong>C# y Unity</strong>.
-  </p>
-  <nav class="flex flex-wrap gap-4 mt-8">
-    <SocialPill href="/RomanosToni_CV.pdf">
-      <Descargar class="size-4" />
-      CV
-    </SocialPill>
-    <SocialPill href="https://www.linkedin.com/in/toniromanos">
-      <LinkedInIcon class="size-4" />
-      LinkedIn
-    </SocialPill>
-    <SocialPill href="https://github.com/Toto-RR">
-      <GitHub class="size-4" />
-      GitHub
-    </SocialPill>
-    
-    <SocialPill href="mailto:toni.romanos.ruiz@gmail.com">
-      <MailIcon class="size-4" />
-      toni.romanos.ruiz@gmail.com
-    </SocialPill>
-  </nav>
-</div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content hero-content--bottom-left">
+
+      <div class="hero-sticker" aria-label="Disponible para oportunidades">
+        <span class="hero-sticker-dot"></span>
+        <span class="hero-sticker-text">¡Disponible para trabajar!</span>
+      </div>
+
+      <p class="hero-eyebrow">GAME DEVELOPER · UNITY · INTERACTIVE SYSTEMS</p>
+
+      <h1>Toni Romanos</h1>
+
+      <p class="hero-description">
+        Me especializo en Unity y disfruto creando proyectos donde se mezclan
+        videojuegos, herramientas, hardware y prototipado.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="/cv.pdf" class="button button-primary" target="_blank" rel="noopener noreferrer">Descargar CV</a>
+        <a href="#contact" class="button button-ghost">Contacto</a>
+        <a href="https://github.com/Toto-RR" class="button button-ghost" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const videos = Array.from(document.querySelectorAll("[data-hero-video]"));
+
+  if (videos.length > 1) {
+    let activeIndex = 0;
+    const intervalMs = 5000;
+
+    setInterval(() => {
+      const current = videos[activeIndex];
+      activeIndex = (activeIndex + 1) % videos.length;
+      const next = videos[activeIndex];
+
+      current.classList.remove("is-active");
+      next.classList.add("is-active");
+    }, intervalMs);
+  }
+</script>
+
+<style>
+  .hero-availability-dot {
+    display: none; /* replaced by sticker */
+  }
+
+  /* STICKER */
+  .hero-sticker {
+    position: absolute;
+    top: -18px;
+    left: -14px;
+    z-index: 10;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem 0.5rem 0.65rem;
+    border-radius: 10px;
+
+    background: #0e0e10;
+    border: 1px solid rgba(245, 26, 41, 0.55);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.55),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 3px rgba(245, 26, 41, 0.08);
+
+    transform: rotate(0deg);
+    transform-origin: top left;
+
+    color: #ffd6da;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    /* subtle worn-sticker feel */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .hero-sticker::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+
+  .hero-sticker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(245, 26, 41, 0.25);
+    flex-shrink: 0;
+    animation: pulse-dot 2s ease infinite;
+  }
+
+  .hero-sticker-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(245, 26, 41, 0.25); }
+    50%       { box-shadow: 0 0 0 6px rgba(245, 26, 41, 0.08); }
+  }
+</style>

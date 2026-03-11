@@ -1,31 +1,38 @@
 ---
-import ExperienceItem from "./ExperienceItem.astro"
-const EXPERIENCE = [
-  {
-    date: "Sep 2025 - Actualidad",
-    title: "Game Developer",
-    company: "Solo Dev. / Indie",
-    description:
-      "Considero que la mejor manera de ganar experiencia es poniendo en práctica los conocimientos adquiridos previamente y durante procesos de desarrollo. Es por eso que no he dejado de trabajar y de aprender en ningún momento, creando prototipos más o menos acabados de videojuegos. Lo que me ha permitido ganar conocimiento y experiencia en una gran variedad de mecánicas y de estilos de videojuegos.",
-    link: "https://neurekalab.com/es/inicio/",
-  },
-  {
-    date: "Sep 2024 - Jul 2025 (Prácticas)",
-    title: "Game Developer",
-    company: "NeurekaLAB",
-    description:
-      "Trabajé en la aplicación SpaceLetters y SpaceNumbers además de la transición de esta al modelo de familias, desarrollada con Unity para dispositivos móviles. Mi rol principal fue el de programador, desarrollando nuevas actividades, funcionalidades, y realizando mejoras en la estructura general del código.",
-    link: "https://neurekalab.com/es/inicio/",
-  },
-]
+import type { ExperienceItem } from "../data/experience";
+
+const { items } = Astro.props as { items: ExperienceItem[] };
 ---
 
-<ol class="relative mt-16">
-  {
-    EXPERIENCE.map((experience) => (
-      <li class="">
-        <ExperienceItem {...experience} />
-      </li>
-    ))
-  }
-</ol>
+<section class="section" id="experience">
+  <div class="section-heading">
+    <h2>Experiencia</h2>
+    <p>
+      Desarrollo de videojuegos, prototipos y proyectos técnicos aplicados a contextos reales.
+    </p>
+  </div>
+
+  <div class="experience-grid-alt">
+    {items.map((item) => (
+      <article class="experience-card-alt">
+        <div class="experience-card-alt-top">
+          <div>
+            <p class="experience-company">{item.company}</p>
+            <h3>{item.role}</h3>
+          </div>
+
+          <div class="experience-meta-alt">
+            <span class="experience-period">{item.period}</span>
+            <span class="experience-type">{item.type}</span>
+          </div>
+        </div>
+
+        <p class="experience-description">{item.description}</p>
+
+        <ul class="experience-highlights">
+          {item.highlights.map((point) => <li>{point}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>

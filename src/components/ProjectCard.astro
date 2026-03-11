@@ -1,0 +1,390 @@
+---
+import { featuredProjects } from "../data/projects";
+
+import GitHub from "../assets/icons/GitHub.astro";
+import Youtube from "../assets/icons/Youtube.astro";
+---
+
+<section class="section" id="projects">
+  <div class="section-heading">
+    <h2>Proyectos destacados</h2>
+    <p>
+      Una selección de trabajos que definen mejor mi perfil: gameplay, sistemas
+      interactivos, hardware y desarrollo técnico aplicado.
+    </p>
+  </div>
+
+  <div class="featured-projects">
+    {
+      featuredProjects.map(
+        (
+          {
+            title,
+            subtitle,
+            description,
+            media,
+            mediaType,
+            video,
+            tags,
+            links,
+            slug,
+          },
+          index,
+        ) => {
+          const n = index + 1; //Tematizado segun accents
+          //const n =  1;
+          const cardStyle = `--ca: var(--accent${n}, var(--accent)); --ca-soft: var(--accent${n}-soft, var(--accent-soft)); --ca-light: var(--accent${n}-light, var(--accent-light));`;
+          return (
+          <article
+            class={`featured-project ${index % 2 !== 0 ? "featured-project--reverse" : ""}`}
+            style={cardStyle}
+          >
+            <div class="featured-project-media-column">
+              <div
+                class={`featured-project-media ${mediaType === "video" ? "featured-project-media--interactive" : ""}`}
+                data-project-media
+              >
+                {mediaType === "video" && video ? (
+                  <>
+                    <img
+                      src={media}
+                      alt={title}
+                      class="featured-project-cover is-visible"
+                      data-project-cover
+                    />
+
+                    <video
+                      class="featured-project-video"
+                      preload="metadata"
+                      playsinline
+                      loop
+                      muted
+                      data-project-video
+                    >
+                      <source src={video} type="video/mp4" />
+                    </video>
+
+                    <button
+                      type="button"
+                      class="featured-project-play"
+                      aria-label={`Reproducir o pausar vídeo de ${title}`}
+                      data-project-toggle
+                    >
+                      <svg
+                        class="icon-play"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 6.5v11l9-5.5-9-5.5Z" fill="currentColor" />
+                      </svg>
+
+                      <svg
+                        class="icon-pause"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M8 6h3v12H8zm5 0h3v12h-3z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="featured-project-fullscreen"
+                      aria-label={`Abrir pantalla completa para ${title}`}
+                      data-project-fullscreen
+                    >
+                      <svg
+                        class="icon-fullscreen-enter"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M7 3H3v4h2V5h2V3Zm14 0h-4v2h2v2h2V3ZM5 17H3v4h4v-2H5v-2Zm16 0h-2v2h-2v2h4v-4Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+
+                      <svg
+                        class="icon-fullscreen-exit"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M9 3H7v2H5v2H3V3h6Zm12 0v4h-2V5h-2V3h4ZM3 17h2v2h2v2H3v-4Zm16 2v-2h2v4h-4v-2h2Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="featured-project-sound"
+                      aria-label={`Activar o desactivar sonido de ${title}`}
+                      data-project-sound
+                    >
+                      <svg
+                        class="icon-volume-on"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M14 5.23v13.54a1 1 0 0 1-1.64.77L7.91 16H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.91l4.45-3.54A1 1 0 0 1 14 5.23Zm3.54 2.05a1 1 0 0 1 1.41 0 6.5 6.5 0 0 1 0 9.19 1 1 0 1 1-1.41-1.42 4.5 4.5 0 0 0 0-6.35 1 1 0 0 1 0-1.42Zm2.83-2.82a1 1 0 0 1 1.41 0 10.5 10.5 0 0 1 0 14.85 1 1 0 0 1-1.41-1.42 8.5 8.5 0 0 0 0-12.01 1 1 0 0 1 0-1.42Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+
+                      <svg
+                        class="icon-volume-off"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M14 5.23v13.54a1 1 0 0 1-1.64.77L7.91 16H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.91l4.45-3.54A1 1 0 0 1 14 5.23Zm6.48 3.36a1 1 0 0 1 0 1.41L18.9 11.6l1.59 1.59a1 1 0 1 1-1.41 1.41l-1.59-1.58-1.58 1.58a1 1 0 1 1-1.42-1.41l1.59-1.59-1.59-1.58a1 1 0 0 1 1.42-1.42l1.58 1.59 1.59-1.59a1 1 0 0 1 1.41 0Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="featured-project-speed"
+                      aria-label="Cambiar velocidad"
+                      data-project-speed
+                    >
+                      2×
+                    </button>
+                  </>
+                ) : (
+                  <img src={media} alt={title} />
+                )}
+              </div>
+
+              <ul class="featured-project-tags">
+                {tags?.filter(Boolean).map((tag) => (
+                  <li>
+                    {typeof tag === "string" ? (
+                      <span class="flex gap-x-2 rounded-full text-xs py-1 px-2">
+                        {tag}
+                      </span>
+                    ) : (
+                      <span class="featured-project-tag">
+                        <tag.icon class="featured-project-tag-icon" />
+                        {tag.name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="featured-project-content">
+              <div class="featured-project-text">
+                <p class="featured-project-subtitle">{subtitle}</p>
+                <h3 transition:name={`project-title-${slug}`}>{title}</h3>
+                <p
+                  class="featured-project-description"
+                  set:html={description}
+                />
+              </div>
+
+              <div class="featured-project-links">
+                {slug && (
+                  <a href={`/projects/${slug}`}>
+                    Ver más →
+                  </a>
+                )}
+
+                {links?.demo && (
+                  <a
+                    href={links.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver proyecto
+                  </a>
+                )}
+
+                {links?.github && (
+                  <a
+                    href={links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <GitHub />
+                    GitHub
+                  </a>
+                )}
+
+                {links?.youtube && (
+                  <a
+                    href={links.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Youtube />
+                    YouTube
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+          );
+        }
+      )
+    }
+  </div>
+</section>
+
+<script lang="ts">
+  const mediaBlocks = document.querySelectorAll("[data-project-media]");
+
+  mediaBlocks.forEach((block) => {
+    const video = block.querySelector("[data-project-video]");
+    const cover = block.querySelector("[data-project-cover]");
+    const toggleButton = block.querySelector("[data-project-toggle]");
+    const soundButton = block.querySelector("[data-project-sound]");
+    const speedButton = block.querySelector("[data-project-speed]");
+    const fullscreenButton = block.querySelector("[data-project-fullscreen]");
+
+    if (!video || !cover || !toggleButton || !soundButton) return;
+    if (!(video instanceof HTMLVideoElement)) return;
+    if (!(cover instanceof HTMLImageElement)) return;
+    if (!(toggleButton instanceof HTMLButtonElement)) return;
+    if (!(soundButton instanceof HTMLButtonElement)) return;
+    if (!(block instanceof HTMLElement)) return;
+    if (speedButton && !(speedButton instanceof HTMLButtonElement)) return;
+    if (fullscreenButton && !(fullscreenButton instanceof HTMLButtonElement))
+      return;
+
+    let isPlaying = false;
+    let isFast = false;
+
+    const getFullscreenElement = () =>
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.msFullscreenElement;
+
+    const isBlockFullscreen = () => getFullscreenElement() === block;
+
+    const syncState = () => {
+      block.classList.toggle("is-playing", isPlaying);
+      block.classList.toggle("is-muted", video.muted);
+      block.classList.toggle("is-fullscreen", isBlockFullscreen());
+      cover.classList.toggle("is-hidden", isPlaying);
+    };
+
+    const pauseVideo = () => {
+      video.pause();
+      isPlaying = false;
+      syncState();
+    };
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+        isPlaying = true;
+        syncState();
+      } catch (error) {
+        console.error("No se pudo reproducir el vídeo:", error);
+      }
+    };
+
+    const enterFullscreen = async () => {
+      try {
+        if (block.requestFullscreen) {
+          await block.requestFullscreen();
+        } else if (block.webkitRequestFullscreen) {
+          block.webkitRequestFullscreen();
+        } else if (block.msRequestFullscreen) {
+          block.msRequestFullscreen();
+        }
+      } catch (error) {
+        console.error("No se pudo activar pantalla completa:", error);
+      }
+    };
+
+    const exitFullscreen = async () => {
+      try {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } catch (error) {
+        console.error("No se pudo salir de pantalla completa:", error);
+      }
+    };
+
+    toggleButton.addEventListener("click", async (event) => {
+      event.stopPropagation();
+
+      if (isPlaying) {
+        pauseVideo();
+      } else {
+        await playVideo();
+      }
+    });
+
+    block.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const clickedSoundButton = target.closest("[data-project-sound]");
+      const clickedSpeedButton = target.closest("[data-project-speed]");
+      const clickedFullscreenButton = target.closest(
+        "[data-project-fullscreen]",
+      );
+
+      if (clickedSoundButton || clickedSpeedButton || clickedFullscreenButton)
+        return;
+
+      if (isPlaying) {
+        pauseVideo();
+      } else {
+        await playVideo();
+      }
+    });
+
+    soundButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      video.muted = !video.muted;
+      syncState();
+    });
+
+    speedButton?.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      isFast = !isFast;
+      video.playbackRate = isFast ? 2 : 1;
+      speedButton.textContent = isFast ? "1×" : "2×";
+    });
+
+    fullscreenButton?.addEventListener("click", async (event) => {
+      event.stopPropagation();
+
+      if (isBlockFullscreen()) {
+        await exitFullscreen();
+      } else {
+        await enterFullscreen();
+      }
+
+      syncState();
+    });
+
+    video.addEventListener("ended", () => {
+      isPlaying = false;
+      syncState();
+    });
+
+    document.addEventListener("fullscreenchange", syncState);
+    document.addEventListener("webkitfullscreenchange", syncState);
+    document.addEventListener("msfullscreenchange", syncState);
+
+    syncState();
+  });
+</script>

@@ -1,196 +1,1715 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import GitHub from "../../components/icons/GitHub.astro";
-import Link from "../../components/icons/Link.astro";
-import LinkButton from "../../components//LinkButton.astro";
-import Youtube from "../../components/icons/Youtube.astro";
-
-import { PROJECTS } from "@/data/projects";
+import { projectPages } from "../../data/projectpages";
+import type { ProjectPage } from "../../data/projectpages";
+import { ClientRouter } from "astro:transitions";
 
 export function getStaticPaths() {
-  return PROJECTS.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+  return projectPages.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
   }));
 }
 
-const { project } = Astro.props;
+const { project } = Astro.props as { project: ProjectPage };
 ---
 
-<style>
-  :global(.detailText p + p) {
-    margin-top: 5rem; /* espacio entre párrafos */
-  }
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{project.title} · Toni Romanos</title>
+    <meta name="description" content={project.tagline} />
+    <link rel="stylesheet" href="/src/styles/global.css" />
+    <ClientRouter />
+  </head>
 
-  :global(.detailText p) {
-    line-height: 1.6; /* altura de línea normal */
-    margin-bottom: 0; /* opcional, para que el espacio lo controle la regla de arriba */
-  }
+  <body
+    style={`--pa: ${project.accent}; --pa-light: ${project.accentLight}; --pa-soft: ${project.accentSoft};`}
+  >
+    <!-- ── Back ─────────────────────────────────────────────────────────── -->
+    <nav class="back-nav">
+      <a href="/#projects" class="back-btn">
+        <svg
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M10 3L5 8l5 5"></path>
+        </svg>
+        Volver
+      </a>
+    </nav>
 
-  h1 {
-    padding-top: 32px;
-    font-size: 4rem;
-    font-weight: 700;
-    color: rgb(254, 240, 138);
-    text-align: center;
-  }
-
-  h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: rgb(138, 254, 219);
-  }
-
-  .prose p {
-    margin-bottom: 2rem;
-  }
-
-  p {
-    color: currentColor;
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2.5rem;
-    }
-  }
-
-  :global(strong) {
-    color: #38bdf8;
-  }
-</style>
-
-<Layout
-  title={project.title}
-  description={`Detalles del proyecto ${project.title}. ${project.description.replace(/<[^>]+>/g, "").slice(0, 150)}...`}
-  headerVariant="minimal"
->
-  <main class="max-w-7xl mx-auto px-6 md:px-16 lg:px-32 py-12 space-y-8">
-    <h1>
-      {project.title}
-    </h1>
-
-    <div
-      class=""
-    >
-      <!-- VIDEO / IMAGEN -->
-      <div class="w-full">
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <header class="project-hero">
+      <div class="project-hero-bg">
         {
-          project.youtubeVideoId && (
-            <div class="w-full aspect-video">
-              <iframe
-                class="w-full h-full rounded-xl"
-                src={`https://www.youtube.com/embed/${project.youtubeVideoId}`}
-                title={`Trailer ${project.title}`}
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              />
-            </div>
-          )
-        }
-
-        {
-          !project.youtubeVideoId && project.trailer && (
-            <div class="w-full aspect-video">
-              <video
-                class="w-full h-full rounded-xl block object-cover"
-                controls
-                playsinline
-                preload="metadata"
-                poster={project.image}
-              >
-                <source src={project.trailer} type="video/mp4" />
-              </video>
-            </div>
-          )
-        }
-
-        {
-          !project.youtubeVideoId && !project.trailer && (
-            <img
-              src={project.image}
-              alt={`Imagen del proyecto ${project.title}`}
-              class="w-full h-auto rounded-xl object-cover"
-            />
+          project.coverVideo ? (
+            <video src={project.coverVideo} autoplay muted loop playsinline />
+          ) : (
+            <img src={project.cover} alt={project.title} />
           )
         }
       </div>
-    </div>
-    <!-- TEXTO -->
-      <div class="w-full flex flex-col justify-start gap-12">
-        <div class="space-y-6">
-          {
-            (project.detail?.explication ?? []).map((paragraph: string) => (
-              <div class="leading-relaxed text-lg" set:html={paragraph} />
-            ))
-          }
+      <div class="project-hero-overlay"></div>
+      <div class="project-hero-glow"></div>
+
+      <div class="project-hero-inner">
+        <div class="container">
+          <div class="project-hero-content">
+            <p class="project-hero-eyebrow">
+              <span class="project-hero-eyebrow-line"></span>
+              {project.subtitle}
+            </p>
+
+            <h1 transition:name={`project-title-${project.slug}`}>
+              {project.title}
+            </h1>
+            <p class="project-hero-tagline">{project.tagline}</p>
+
+            <div class="project-hero-meta">
+              <span class="project-meta-pill"
+                ><strong>{project.year}</strong></span
+              >
+              <span class="project-meta-pill">{project.duration}</span>
+              <span class="project-meta-pill">{project.role}</span>
+              <span class="project-meta-pill">{project.team}</span>
+            </div>
+
+            <div class="project-hero-tags">
+              {project.tags.map((t) => <span class="project-tag">{t}</span>)}
+            </div>
+
+            <div class="project-hero-links">
+              {
+                project.links.demo && (
+                  <a
+                    href={project.links.demo}
+                    class="project-link-btn project-link-btn--primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver proyecto
+                  </a>
+                )
+              }
+              {
+                project.links.github && (
+                  <a
+                    href={project.links.github}
+                    class="project-link-btn project-link-btn--ghost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                )
+              }
+              {
+                project.links.youtube && (
+                  <a
+                    href={project.links.youtube}
+                    class="project-link-btn project-link-btn--ghost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    YouTube
+                  </a>
+                )
+              }
+              {
+                project.links.itch && (
+                  <a
+                    href={project.links.itch}
+                    class="project-link-btn project-link-btn--ghost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    itch.io
+                  </a>
+                )
+              }
+            </div>
+          </div>
         </div>
-        <div class="space-y-6">
-          {
-            project.detail?.myRole && (
-              <div class="detailText mx-auto">
-                <h2>Mi rol en el proyecto</h2>
-                <div
-                  class="leading-relaxed text-lg mt-4 space-y-4"
-                  set:html={project.detail.myRole}
-                />
+      </div>
+
+      <div class="project-hero-scroll">
+        <div class="project-hero-scroll-line"></div>
+        <span>scroll</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- ══ DESCRIPCIÓN ════════════════════════════════════════════════ -->
+      <section class="project-section">
+        <div class="container">
+          <div class="section-label">
+            <span class="section-label-line"></span>
+            Sobre el proyecto
+          </div>
+          <div class="project-desc-grid">
+            <div class="project-desc-body" set:html={project.description} />
+
+            <aside class="project-info-card">
+              <div class="project-info-row">
+                <span class="project-info-label">Año</span>
+                <span class="project-info-value">{project.year}</span>
               </div>
+              <div class="project-info-row">
+                <span class="project-info-label">Duración</span>
+                <span class="project-info-value">{project.duration}</span>
+              </div>
+              <div class="project-info-row">
+                <span class="project-info-label">Rol</span>
+                <span class="project-info-value">{project.role}</span>
+              </div>
+              <div class="project-info-row">
+                <span class="project-info-label">Equipo</span>
+                <span class="project-info-value">{project.team}</span>
+              </div>
+              <div class="project-info-row">
+                <span class="project-info-label">Estado</span>
+                <span class="project-info-value">
+                  <span class="project-status-badge">
+                    <span class="project-status-dot"></span>
+                    {project.status}
+                  </span>
+                </span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ GALERÍA ════════════════════════════════════════════════════ -->
+      {
+        project.gallery.length > 0 && (
+          <section class="project-section">
+            <div class="container">
+              <div class="section-label">
+                <span class="section-label-line" />
+                Galería
+              </div>
+              <h2 class="section-title">Imágenes y gameplay</h2>
+              <div class="masonry-grid" id="gallery">
+                {project.gallery.map((item, i) => (
+                  <div
+                    class={`gallery-item ${item.type === "video" ? "gallery-item--video" : ""}`}
+                    data-lightbox
+                    data-src={item.src}
+                    data-type={item.type}
+                  >
+                    {item.type === "video" ? (
+                      <>
+                        <video
+                          src={item.src}
+                          loop
+                          playsinline
+                          preload="metadata"
+                          data-gallery-video
+                        />
+
+                        <div class="gallery-video-controls" data-video-controls>
+                          <button
+                            class="gvc-btn gvc-play"
+                            data-gvc-play
+                            aria-label="Play / Pausa"
+                          >
+                            <svg class="icon-play" viewBox="0 0 24 24">
+                              <path
+                                d="M8 6.5v11l9-5.5-9-5.5Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            <svg class="icon-pause" viewBox="0 0 24 24">
+                              <path
+                                d="M8 6h3v12H8zm5 0h3v12h-3z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
+
+                          <div class="gvc-volume" data-gvc-volume-wrap>
+                            <button
+                              class="gvc-btn gvc-mute"
+                              data-gvc-mute
+                              aria-label="Silenciar"
+                            >
+                              <svg class="icon-vol-on" viewBox="0 0 24 24">
+                                <path
+                                  d="M14 5.23v13.54a1 1 0 0 1-1.64.77L7.91 16H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.91l4.45-3.54A1 1 0 0 1 14 5.23Zm3.54 2.05a1 1 0 0 1 1.41 0 6.5 6.5 0 0 1 0 9.19 1 1 0 1 1-1.41-1.42 4.5 4.5 0 0 0 0-6.35 1 1 0 0 1 0-1.42Zm2.83-2.82a1 1 0 0 1 1.41 0 10.5 10.5 0 0 1 0 14.85 1 1 0 0 1-1.41-1.42 8.5 8.5 0 0 0 0-12.01 1 1 0 0 1 0-1.42Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              <svg class="icon-vol-off" viewBox="0 0 24 24">
+                                <path
+                                  d="M14 5.23v13.54a1 1 0 0 1-1.64.77L7.91 16H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.91l4.45-3.54A1 1 0 0 1 14 5.23Zm6.48 3.36a1 1 0 0 1 0 1.41L18.9 11.6l1.59 1.59a1 1 0 1 1-1.41 1.41l-1.59-1.58-1.58 1.58a1 1 0 1 1-1.42-1.41l1.59-1.59-1.59-1.58a1 1 0 0 1 1.42-1.42l1.58 1.59 1.59-1.59a1 1 0 0 1 1.41 0Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </button>
+                            <input
+                              class="gvc-slider"
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.05"
+                              value="1"
+                              data-gvc-volume
+                              aria-label="Volumen"
+                            />
+                          </div>
+
+                          <button
+                            class="gvc-btn gvc-fullscreen"
+                            data-gvc-fullscreen
+                            aria-label="Pantalla completa"
+                          >
+                            <svg class="icon-fs-enter" viewBox="0 0 24 24">
+                              <path
+                                d="M7 3H3v4h2V5h2V3Zm14 0h-4v2h2v2h2V3ZM5 17H3v4h4v-2H5v-2Zm16 0h-2v2h-2v2h4v-4Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            <svg class="icon-fs-exit" viewBox="0 0 24 24">
+                              <path
+                                d="M9 3H7v2H5v2H3V3h6Zm12 0v4h-2V5h-2V3h4ZM3 17h2v2h2v2H3v-4Zm16 2v-2h2v4h-4v-2h2Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <img
+                        src={item.src}
+                        alt={item.caption || `Imagen ${i + 1}`}
+                        loading="lazy"
+                      />
+                    )}
+                    {item.caption && (
+                      <p class="gallery-caption">{item.caption}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <!-- ══ SISTEMAS TÉCNICOS ══════════════════════════════════════════ -->
+      {
+        project.systems.length > 0 && (
+          <section class="project-section">
+            <div class="container">
+              <div class="section-label">
+                <span class="section-label-line" />
+                Arquitectura
+              </div>
+              <h2 class="section-title">Sistemas técnicos</h2>
+              <p class="section-subtitle">
+                Decisiones de arquitectura y los sistemas que dan vida al
+                proyecto.
+              </p>
+              <div class="systems-grid">
+                {project.systems.map((sys, i) => (
+                  <article class="system-card">
+                    <div class="system-number">0{i + 1}</div>
+                    <h3>{sys.title}</h3>
+                    <p>{sys.description}</p>
+                    <div class="system-tags">
+                      {sys.tags.map((t) => (
+                        <span class="system-tag">{t}</span>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <!-- ══ PROCESO ════════════════════════════════════════════════════ -->
+      {
+        project.process.length > 0 && (
+          <section class="project-section">
+            <div class="container">
+              <div class="section-label">
+                <span class="section-label-line" />
+                Proceso
+              </div>
+              <h2 class="section-title">Cómo se construyó</h2>
+              <p class="section-subtitle">
+                Las fases del proyecto: desde la idea hasta el resultado final.
+              </p>
+              <div class="process-timeline">
+                {project.process.map((step) => (
+                  <div class="process-step">
+                    <div class="process-dot-wrap">
+                      <span class="process-dot" />
+                    </div>
+                    <article class="process-card">
+                      <p class="process-phase">{step.phase}</p>
+                      <h3>{step.title}</h3>
+                      <p set:html={step.body} />
+                    </article>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <!-- ══ RETOS ══════════════════════════════════════════════════════ -->
+      {
+        project.challenges.length > 0 && (
+          <section class="project-section">
+            <div class="container">
+              <div class="section-label">
+                <span class="section-label-line" />
+                Retos
+              </div>
+              <h2 class="section-title">Problemas y soluciones</h2>
+              <p class="section-subtitle">
+                Los obstáculos más interesantes del proyecto y cómo los resolví.
+              </p>
+              <div class="challenges-list">
+                {project.challenges.map((c) => (
+                  <div class="challenge-card">
+                    <div class="challenge-problem">
+                      <div>
+                        <span class="challenge-tag">{c.tag}</span>
+                        <span class="challenge-label challenge-label--problem">
+                          Problema
+                        </span>
+                      </div>
+                      <p>{c.problem}</p>
+                    </div>
+                    <div class="challenge-solution">
+                      <span class="challenge-label challenge-label--solution">
+                        Solución
+                      </span>
+                      <p set:html={c.solution} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <!-- ══ APRENDIZAJES ════════════════════════════════════════════════ -->
+      {
+        project.learnings.length > 0 && (
+          <section class="project-section">
+            <div class="container">
+              <div class="section-label">
+                <span class="section-label-line" />
+                Conclusiones
+              </div>
+              <h2 class="section-title">Qué aprendí</h2>
+              <div class="learnings-grid">
+                {project.learnings.map((l) => (
+                  <div class="learning-card">
+                    <span class="learning-icon" />
+                    <p>{l}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+    </main>
+
+    <!-- ══ NAV PREV / NEXT ════════════════════════════════════════════ -->
+    <div class="container">
+      <nav class="project-nav">
+        <div class="project-nav-grid">
+          {
+            project.prev && (
+              <a
+                href={project.prev.slug}
+                class="project-nav-link project-nav-link--prev"
+              >
+                <span class="project-nav-direction">← Anterior</span>
+                <span class="project-nav-title">{project.prev.title}</span>
+              </a>
+            )
+          }
+          {
+            project.next && (
+              <a
+                href={project.next.slug}
+                class="project-nav-link project-nav-link--next"
+                style={!project.prev ? "grid-column: 2" : ""}
+              >
+                <span class="project-nav-direction">Siguiente →</span>
+                <span class="project-nav-title">{project.next.title}</span>
+              </a>
             )
           }
         </div>
-      </div>
-    {
-      project.gallery && (
-        <section class="mt-24 space-y-16 pt-16">
-          <h2 class="text-3xl font-bold text-center text-yellow-200">
-            Galería
-          </h2>
+      </nav>
+    </div>
 
-          <div class="columns-1 md:columns-2 xl:columns-2 gap-8 space-y-8">
-            {project.gallery.map((item) => (
-              <div class="mb-8 break-inside-avoid space-y-3">
-                {item.title && (
-                  <h3 class="text-xl font-semibold text-cyan-200">
-                    {item.title}
-                  </h3>
-                )}
+    <!-- Lightbox (solo imágenes) -->
+    <div
+      class="lightbox"
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Imagen ampliada"
+    >
+      <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar"
+        >✕</button
+      >
+      <img class="lightbox-media" id="lightbox-img" src="" alt="" />
+    </div>
 
-                {item.description && (
-                  <p class="text-gray-400">{item.description}</p>
-                )}
+    <script>
+      // ── Galería: controles de vídeo ───────────────────────────────────────
+      document.querySelectorAll(".gallery-item--video").forEach((item) => {
+        const video = item.querySelector(
+          "[data-gallery-video]",
+        ) as HTMLVideoElement;
+        const playBtn = item.querySelector(
+          "[data-gvc-play]",
+        ) as HTMLButtonElement;
+        const muteBtn = item.querySelector(
+          "[data-gvc-mute]",
+        ) as HTMLButtonElement;
+        const volSlider = item.querySelector(
+          "[data-gvc-volume]",
+        ) as HTMLInputElement;
+        const fsBtn = item.querySelector(
+          "[data-gvc-fullscreen]",
+        ) as HTMLButtonElement;
+        if (!video) return;
 
-                {item.type === "image" && (
-                  <img
-                    src={item.src}
-                    alt={item.title ?? "Project media"}
-                    class="w-full rounded-xl"
-                  />
-                )}
+        // ── Estado ──
+        let playing = false;
 
-                {item.type === "video" && (
-                  <video class="w-full rounded-xl" controls preload="metadata">
-                    <source src={item.src} type="video/mp4" />
-                  </video>
-                )}
+        const syncPlay = () => {
+          item.classList.toggle("is-playing", playing);
+        };
 
-                {item.type === "youtube" && (
-                  <div class="aspect-video">
-                    <iframe
-                      class="w-full h-full rounded-xl"
-                      src={`https://www.youtube-nocookie.com/embed/${item.src}`}
-                      title={item.title ?? "YouTube video"}
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )
+        const syncMute = () => {
+          item.classList.toggle("is-muted", video.muted || video.volume === 0);
+        };
+
+        const syncFs = () => {
+          const isFs = document.fullscreenElement === item;
+          item.classList.toggle("is-fullscreen", isFs);
+        };
+
+        // ── Play / Pause ──
+        playBtn?.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          if (playing) {
+            video.pause();
+            playing = false;
+          } else {
+            await video.play().catch(() => {});
+            playing = true;
+          }
+          syncPlay();
+        });
+
+        video.addEventListener("ended", () => {
+          playing = false;
+          syncPlay();
+        });
+
+        // ── Mute toggle ──
+        muteBtn?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          video.muted = !video.muted;
+          if (volSlider)
+            volSlider.value = video.muted ? "0" : String(video.volume);
+          syncMute();
+        });
+
+        // ── Volume slider ──
+        volSlider?.addEventListener("input", (e) => {
+          e.stopPropagation();
+          const val = parseFloat((e.target as HTMLInputElement).value);
+          video.volume = val;
+          video.muted = val === 0;
+          syncMute();
+        });
+
+        volSlider?.addEventListener("click", (e) => e.stopPropagation());
+
+        // ── Fullscreen ──
+        fsBtn?.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          if (document.fullscreenElement === item) {
+            await document.exitFullscreen().catch(() => {});
+          } else {
+            await (item as HTMLElement).requestFullscreen().catch(() => {});
+          }
+        });
+
+        document.addEventListener("fullscreenchange", syncFs);
+
+        // ── Click en el vídeo = play/pause ──
+        video.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          if (playing) {
+            video.pause();
+            playing = false;
+          } else {
+            await video.play().catch(() => {});
+            playing = true;
+          }
+          syncPlay();
+        });
+      });
+
+      // ── Lightbox (solo imágenes ahora) ───────────────────────────────────
+      const lightbox = document.getElementById("lightbox")!;
+      const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+      const lbClose = document.getElementById("lightbox-close")!;
+
+      const openLb = (src: string) => {
+        lbImg.src = src;
+        lightbox.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      };
+      const closeLb = () => {
+        lightbox.classList.remove("is-open");
+        document.body.style.overflow = "";
+      };
+
+      document
+        .querySelectorAll(".gallery-item:not(.gallery-item--video)")
+        .forEach((el) => {
+          el.addEventListener("click", () =>
+            openLb((el as HTMLElement).dataset.src!),
+          );
+        });
+
+      lbClose.addEventListener("click", closeLb);
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLb();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLb();
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  /* ── Variables de proyecto inyectadas via style attr en <body> ─── */
+
+  /* ── View Transitions ──────────────────────────────────────────── */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
     }
-  </main>
-</Layout>
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* El contenido principal entra con fade suave */
+  main {
+    animation: fade-in-up 0.45s ease both;
+    animation-delay: 0.1s;
+  }
+
+  .project-nav {
+    animation: fade-in-up 0.45s ease both;
+    animation-delay: 0.2s;
+  }
+
+  /* ── Back nav ──────────────────────────────────────────────────── */
+  .back-nav {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 50;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(11, 11, 12, 0.72);
+    backdrop-filter: blur(12px);
+    color: var(--muted);
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s;
+  }
+
+  .back-btn:hover {
+    color: var(--text);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateX(-2px);
+  }
+
+  .back-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────── */
+  .project-hero {
+    position: relative;
+    min-height: 92svh;
+    display: grid;
+    place-items: end;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .project-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .project-hero-bg img,
+  .project-hero-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        to top,
+        rgba(11, 11, 12, 0.98) 0%,
+        rgba(11, 11, 12, 0.55) 40%,
+        rgba(11, 11, 12, 0.18) 100%
+      ),
+      linear-gradient(to right, rgba(11, 11, 12, 0.5) 0%, transparent 60%);
+  }
+
+  .project-hero-glow {
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 560px;
+    height: 560px;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      var(--pa-soft, rgba(245, 26, 41, 0.14)),
+      transparent 68%
+    );
+    filter: blur(50px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .project-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: 5rem;
+  }
+
+  .project-hero-content {
+    max-width: 840px;
+
+    padding: 4rem 4.5rem;
+    border-radius: 28px;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.03)
+      ),
+      rgba(12, 12, 14, 0.48);
+    border: 1px solid var(--pa-soft);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    overflow: visible;
+  }
+
+  .project-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+    color: var(--pa, #f51a29);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .project-hero-eyebrow-line {
+    width: 36px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
+  .project-hero h1 {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.93;
+    letter-spacing: -0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-hero-tagline {
+    max-width: 58ch;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.72;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    margin-bottom: 2rem;
+  }
+
+  .project-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 2rem;
+  }
+
+  .project-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .project-meta-pill strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .project-hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .project-tag {
+    padding: 0.45rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid var(--pa-soft, rgba(245, 26, 41, 0.14));
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .project-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .project-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 46px;
+    padding: 0 1.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition:
+      transform 0.2s,
+      border-color 0.2s,
+      background 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .project-link-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-link-btn--primary {
+    background: var(--pa, #f51a29);
+    border-color: var(--pa, #f51a29);
+    color: #fff;
+    box-shadow: 0 12px 30px var(--pa-soft, rgba(245, 26, 41, 0.3));
+  }
+
+  .project-link-btn--primary:hover {
+    box-shadow: 0 18px 40px var(--pa-soft, rgba(245, 26, 41, 0.4));
+  }
+
+  .project-link-btn--ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+  }
+
+  .project-link-btn--ghost:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .project-hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .project-hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--pa, #f51a29), transparent);
+    animation: scroll-line 2s ease infinite;
+  }
+
+  @keyframes scroll-line {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    51% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+
+  /* ── Secciones ─────────────────────────────────────────────────── */
+  .project-section {
+    padding: 6rem 0;
+  }
+  .project-section + .project-section {
+    padding-top: 0;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .section-label-line {
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--pa, #f51a29), transparent);
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-subtitle {
+    color: var(--muted);
+    line-height: 1.72;
+    max-width: 68ch;
+    margin-bottom: 0;
+  }
+
+  /* ── Descripción ───────────────────────────────────────────────── */
+  .project-desc-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2.5rem;
+  }
+
+  .project-desc-body {
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+
+  .project-desc-body :global(p + p) {
+    margin-top: 1.2rem;
+  }
+  .project-desc-body :global(strong) {
+    color: var(--pa-light, var(--pa, #f51a29));
+  }
+
+  .project-info-card {
+    position: sticky;
+    top: 2rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 28px);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(
+        circle at top right,
+        var(--pa-soft, rgba(245, 26, 41, 0.1)),
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.045),
+        rgba(255, 255, 255, 0.02)
+      );
+  }
+
+  .project-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .project-info-row:last-child {
+    border-bottom: none;
+  }
+
+  .project-info-label {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .project-info-value {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .project-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--pa-soft, rgba(245, 26, 41, 0.2));
+    background: var(--pa-soft, rgba(245, 26, 41, 0.08));
+    color: #ffd6da;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .project-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--pa, #f51a29);
+  }
+
+  /* ── Galería masonry ───────────────────────────────────────────── */
+  .masonry-grid {
+    columns: 2;
+    column-gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .gallery-item {
+    break-inside: avoid;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius, 20px);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 1rem;
+    cursor: zoom-in;
+    /* Sin aspect-ratio fijo: cada item tiene la altura natural de su contenido */
+  }
+
+  .gallery-item img,
+  .gallery-item video {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .gallery-item:hover img,
+  .gallery-item:hover video {
+    transform: scale(1.03);
+  }
+
+  .gallery-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom, 
+      rgba(11, 11, 11, 0.87),
+      rgba(11, 11, 11, 0.87),
+      rgba(11, 11, 11, 0.87), 
+      transparent);
+    color: var(--muted);
+    font-size: 0.82rem;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.25s,
+      transform 0.25s;
+  }
+
+  .gallery-item:hover .gallery-caption {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(5, 5, 7, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .lightbox.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox-media {
+    max-width: 90vw;
+    max-height: 88vh;
+    border-radius: var(--radius, 20px);
+    border: 1px solid var(--line);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ── Sistemas técnicos ─────────────────────────────────────────── */
+  .systems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .system-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 28px);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(
+        circle at top right,
+        var(--pa-soft, rgba(245, 26, 41, 0.08)),
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.02)
+      );
+    transition:
+      transform 0.25s,
+      border-color 0.25s;
+  }
+
+  .system-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--pa, #f51a29),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .system-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--pa, #f51a29) 30%, transparent);
+  }
+  .system-card:hover::before {
+    opacity: 1;
+  }
+
+  .system-number {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: var(--pa, rgba(245, 26, 41, 0.2));
+    margin-bottom: 0.75rem;
+  }
+
+  .system-card h3 {
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .system-card p {
+    color: var(--muted);
+    line-height: 1.72;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .system-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .system-tag {
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  /* ── Proceso ───────────────────────────────────────────────────── */
+  .process-timeline {
+    position: relative;
+    margin-top: 2.5rem;
+  }
+
+  .process-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 1.5rem;
+    width: 1px;
+    background: linear-gradient(
+      to top,
+      var(--pa, #f51a29),
+      rgba(255, 255, 255, 0.05)
+    );
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .process-step:last-child {
+    margin-bottom: 0;
+  }
+
+  .process-dot-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .process-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--pa, #f51a29);
+    box-shadow:
+      0 0 0 5px var(--bg, #0b0b0c),
+      0 0 0 7px color-mix(in srgb, var(--pa, #f51a29) 30%, transparent);
+  }
+
+  .process-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 28px);
+    border: 1px solid var(--line);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.02)
+    );
+    transition:
+      transform 0.25s,
+      border-color 0.25s;
+  }
+
+  .process-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pa, #f51a29) 25%, transparent);
+  }
+
+  .process-phase {
+    color: var(--pa, #f51a29);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .process-card h3 {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.85rem;
+  }
+  .process-card p {
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .process-card :global(strong) {
+    color: var(--pa-light);
+  }
+
+  /* ── Retos ─────────────────────────────────────────────────────── */
+  .challenges-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .challenge-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: var(--radius-lg, 28px);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+
+  .challenge-card:hover {
+    border-color: color-mix(in srgb, var(--pa, #f51a29) 28%, transparent);
+  }
+
+  .challenge-problem,
+  .challenge-solution {
+    padding: 1.5rem;
+  }
+
+  .challenge-problem {
+    background: rgba(255, 255, 255, 0.025);
+    border-right: 1px solid var(--line);
+  }
+
+  .challenge-solution {
+    background:
+      radial-gradient(
+        circle at bottom left,
+        var(--pa-soft, rgba(245, 26, 41, 0.08)),
+        transparent 60%
+      ),
+      rgba(255, 255, 255, 0.02);
+  }
+
+  .challenge-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .challenge-label--problem {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--muted);
+  }
+  .challenge-label--solution {
+    border: 1px solid color-mix(in srgb, var(--pa, #f51a29) 30%, transparent);
+    background: var(--pa-soft, rgba(245, 26, 41, 0.08));
+    color: #ffd6da;
+  }
+
+  .challenge-tag {
+    float: right;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .challenge-problem p,
+  .challenge-solution p {
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.72;
+    font-size: 0.95rem;
+  }
+
+  /* ── Aprendizajes ──────────────────────────────────────────────── */
+  .learnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .learning-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    border-radius: var(--radius, 20px);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    transition:
+      transform 0.2s,
+      border-color 0.2s;
+  }
+
+  .learning-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pa, #f51a29) 25%, transparent);
+  }
+
+  .learning-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--pa, #f51a29);
+    flex-shrink: 0;
+    margin-top: 0.45rem;
+  }
+
+  .learning-card p {
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.68;
+    font-size: 0.95rem;
+  }
+
+  /* ── Nav prev/next ─────────────────────────────────────────────── */
+  .project-nav {
+    padding: 5rem 0 6rem;
+    border-top: 1px solid var(--line);
+    margin-top: 2rem;
+  }
+
+  .project-nav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .project-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 28px);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    transition:
+      transform 0.25s,
+      border-color 0.25s,
+      background 0.25s;
+  }
+
+  .project-nav-link:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--pa, #f51a29) 28%, transparent);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .project-nav-link--next {
+    text-align: right;
+  }
+
+  .project-nav-direction {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .project-nav-title {
+    font-size: clamp(1.1rem, 2vw, 1.45rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* Vídeos: ancho completo spanning las dos columnas */
+  .gallery-item--video {
+    cursor: default;
+    column-span: all;
+  }
+
+  .gallery-item--video video {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  /* Barra de controles — oculta por defecto, aparece en hover */
+  .gallery-video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.85rem;
+    background: linear-gradient(
+      to top,
+      rgba(5, 5, 7, 0.88) 0%,
+      transparent 100%
+    );
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease;
+    pointer-events: none;
+  }
+
+  .gallery-item--video:hover .gallery-video-controls,
+  .gallery-item--video.is-playing .gallery-video-controls {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Botones individuales */
+  .gvc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 11, 12, 0.65);
+    color: var(--text);
+    cursor: pointer;
+    flex-shrink: 0;
+    backdrop-filter: blur(8px);
+    transition:
+      background 0.18s,
+      border-color 0.18s,
+      transform 0.18s;
+  }
+
+  .gvc-btn:hover {
+    background: rgba(30, 30, 34, 0.88);
+    border-color: rgba(255, 255, 255, 0.26);
+    transform: scale(1.08);
+  }
+
+  .gvc-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Play/Pause — icon swap */
+  .icon-pause {
+    display: none;
+  }
+  .gallery-item--video.is-playing .icon-play {
+    display: none;
+  }
+  .gallery-item--video.is-playing .icon-pause {
+    display: block;
+  }
+
+  /* Mute — icon swap */
+  .icon-vol-off {
+    display: none;
+  }
+  .gallery-item--video.is-muted .icon-vol-on {
+    display: none;
+  }
+  .gallery-item--video.is-muted .icon-vol-off {
+    display: block;
+  }
+
+  /* Fullscreen — icon swap */
+  .icon-fs-exit {
+    display: none;
+  }
+  .gallery-item--video.is-fullscreen .icon-fs-enter {
+    display: none;
+  }
+  .gallery-item--video.is-fullscreen .icon-fs-exit {
+    display: block;
+  }
+
+  /* Grupo volumen (botón mute + slider) */
+  .gvc-volume {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  /* Slider de volumen */
+  .gvc-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 80px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    outline: none;
+    cursor: pointer;
+    transition: width 0.2s ease;
+  }
+
+  .gvc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--pa, #f51a29);
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(245, 26, 41, 0.2);
+    transition: transform 0.15s;
+  }
+
+  .gvc-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.25);
+  }
+
+  .gvc-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--pa, #f51a29);
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Fullscreen al final de la barra */
+  .gvc-fullscreen {
+    margin-left: auto;
+  }
+
+  /* En pantalla completa, el vídeo ocupa todo */
+  .gallery-item--video.is-fullscreen video {
+    object-fit: contain;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .project-desc-grid {
+      grid-template-columns: 1fr;
+    }
+    .project-info-card {
+      position: static;
+    }
+    .challenge-card {
+      grid-template-columns: 1fr;
+    }
+    .challenge-problem {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .masonry-grid {
+      columns: 2;
+    }
+    .project-nav-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .project-hero h1 {
+      font-size: clamp(2.5rem, 11vw, 4rem);
+    }
+    .masonry-grid {
+      columns: 1;
+    }
+    .process-timeline::before {
+      left: 1rem;
+    }
+    .process-step {
+      grid-template-columns: 2.2rem 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

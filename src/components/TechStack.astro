@@ -1,0 +1,310 @@
+---
+import { TAGS } from "../data/tags";
+
+const loadoutGroups = [
+  {
+    title: "Engine & Gameplay",
+    description: "Tecnologías principales para programación, gameplay y sistemas.",
+    items: [
+      TAGS.UNITY,
+      TAGS.CSHARP,
+      TAGS.CPP,
+      TAGS.VISUALSTUDIO,
+      TAGS.VSCODE,
+      TAGS.SDL
+    ].filter(Boolean),
+  },
+  {
+    title: "3D & Art Pipeline",
+    description: "Herramientas de modelado, escultura, texturizado y apoyo visual.",
+    items: [
+      TAGS.MAYA,
+      TAGS.ZBRUSH,
+      TAGS.SUBSTANCE,
+      TAGS.PHOTOSHOP,
+      TAGS.ILLUSTRATOR,
+    ].filter(Boolean),
+  },
+  {
+    title: "Hardware & Prototyping",
+    description: "Diseño y prototipado de experiencias interactivas y hardware propio.",
+    items: [
+      TAGS.ARDUINO,
+      TAGS.FUSION360,
+    ].filter(Boolean),
+  },
+  {
+    title: "Web & Apps",
+    description: "Tecnologías que utilizo para web, interfaces y aplicaciones.",
+    items: [
+      TAGS.HTML,
+      TAGS.CSS,
+      TAGS.JAVASCRIPT,
+      TAGS.REACT,
+      TAGS.TAILWIND,
+      TAGS.NEXTJS,
+      TAGS.NODE,
+      TAGS.FLUTTER,
+      TAGS.DART,
+    ].filter(Boolean),
+  },
+  {
+    title: "Tools & Workflow",
+    description: "Herramientas de trabajo, control de versiones y soporte general.",
+    items: [
+      TAGS.FIGMA,
+      TAGS.DOXYGEN,
+      TAGS.GIT,
+      TAGS.GITHUB,
+      TAGS.CHATGPT,
+      TAGS.SLACK
+    ].filter(Boolean),
+  },
+];
+---
+
+<section class="section tech-loadout" id="tech">
+  <div class="section-heading">
+    <h2>Stack y herramientas</h2>
+    <p>
+      Mi loadout de desarrollo: motores, lenguajes, pipeline 3D, hardware y
+      herramientas que utilizo para construir proyectos.
+    </p>
+  </div>
+
+  <div class="tech-loadout-grid">
+    {loadoutGroups.map((group) => (
+      <article class="tech-group-card">
+        <div class="tech-group-head">
+          <p class="tech-group-eyebrow">Loadout</p>
+          <h3>{group.title}</h3>
+          <p class="tech-group-description">{group.description}</p>
+        </div>
+
+        <div class="tech-group-items">
+          {group.items.map((tag) => {
+            const Icon = tag.icon;
+
+            return (
+              <div class="tech-item">
+                <div class="tech-item-icon-wrap">
+                  <Icon class="tech-icon" />
+                </div>
+                <span>{tag.name}</span>
+              </div>
+            );
+          })}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tech-loadout {
+    position: relative;
+  }
+
+  .tech-loadout-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .tech-group-card {
+    position: relative;
+    grid-column: span 6;
+    overflow: hidden;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at top right, rgba(245, 26, 41, 0.1), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+      rgba(10, 10, 12, 0.9);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform 0.28s ease,
+      border-color 0.28s ease,
+      box-shadow 0.28s ease,
+      background 0.28s ease;
+  }
+
+  .tech-group-card::before {
+    content: "";
+    position: absolute;
+    inset: auto auto -90px -90px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(245, 26, 41, 0.1), transparent 68%);
+    pointer-events: none;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    opacity: 0.85;
+  }
+
+  .tech-group-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(245, 26, 41, 0.24);
+    background:
+      radial-gradient(circle at top right, rgba(245, 26, 41, 0.14), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024)),
+      rgba(10, 10, 12, 0.94);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  }
+
+  .tech-group-card:hover::before {
+    transform: scale(1.08);
+  }
+
+  .tech-group-head {
+    margin-bottom: 1.15rem;
+  }
+
+  .tech-group-eyebrow {
+    margin: 0 0 0.45rem;
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .tech-group-head h3 {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .tech-group-description {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 0.92rem;
+    max-width: 58ch;
+  }
+
+  .tech-group-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .tech-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-height: 112px;
+    padding: 0.95rem 0.8rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
+      rgba(255, 255, 255, 0.02);
+    text-align: center;
+    transition:
+      transform 0.22s ease,
+      border-color 0.22s ease,
+      background 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  .tech-item::after {
+    content: "";
+    position: absolute;
+    inset: auto 50% 10px 50%;
+    width: 0;
+    height: 0;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(245, 26, 41, 0.22), transparent 70%);
+    transform: translateX(-50%);
+    transition:
+      width 0.28s ease,
+      height 0.28s ease,
+      opacity 0.28s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tech-item-icon-wrap {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    transition:
+      transform 0.22s ease,
+      background 0.22s ease,
+      border-color 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  .tech-icon {
+    width: 48px;
+    height: 48px;
+    transition: transform 0.22s ease, filter 0.22s ease;
+  }
+
+  .tech-item:hover .tech-icon {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 10px rgba(245, 26, 41, 0.18));
+  }
+
+  .tech-item span {
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.3;
+    transition: color 0.22s ease;
+  }
+
+  .tech-item:hover span {
+    color: var(--text);
+  }
+
+  @media (max-width: 980px) {
+    .tech-group-card {
+      grid-column: span 12;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tech-loadout-grid {
+      gap: 1rem;
+    }
+
+    .tech-group-card {
+      padding: 1rem;
+      border-radius: 20px;
+    }
+
+    .tech-group-items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .tech-item {
+      min-height: 102px;
+      padding: 0.85rem 0.7rem;
+      border-radius: 16px;
+    }
+
+    .tech-item-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+    }
+
+    .tech-icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    .tech-item span {
+      font-size: 0.8rem;
+    }
+  }
+</style>

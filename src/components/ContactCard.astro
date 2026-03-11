@@ -1,0 +1,352 @@
+---
+const profile = {
+  name: "Toni Romanos",
+  role: "Game Developer · Unity · Gameplay Systems",
+  description:
+    "Especializado en Unity y C#, con enfoque en gameplay programming, sistemas interactivos y prototipado técnico. Me muevo cómodo entre la programación, el diseño de mecánicas y la experimentación con hardware.",
+  focus: [
+    "Unity & C#",
+    "Gameplay Programming",
+    "Prototipado rápido",
+    "Sistemas interactivos",
+    "UI técnica",
+    "Arduino & hardware",
+  ],
+  image: "/media/me.webp",
+  email: "tuemail@correo.com",
+  github: "https://github.com/Toto-RR",
+  linkedin: "https://www.linkedin.com/in/tu-linkedin/",
+};
+---
+
+<section class="aboutme-card" id="aboutme">
+  <div class="aboutme-grid">
+    <div class="aboutme-content">
+      <div class="aboutme-eyebrow">
+        <span class="aboutme-eyebrow-line"></span>
+        <span>About Me</span>
+      </div>
+
+      <h2 class="aboutme-title">
+        Desarrollo gameplay, sistemas y proyectos interactivos.
+      </h2>
+
+      <p class="aboutme-description">
+        {profile.description}
+      </p>
+
+      <div class="aboutme-focus">
+        {profile.focus.map((item) => <span class="focus-pill">{item}</span>)}
+      </div>
+
+      <div class="aboutme-actions">
+        <a class="aboutme-link aboutme-link--primary" href={`mailto:${profile.email}`}>
+          {profile.email}
+        </a>
+
+        <div class="aboutme-socials">
+          <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="aboutme-visual">
+      <div class="aboutme-photo-wrap">
+        <div class="aboutme-photo-glow"></div>
+
+        <figure class="aboutme-photo-card">
+          <img
+            src={profile.image}
+            alt={`Foto de ${profile.name}`}
+            class="aboutme-photo"
+            loading="lazy"
+          />
+
+          <figcaption class="aboutme-photo-caption">
+            <span class="photo-caption-dot"></span>
+            Toni Romanos · Game Developer
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .aboutme-card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 2vw, 2rem);
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at top right, rgba(245, 26, 41, 0.16), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.03), transparent 35%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.025));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(14px);
+  }
+
+  .aboutme-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        transparent 18%,
+        transparent 82%,
+        rgba(255, 255, 255, 0.03) 100%
+      );
+  }
+
+  .aboutme-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
+  }
+
+  .aboutme-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .aboutme-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .aboutme-eyebrow-line {
+    width: 42px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .aboutme-title {
+    max-width: 16ch;
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(2rem, 4vw, 3.7rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .aboutme-description {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: 1rem;
+    max-width: 60ch;
+  }
+
+  .aboutme-focus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .focus-pill {
+    padding: 0.7rem 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font-size: 0.88rem;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .focus-pill:hover {
+    transform: translateY(-2px);
+    border-color: rgba(245, 26, 41, 0.45);
+    background: rgba(245, 26, 41, 0.1);
+  }
+
+  .aboutme-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .aboutme-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.9rem 1.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      background 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .aboutme-link--primary {
+    border: 1px solid rgba(245, 26, 41, 0.34);
+    background: linear-gradient(180deg, rgba(245, 26, 41, 0.22), rgba(245, 26, 41, 0.12));
+    color: var(--text);
+    box-shadow: 0 12px 28px rgba(245, 26, 41, 0.14);
+  }
+
+  .aboutme-link--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(245, 26, 41, 0.2);
+  }
+
+  .aboutme-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .aboutme-socials a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .aboutme-socials a:hover {
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .aboutme-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .aboutme-photo-wrap {
+    position: relative;
+    width: min(100%, 370px);
+  }
+
+  .aboutme-photo-glow {
+    position: absolute;
+    inset: auto 8% 4% 8%;
+    height: 78%;
+    border-radius: 28px;
+    background: radial-gradient(circle, rgba(245, 26, 41, 0.22), transparent 68%);
+    filter: blur(28px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .aboutme-photo-card {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0.9rem;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+    box-shadow:
+      0 26px 60px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .aboutme-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .aboutme-photo-caption {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .photo-caption-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(245, 26, 41, 0.12);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 980px) {
+    .aboutme-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .aboutme-title {
+      max-width: 100%;
+    }
+
+    .aboutme-visual {
+      order: -1;
+    }
+
+    .aboutme-photo-wrap {
+      width: min(100%, 420px);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .aboutme-card {
+      padding: 1.2rem;
+      border-radius: 24px;
+    }
+
+    .aboutme-title {
+      font-size: clamp(1.8rem, 9vw, 2.8rem);
+      line-height: 1.02;
+    }
+
+    .aboutme-description {
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .aboutme-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .aboutme-link--primary {
+      width: 100%;
+    }
+
+    .aboutme-socials {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
