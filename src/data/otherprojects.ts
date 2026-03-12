@@ -10,7 +10,10 @@ export const otherProjects = [
     `,
     image: "/media/projects/nightmaresofthenight.webp",
     tags: [TAGS.UNITY, TAGS.CSHARP],
-    links: {},
+    links: {
+      github: "https://github.com/ericlr1/7a-Gran-CITM-Game-Jam/",
+      itchio: "https://ericlr.itch.io/nightmares-of-the-night",
+    },
   },
   {
     title: "Dragged Off Time",
@@ -46,7 +49,9 @@ export const otherProjects = [
       `,
     image: "/media/projects/citmfighters.webp",
     tags: [TAGS.UNITY, TAGS.MAYA, TAGS.CSHARP],
-    links: {},
+    links: {
+      github:"https://github.com/Toto-RR/CITM-FIGHTERS",
+    },
   },
   {
     title: "Finite State Machine",

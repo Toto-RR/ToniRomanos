@@ -3,6 +3,7 @@ import { featuredProjects } from "../data/projects";
 
 import GitHub from "../assets/icons/GitHub.astro";
 import Youtube from "../assets/icons/Youtube.astro";
+import Itchio from "./icons/Itchio.astro";
 ---
 
 <section class="section" id="projects">
@@ -228,6 +229,18 @@ import Youtube from "../assets/icons/Youtube.astro";
                     YouTube
                   </a>
                 )}
+
+                {links?.itchio && (
+                  <a
+                    href={links.itchio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Itchio />
+                    Itch.io
+                  </a>
+                )}
+
               </div>
             </div>
           </article>

@@ -3,6 +3,7 @@ import GitHub from "../assets/icons/GitHub.astro";
 import Link from "../assets/icons/Link.astro";
 import Youtube from "../assets/icons/Youtube.astro";
 import { otherProjects } from "../data/otherprojects";
+import Itchio from "./icons/Itchio.astro";
 ---
 
 <section class="section" id="other-projects">
@@ -55,6 +56,11 @@ import { otherProjects } from "../data/otherprojects";
                 {links?.youtube && (
                   <a href={links.youtube} class="other-project-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                     <Youtube />
+                  </a>
+                )}
+                {links?.itchio && (
+                  <a href={links.itchio} class="other-project-link" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <Itchio />
                   </a>
                 )}
               </div>

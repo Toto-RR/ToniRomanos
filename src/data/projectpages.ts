@@ -200,7 +200,8 @@ export const projectPages: ProjectPage[] = [
       youtube: "https://www.youtube.com/watch?v=VUa7hCppVwM",
     },
 
-    next: { title: "RPG Combat System", slug: "/projects/rpg-game" },
+    next: { title: "Alien: Extraction", slug: "/projects/alien-extraction" },
+
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -323,7 +324,7 @@ export const projectPages: ProjectPage[] = [
         solution: `Creé un sistema que utiliza dos placeholder, 'caster' y 'target'. 
           Al realizar una acción, se leen los parametros de esta y se sitúan los placeholder en sus respectivos lugares, 
           se calcula la distancia entre ellos y se normaliza, luego, mediante Signals se llaman a los eventos correspondientes (MakeDamage, Heal, ApplyBuff, etc).
-          <br>Por ejemplo: se ejecuta una habilidad -> sale el proyectil inicial -> cuando la distancia recorrida del proyectil es un 90% de la total -> crea una explosión en 'target'
+          <br>Por ejemplo: se ejecuta una habilidad -> sale el proyectil inicial -> cuando la distancia recorrida del proyectil es un 90% de la total -> crea una explosión en 'target'.
         `,
         tag: "Arquitectura",
       },
@@ -332,7 +333,7 @@ export const projectPages: ProjectPage[] = [
     learnings: [
       "El feedback visual y sonoro no es polish — es una parte central del diseño de combate. Un ataque que no se siente poderoso no es un problema de arte, es un problema de diseño.",
       "Los ScriptableObjects son perfectos para datos de juego, pero hay que definir bien los límites de lo que hacen. Si empiezan a contener lógica, el sistema se complica rápido.",
-      "Para un juego de gran escala, crear sistemas que permitan la rápida creación y variabilidad de elementos es crucial para poder dar variedad rápidamente",
+      "Para un juego de gran escala, crear sistemas que permitan la rápida creación y variabilidad de elementos es crucial para poder dar variedad rápidamente.",
     ],
 
     links: {

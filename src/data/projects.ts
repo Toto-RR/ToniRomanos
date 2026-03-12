@@ -23,6 +23,7 @@ export const featuredProjects = [
       github: "https://github.com/Toto-RR/Joined-NeoParty",
       demo: "",
       youtube: "https://www.youtube.com/watch?v=VUa7hCppVwM",
+      itchio: "",
     },
   },
 
