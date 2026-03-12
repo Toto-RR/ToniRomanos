@@ -1,4 +1,5 @@
 ---
+import "../../styles/global.css";
 import { projectPages } from "../../data/projectpages";
 import type { ProjectPage } from "../../data/projectpages";
 import { ClientRouter } from "astro:transitions";
@@ -20,7 +21,6 @@ const { project } = Astro.props as { project: ProjectPage };
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{project.title} · Toni Romanos</title>
     <meta name="description" content={project.tagline} />
-    <link rel="stylesheet" href="/src/styles/global.css" />
     <ClientRouter />
   </head>
 
