@@ -25,6 +25,14 @@ export const featuredProjects = [
       youtube: "https://www.youtube.com/watch?v=VUa7hCppVwM",
       itchio: "",
     },
+    en: {
+      subtitle: "Unity · Arduino · Alternative hardware",
+      description: `
+        <p>A Unity game played with dedicated controllers designed in <strong>Fusion 360</strong> and programmed with the <strong>Arduino IDE</strong>. Final degree project for the BA in Game Design and Development.</p>
+        <br>
+        <p>🏆 <strong>Joined! NeoParty</strong> was shown at a <strong>SAGA 2025</strong> stand, a Catalan games fair, with support from <strong>Xarxa Accescat</strong>, plus a talk on the development.</p>
+      `,
+    },
   },
 
   
@@ -49,6 +57,16 @@ export const featuredProjects = [
     links: {
       github: "https://github.com/Clapcom-Studios/Alien-Extraction",
     },
+    en: {
+      subtitle: "Ymir Engine · C++ · Team project",
+      description: `
+      <p>A game inspired by the <strong>Alien</strong> franchise, built by the fictional studio <strong>Clapcom Studios</strong> on an in-house engine, <strong>Ymir Engine</strong>, written in <strong>C++</strong>.</p>
+      <br>
+      <p>As one of the lead programmers, I built the <strong>engine's complete particle module</strong>, plus player systems like shooting and abilities.</p>
+      <br>
+      <p>🏆 Alien: Extraction was played and reviewed by <strong>Larian Studios</strong> staff, who highlighted the merit of a working in-house engine in just 4 months.</p>
+      `,
+    },
   },
   
   {
@@ -70,6 +88,13 @@ export const featuredProjects = [
     links: {
       github: "https://github.com/Toto-RR",
     },
+    en: {
+      subtitle: "Unity · RPG · Prototype",
+      description: `
+        <p>A prototype inspired by <strong>Expedition 33</strong> and similar games, exploring the mechanics that define <strong>turn-based combat</strong>.</p>
+        <br>
+        <p>Beyond the classic RPG systems, this project dug into <strong>VFX, SFX, cinematics</strong> and other elements common to the genre's references.</p>
+      `,
+    },
   },
-  
 ];

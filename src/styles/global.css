@@ -15,9 +15,9 @@
     --muted: #a1a1aa;
     --line: rgba(255, 255, 255, 0.08);
 
-    --accent: #f51a29;
-    --accent-light: #f3636c;
-    --accent-soft: rgba(245, 26, 41, 0.14);
+    --accent: var(--color-accent, #9184d9);
+    --accent-light: var(--color-accent-400, #a397e2);
+    --accent-soft: rgba(145, 132, 217, 0.14);
 
     /* Accents por proyecto — cambia estos para personalizar cada card */
     --accent1: #c21dba;
@@ -170,13 +170,13 @@ strong {
 
 .button-primary {
     background: linear-gradient(180deg, var(--accent-light), var(--accent));
-    border-color: rgba(245, 26, 41, 0.75);
+    border-color: rgba(145, 132, 217, 0.75);
     color: #fff;
-    box-shadow: 0 12px 30px rgba(245, 26, 41, 0.18);
+    box-shadow: 0 12px 30px rgba(145, 132, 217, 0.18);
 }
 
 .button-primary:hover {
-    box-shadow: 0 18px 40px rgba(245, 26, 41, 0.25);
+    box-shadow: 0 18px 40px rgba(145, 132, 217, 0.25);
 }
 
 .button-ghost {
@@ -185,123 +185,11 @@ strong {
 }
 
 .button-ghost:hover {
-    border-color: rgba(245, 26, 41, 0.24);
+    border-color: rgba(145, 132, 217, 0.24);
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* HERO */
-
-.hero {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    place-items: center;
-    width: 100%;
-    min-height: 100svh;
-    overflow: hidden;
-}
-
-.hero-media {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-.hero-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transform: scale(1.03);
-    pointer-events: none;
-    transition:
-        opacity 1.2s ease,
-        transform 6s ease;
-}
-
-.hero-video.is-active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-        linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.35) 0%,
-            rgba(0, 0, 0, 0.55) 45%,
-            rgba(0, 0, 0, 0.78) 100%);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-
-.hero-inner {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
-.hero-content {
-    position: absolute;
-    left: 8vw;
-    bottom: 15vh;
-    max-width: fit-content;
-    padding: 4rem 4.5rem;
-    border-radius: 28px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
-        rgba(12, 12, 14, 0.48);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-    overflow: visible;
-}
-
-.hero-content--bottom-left {
-    margin-left: 0;
-    margin-right: auto;
-    text-align: left;
-}
-
-.hero-eyebrow {
-    margin: 0 0 0.9rem;
-    color: var(--accent);
-    letter-spacing: 0.16em;
-    font-weight: 700;
-    font-size: 0.76rem;
-    text-transform: uppercase;
-}
-
-.hero h1 {
-    margin: 0;
-    font-size: clamp(3rem, 7vw, 6rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.05em;
-}
-
-.hero-description {
-    max-width: 48ch;
-    margin: 1rem 0 0;
-    color: rgba(255, 255, 255, 0.84);
-    line-height: 1.7;
-    font-size: 1rem;
-}
-
-.hero-buttons {
-    display: flex;
-    justify-content: flex-start;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.7rem;
-}
+/* HERO — el maquetado y estilos del hero viven ahora en Hero.astro (scoped) */
 
 /* SECCIONES */
 
@@ -364,7 +252,7 @@ strong {
 
 .project-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.026)),
         rgba(10, 10, 12, 0.92);
@@ -407,10 +295,10 @@ strong {
 
 .project-tags span {
     padding: 0.45rem 0.75rem;
-    border: 1px solid rgba(245, 26, 41, 0.18);
+    border: 1px solid rgba(145, 132, 217, 0.18);
     border-radius: 999px;
-    background: rgba(245, 26, 41, 0.08);
-    color: #ffd6da;
+    background: rgba(145, 132, 217, 0.08);
+    color: #cfc9f2;
     font-size: 0.83rem;
 }
 
@@ -453,7 +341,7 @@ strong {
 .contact-card:hover,
 .stack-item:hover {
     transform: translateY(-4px);
-    border-color: rgba(245, 26, 41, 0.22);
+    border-color: rgba(145, 132, 217, 0.22);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024)),
         rgba(10, 10, 12, 0.92);
@@ -542,13 +430,13 @@ strong {
     width: 110px;
     height: 110px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(245, 26, 41, 0.12), transparent 70%);
+    background: radial-gradient(circle, rgba(145, 132, 217, 0.12), transparent 70%);
     pointer-events: none;
 }
 
 .experience-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.028)),
         rgba(10, 10, 12, 0.92);
@@ -562,7 +450,7 @@ strong {
     height: 10px;
     border-radius: 999px;
     background: var(--accent);
-    box-shadow: 0 0 0 6px rgba(245, 26, 41, 0.12);
+    box-shadow: 0 0 0 6px rgba(145, 132, 217, 0.12);
 }
 
 .experience-grid {
@@ -583,10 +471,10 @@ strong {
     display: inline-flex;
     width: fit-content;
     padding: 0.55rem 0.85rem;
-    border: 1px solid rgba(245, 26, 41, 0.22);
+    border: 1px solid rgba(145, 132, 217, 0.22);
     border-radius: 999px;
-    background: rgba(245, 26, 41, 0.12);
-    color: #ffd7db;
+    background: rgba(145, 132, 217, 0.12);
+    color: #cfc9f2;
     font-size: 0.88rem;
     font-weight: 600;
 }
@@ -665,7 +553,7 @@ strong {
 
 .experience-card-alt:hover {
     transform: translateY(-4px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024)),
         rgba(10, 10, 12, 0.92);
@@ -730,7 +618,7 @@ strong {
 
 .tech-item:hover {
     transform: translateY(-4px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
 }
 
 .tech-icon {
@@ -768,7 +656,7 @@ strong {
 
 .experiment-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024)),
         rgba(10, 10, 12, 0.92);
@@ -796,9 +684,9 @@ strong {
 .experiment-tags span {
     padding: 0.3rem 0.55rem;
     border-radius: 999px;
-    border: 1px solid rgba(245, 26, 41, 0.18);
-    background: rgba(245, 26, 41, 0.08);
-    color: #ffd6da;
+    border: 1px solid rgba(145, 132, 217, 0.18);
+    background: rgba(145, 132, 217, 0.08);
+    color: #cfc9f2;
     font-size: 0.75rem;
 }
 
@@ -1329,7 +1217,7 @@ strong {
     border: 1px solid var(--accent-soft);
     border-radius: 14px;
     background: var(--bg-soft);
-    color: #ffd6da;
+    color: #cfc9f2;
     font-size: 0.78rem;
 }
 
@@ -1357,26 +1245,6 @@ strong {
 
     .stack-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .hero {
-        min-height: 100svh;
-    }
-
-    .hero-inner {
-        padding: 6.5rem 0 2rem;
-    }
-
-    .hero-content {
-        left: 4vw;
-        right: 4vw;
-        bottom: 8vh;
-        max-width: none;
-        padding: 1.6rem 1.4rem;
-    }
-
-    .hero h1 {
-        font-size: clamp(2.5rem, 10vw, 4.4rem);
     }
 
     .featured-project,
@@ -1467,31 +1335,6 @@ strong {
 
     .stack-grid {
         grid-template-columns: 1fr;
-    }
-
-    .hero-inner {
-        width: min(calc(100% - 1rem), 1400px);
-        padding: 6rem 0 1rem;
-    }
-
-    .hero-content {
-        left: 1rem;
-        right: 1rem;
-        bottom: 2rem;
-        max-width: none;
-        padding: 1.25rem 1rem;
-        border-radius: 22px;
-        text-align: center;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .hero-eyebrow {
-        font-size: 0.68rem;
-        letter-spacing: 0.12em;
     }
 
     .experience-card {

@@ -1,0 +1,157 @@
+/* ============================================================
+   Rediseño 2026 — capa de tokens sobre global.css
+   Impórtalo DESPUÉS de global.css en Layout.astro:
+     import "../styles/global.css";
+     import "../styles/redesign.css";
+   ============================================================ */
+
+:root {
+  /* Fondo azul-grisáceo, un solo acento blurple */
+  --color-bg: #161826;
+  --color-surface: #1b1d2e;
+  --color-text: #e9e9ed;
+  --color-divider: rgba(233, 233, 237, 0.1);
+
+  --color-accent: #9184d9;
+  --color-accent-200: #cfc9f2;
+  --color-accent-300: #b7aeea;
+  --color-accent-400: #a397e2;
+  --color-accent-600: #7972a9;
+
+  --color-neutral-200: #d3d3da;
+  --color-neutral-300: #a9a9b6;
+  --color-neutral-400: #8c8c99;
+  --color-neutral-600: #5a5a68;
+  --color-neutral-800: #23252f;
+  --color-neutral-900: #16171f;
+
+  /* Fondo saturado para la sección Arcade */
+  --color-section: #262a60;
+
+  --radius: 8px;
+  --radius-lg: 8px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+
+  /* Compatibilidad con los nombres antiguos de global.css */
+  --accent: var(--color-accent);
+  --accent-soft: rgba(145, 132, 217, 0.35);
+  --bg: var(--color-bg);
+  --bg-soft: var(--color-surface);
+  --text: var(--color-text);
+  --muted: var(--color-neutral-300);
+}
+
+/* ---- Botones: contorno, sin glows ---- */
+.button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.button-primary,
+.btn-primary {
+  border-color: var(--color-accent);
+  color: var(--color-accent-200);
+}
+
+.button-primary:hover,
+.btn-primary:hover {
+  background: rgba(145, 132, 217, 0.14);
+}
+
+.button-primary:active,
+.btn-primary:active {
+  background: rgba(145, 132, 217, 0.24);
+  border-color: var(--color-accent-400);
+}
+
+.button-secondary,
+.btn-secondary {
+  border-color: var(--color-divider);
+  color: var(--color-text);
+}
+
+.button-secondary:hover,
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  background: rgba(145, 132, 217, 0.08);
+}
+
+.button-ghost,
+.btn-ghost {
+  color: var(--color-neutral-300);
+}
+
+.button-ghost:hover,
+.btn-ghost:hover {
+  color: var(--color-text);
+  background: rgba(233, 233, 237, 0.06);
+}
+
+/* ---- Foco de teclado tematizado en todo el sitio ---- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(145, 132, 217, 0.3);
+}
+
+/* ---- Enlaces ---- */
+a {
+  color: var(--color-accent-200);
+}
+
+a:hover {
+  color: var(--color-text);
+}
+
+/* ---- Tags: bordes finos, sin rojo ---- */
+.tag,
+.other-project-tags span,
+.other-project-tag-icon-wrap {
+  border-color: var(--color-divider) !important;
+  background: var(--color-surface) !important;
+  color: var(--color-neutral-200) !important;
+  border-radius: var(--radius) !important;
+}
+
+.tag-outline {
+  background: transparent !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent-200) !important;
+}
+
+/* ---- Enlaces circulares de las tarjetas ---- */
+.other-project-links a:hover {
+  border-color: var(--color-accent) !important;
+  color: var(--color-text) !important;
+}
+
+/* ---- Imágenes de contenido: se funden con el fondo ---- */
+.lighten img,
+img.lighten {
+  mix-blend-mode: lighten;
+}

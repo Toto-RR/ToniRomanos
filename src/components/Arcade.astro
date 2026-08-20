@@ -1,0 +1,707 @@
+---
+import { arcadeDiscs } from "../data/arcade";
+
+interface Props {
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props as Props;
+const discs = arcadeDiscs;
+
+const COPY = {
+  es: {
+    kicker: "Arcade",
+    title: "Juega aquí mismo",
+    lede: "Los proyectos con build web se ejecutan dentro de la página. Coge un disco y mételo en la disquetera.",
+    insertPrompt: "¡Inserta algún disco!",
+    insertNote: "Elige un disco de la estantería y se meterá en la disquetera.",
+    noBuildNote: "Este proyecto es de escritorio. Puedes ver el tráiler y el código.",
+    rack: "Estantería",
+    playable: "Jugable",
+    noBuild: "Sin build web",
+    inDrive: "En la disquetera",
+    empty: "Vacío",
+    reading: "Leyendo disco",
+    noData: "Sin datos",
+    dragHint: "Disquetera vacía",
+    expand: "Ampliar",
+    eject: "Expulsar",
+    nativeFull: "Pantalla completa",
+    openExternal: "Abrir en nueva pestaña",
+    close: "Cerrar",
+    escHint: "Pulsa Esc para volver al portfolio.",
+  },
+  en: {
+    kicker: "Arcade",
+    title: "Play right here",
+    lede: "Projects with a web build run inside the page. Take a disc and slide it into the drive.",
+    insertPrompt: "Insert a disc!",
+    insertNote: "Pick a disc from the rack and it goes into the drive.",
+    noBuildNote: "This one is a desktop project. You can watch the trailer and read the code.",
+    rack: "Rack",
+    playable: "Playable",
+    noBuild: "No web build",
+    inDrive: "In the drive",
+    empty: "Empty",
+    reading: "Reading disc",
+    noData: "No data",
+    dragHint: "Drive empty",
+    expand: "Expand",
+    eject: "Eject",
+    nativeFull: "Full screen",
+    openExternal: "Open in a new tab",
+    close: "Close",
+    escHint: "Press Esc to go back to the portfolio.",
+  },
+} as const;
+
+const t = COPY[lang];
+---
+
+<section class="arcade" id="arcade">
+  <div class="arcade-inner">
+    <div class="arcade-kicker">{t.kicker}</div>
+    <h2>{t.title}</h2>
+    <p class="arcade-lede">{t.lede}</p>
+
+    <div class="arcade-grid">
+      <div>
+        <div class="screen" data-screen>
+          <iframe
+            class="screen-frame"
+            data-frame
+            title="build"
+            allowfullscreen
+            hidden></iframe>
+
+          <div class="screen-idle" data-idle>
+            <div class="screen-idle-title" data-idle-title>{t.insertPrompt}</div>
+            <p class="screen-idle-note" data-idle-note>{t.insertNote}</p>
+            <a class="button button-secondary" data-idle-link hidden>Ver repositorio</a>
+          </div>
+        </div>
+
+        <div class="drive">
+          <div class="drive-spindle">
+            <div class="drive-disc" data-drive-disc hidden>
+              <div class="drive-disc-hole"></div>
+            </div>
+          </div>
+
+          <div class="drive-readout">
+            <div class="drive-status">
+              <span class="drive-led" data-led></span>
+              <span data-state>{t.empty}</span>
+            </div>
+            <div class="drive-title" data-title>{t.insertPrompt}</div>
+            <div class="drive-meta" data-meta>{t.dragHint}</div>
+          </div>
+
+          <div class="drive-actions">
+            <button class="button button-primary drive-btn" data-expand hidden>{t.expand}</button>
+            <button class="button button-ghost drive-btn" data-eject hidden>{t.eject}</button>
+            <div class="drive-vent"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="rack-label">{t.rack}</div>
+        <div class="rack">
+          {
+            discs.map((disc) => (
+              <div class="disc-slot" data-disc={disc.id}>
+                <button
+                  class="disc"
+                  data-select={disc.id}
+                  data-embed={disc.embed ?? ""}
+                  data-link={disc.link}
+                  data-link-label={disc.linkLabel}
+                  data-title={disc.title}
+                  data-tech={disc.tech}
+                  aria-label={disc.title}
+                >
+                  <img class="disc-cover" src={disc.cover} alt="" loading="lazy" />
+                  <span class="disc-sheen"></span>
+                  <span class="disc-hub"><span class="disc-hole"></span></span>
+                </button>
+                <div class="disc-title">{disc.title}</div>
+                <div class="disc-status" data-status={disc.id}>
+                  {disc.embed ? t.playable : t.noBuild}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="fullscreen" data-full hidden>
+  <div class="fullscreen-bar">
+    <div>
+      <div class="fullscreen-kicker">{t.reading}</div>
+      <div class="fullscreen-title" data-full-title></div>
+    </div>
+    <div class="fullscreen-actions">
+      <button class="button button-secondary drive-btn" data-native>{t.nativeFull}</button>
+      <a class="button button-ghost drive-btn" data-full-link target="_blank" rel="noopener noreferrer">{t.openExternal}</a>
+      <button class="button button-ghost drive-btn" data-close>{t.close}</button>
+    </div>
+  </div>
+  <div class="fullscreen-stage">
+    <iframe data-full-frame title="build" allowfullscreen></iframe>
+  </div>
+  <div class="fullscreen-hint">{t.escHint}</div>
+</div>
+
+<script define:vars={{ t }}>
+  const section = document.querySelector("#arcade");
+  const overlay = document.querySelector("[data-full]");
+  if (section && overlay) {
+    const q = (sel, root = section) => root.querySelector(sel);
+
+    const frame = q("[data-frame]");
+    const idle = q("[data-idle]");
+    const idleTitle = q("[data-idle-title]");
+    const idleNote = q("[data-idle-note]");
+    const idleLink = q("[data-idle-link]");
+    const driveDisc = q("[data-drive-disc]");
+    const led = q("[data-led]");
+    const stateEl = q("[data-state]");
+    const titleEl = q("[data-title]");
+    const metaEl = q("[data-meta]");
+    const expandBtn = q("[data-expand]");
+    const ejectBtn = q("[data-eject]");
+
+    const fullFrame = overlay.querySelector("[data-full-frame]");
+    const fullTitle = overlay.querySelector("[data-full-title]");
+    const fullLink = overlay.querySelector("[data-full-link]");
+
+    let current = null;
+
+    const eject = () => {
+      current = null;
+      frame.hidden = true;
+      frame.removeAttribute("src");
+      idle.hidden = false;
+      idleTitle.textContent = t.insertPrompt;
+      idleNote.textContent = t.insertNote;
+      idleLink.hidden = true;
+      driveDisc.hidden = true;
+      driveDisc.classList.remove("is-spinning");
+      led.classList.remove("is-on");
+      stateEl.textContent = t.empty;
+      titleEl.textContent = t.insertPrompt;
+      metaEl.textContent = t.dragHint;
+      expandBtn.hidden = true;
+      ejectBtn.hidden = true;
+      closeFull();
+      section.querySelectorAll("[data-status]").forEach((el) => {
+        const btn = section.querySelector(`[data-select="${el.dataset.status}"]`);
+        el.textContent = btn?.dataset.embed ? t.playable : t.noBuild;
+      });
+      section.querySelectorAll(".disc-slot").forEach((el) => el.classList.remove("is-inserted"));
+    };
+
+    const insert = (btn) => {
+      if (current === btn) return;
+      current = btn;
+      const { embed = "", link = "", linkLabel = "", title = "", tech = "" } = btn.dataset;
+
+      led.classList.add("is-on");
+      titleEl.textContent = title;
+      metaEl.textContent = tech;
+      stateEl.textContent = embed ? t.reading : t.noData;
+      ejectBtn.hidden = false;
+
+      driveDisc.hidden = false;
+      driveDisc.classList.remove("is-spinning");
+      void driveDisc.offsetWidth;
+      driveDisc.classList.add("is-spinning");
+
+      if (embed) {
+        frame.src = embed;
+        frame.hidden = false;
+        idle.hidden = true;
+        expandBtn.hidden = false;
+        fullFrame.src = embed;
+        fullTitle.textContent = title;
+        fullLink.href = embed;
+      } else {
+        frame.hidden = true;
+        frame.removeAttribute("src");
+        idle.hidden = false;
+        idleTitle.textContent = title;
+        idleNote.textContent = t.noBuildNote;
+        idleLink.hidden = false;
+        idleLink.href = link;
+        idleLink.textContent = linkLabel;
+        expandBtn.hidden = true;
+      }
+
+      section.querySelectorAll(".disc-slot").forEach((el) => el.classList.remove("is-inserted"));
+      section.querySelectorAll("[data-status]").forEach((el) => {
+        const b = section.querySelector(`[data-select="${el.dataset.status}"]`);
+        el.textContent = b?.dataset.embed ? t.playable : t.noBuild;
+      });
+      btn.closest(".disc-slot")?.classList.add("is-inserted");
+      const status = section.querySelector(`[data-status="${btn.dataset.select}"]`);
+      if (status) status.textContent = t.inDrive;
+    };
+
+    const openFull = () => {
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+    const closeFull = () => {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    };
+
+    section.querySelectorAll("[data-select]").forEach((btn) => {
+      btn.addEventListener("click", () => insert(btn));
+    });
+    ejectBtn.addEventListener("click", eject);
+    expandBtn.addEventListener("click", openFull);
+    overlay.querySelector("[data-close]")?.addEventListener("click", closeFull);
+    overlay.querySelector("[data-native]")?.addEventListener("click", () => {
+      overlay.querySelector(".fullscreen-stage")?.requestFullscreen?.();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !overlay.hidden) closeFull();
+    });
+  }
+</script>
+
+<style>
+  .arcade {
+    position: relative;
+    margin-top: 5.25rem;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+    background: linear-gradient(180deg, #262a60 0%, #1d2049 100%);
+  }
+
+  .arcade-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 4.5rem 2rem;
+  }
+
+  .arcade-kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent-200, #cfc9f2);
+    margin-bottom: 0.7rem;
+  }
+
+  .arcade h2 {
+    font-family: var(--font-heading, inherit);
+    font-weight: 500;
+    font-size: 2.125rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+  }
+
+  .arcade-lede {
+    max-width: 62ch;
+    color: var(--color-accent-200, #cfc9f2);
+    margin: 0 0 1.75rem;
+  }
+
+  .arcade-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* SCREEN */
+  .screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    background: #0f111c;
+    box-shadow: inset 0 0 0 1px rgba(233, 233, 237, 0.14);
+  }
+
+  .screen-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .screen-idle {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 2rem;
+    text-align: center;
+    background: radial-gradient(80% 80% at 50% 40%, #1a1d33 0%, #0f111c 75%);
+  }
+
+  .screen-idle-title {
+    font-family: var(--font-heading, inherit);
+    font-size: 1.375rem;
+    letter-spacing: -0.01em;
+  }
+
+  .screen-idle-note {
+    max-width: 44ch;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-neutral-300, #a9a9b6);
+  }
+
+  /* DRIVE */
+  .drive {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.05rem;
+    padding: 1.05rem 1.4rem;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(180deg, #23252f 0%, #16171f 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(233, 233, 237, 0.14),
+      0 14px 34px rgba(0, 0, 0, 0.5);
+  }
+
+  .drive-spindle {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    flex: none;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #0f111c;
+    box-shadow:
+      inset 0 0 0 1px rgba(233, 233, 237, 0.16),
+      inset 0 6px 18px rgba(0, 0, 0, 0.7);
+  }
+
+  .drive-disc {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #423a6a,
+      #9184d9,
+      #5c5783,
+      #b5abfc,
+      #2b2741,
+      #9184d9,
+      #423a6a
+    );
+    box-shadow: inset 0 0 0 1px rgba(233, 233, 237, 0.22);
+  }
+
+  .drive-disc.is-spinning {
+    animation:
+      disc-insert 0.62s cubic-bezier(0.2, 0.7, 0.2, 1) both,
+      disc-spin 2.6s linear 0.62s infinite;
+  }
+
+  .drive-disc-hole {
+    position: absolute;
+    inset: 36%;
+    border-radius: 50%;
+    background: #16171f;
+    box-shadow: inset 0 0 0 1px rgba(233, 233, 237, 0.2);
+  }
+
+  @keyframes disc-insert {
+    from {
+      transform: translateY(-120%) scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @keyframes disc-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .drive-readout {
+    min-width: 0;
+  }
+
+  .drive-status {
+    display: flex;
+    align-items: center;
+    gap: 0.525rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.656rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-neutral-400, #8c8c99);
+  }
+
+  .drive-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #5a5a68;
+    transition: background 200ms ease, box-shadow 200ms ease;
+  }
+
+  .drive-led.is-on {
+    background: #b5abfc;
+    box-shadow: 0 0 10px rgba(181, 171, 252, 0.6);
+  }
+
+  .drive-title {
+    font-family: var(--font-heading, inherit);
+    font-size: 1.1875rem;
+    letter-spacing: -0.01em;
+  }
+
+  .drive-meta {
+    font-size: 0.781rem;
+    color: var(--color-neutral-300, #a9a9b6);
+  }
+
+  .drive-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .drive-btn {
+    font-size: 0.75rem;
+  }
+
+  .drive-vent {
+    width: 132px;
+    height: 7px;
+    border-radius: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(233, 233, 237, 0.12) 0 4px,
+      transparent 4px 9px
+    );
+  }
+
+  /* RACK */
+  .rack-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent-200, #cfc9f2);
+    margin-bottom: 1.05rem;
+  }
+
+  .rack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .disc-slot {
+    width: 132px;
+    transition: transform 220ms ease;
+  }
+
+  .disc-slot.is-inserted {
+    transform: translateY(-6px);
+  }
+
+  .disc {
+    position: relative;
+    display: block;
+    width: 132px;
+    height: 132px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0f111c;
+    box-shadow:
+      0 12px 26px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(233, 233, 237, 0.18);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  .disc:hover {
+    transform: translateY(-4px) rotate(-4deg);
+  }
+
+  .disc:focus-visible {
+    outline: 2px solid var(--color-accent, #9184d9);
+    outline-offset: 3px;
+  }
+
+  .disc-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .disc-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.38;
+    background: conic-gradient(
+      from 210deg,
+      rgba(145, 132, 217, 0.55),
+      rgba(233, 233, 237, 0.08),
+      rgba(90, 84, 140, 0.5),
+      rgba(233, 233, 237, 0.12),
+      rgba(145, 132, 217, 0.5)
+    );
+  }
+
+  .disc-hub {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: #16171f;
+    box-shadow:
+      inset 0 0 0 1px rgba(233, 233, 237, 0.22),
+      0 0 0 8px rgba(15, 17, 28, 0.35);
+  }
+
+  .disc-hole {
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    background: #0f111c;
+  }
+
+  .disc-title {
+    font-family: var(--font-heading, inherit);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    margin-top: 0.7rem;
+  }
+
+  .disc-status {
+    font-size: 0.656rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-neutral-400, #8c8c99);
+    margin-top: 0.125rem;
+  }
+
+  /* FULLSCREEN OVERLAY */
+  .fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.4rem;
+    background: rgba(22, 24, 38, 0.94);
+    backdrop-filter: blur(8px);
+    animation: overlay-rise 0.22s ease both;
+  }
+
+  .fullscreen[hidden] {
+    display: none;
+  }
+
+  @keyframes overlay-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .fullscreen-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.05rem;
+    flex-wrap: wrap;
+  }
+
+  .fullscreen-kicker {
+    font-size: 0.656rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent-300, #b7aeea);
+  }
+
+  .fullscreen-title {
+    font-family: var(--font-heading, inherit);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .fullscreen-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.525rem;
+    flex-wrap: wrap;
+  }
+
+  .fullscreen-stage {
+    flex: 1;
+    min-height: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0f111c;
+  }
+
+  .fullscreen-stage iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .fullscreen-hint {
+    font-size: 0.719rem;
+    color: var(--color-neutral-400, #8c8c99);
+  }
+
+  @media (max-width: 640px) {
+    .arcade-inner {
+      padding: 3rem 1.25rem;
+    }
+    .screen {
+      aspect-ratio: 3 / 4;
+      border-radius: 8px;
+    }
+    .drive {
+      flex-wrap: wrap;
+    }
+    .drive-actions {
+      margin-left: 0;
+      width: 100%;
+    }
+    .drive-vent {
+      display: none;
+    }
+  }
+</style>

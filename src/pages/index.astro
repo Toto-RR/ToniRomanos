@@ -1,35 +1,45 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+import Arcade from "../components/Arcade.astro";
 import FeaturedProjects from "../components/ProjectCard.astro";
-import OtherProjects from "../components/OtrosProyectos.astro";
 import Experience from "../components/Experience.astro";
 import TechStack from "../components/TechStack.astro";
 import ContactCard from "../components/ContactCard.astro";
+import Notas from "../components/Notas.astro";
+import Estudios from "../components/Estudios.astro";
 
 import { featuredProjects } from "../data/projects";
-import { otherProjects } from "../data/otherprojects";
 import { experience } from "../data/experience";
 import { tech } from "../data/tech";
-import Estudios from "../components/Estudios.astro";
+
+const lang = "es" as const;
 ---
 
-<Layout>
-  <Hero />
+<Layout lang={lang}>
+  <Hero lang={lang} />
 
-  <main class="container">
-    <Experience items={experience} />
-    
-    <FeaturedProjects items={featuredProjects} />
-    <OtherProjects items={otherProjects} />
-    <Estudios/>
+  <main>
+    <div class="container">
+      <Experience items={experience} lang={lang} />
 
-    <section id="stack" class="section">
-      <TechStack items={tech} />
-    </section>
+      <FeaturedProjects items={featuredProjects} lang={lang} />
+    </div>
 
-    <section class="section">
-      <ContactCard />
-    </section>
+    <Arcade lang={lang} />
+
+    <div class="container">
+      <Estudios lang={lang} />
+
+      <section id="stack" class="section">
+        <TechStack items={tech} lang={lang} />
+      </section>
+
+      <Notas lang={lang} />
+
+      <section class="section">
+        <ContactCard lang={lang} />
+      </section>
+    </div>
   </main>
 </Layout>

@@ -1,55 +1,95 @@
 ---
-const studies = [
-  {
-    title: "Grado en Diseño y Desarrollo de Videojuegos",
-    center: "Centre de la Imatge i Tecnología Multimèdia - CITM",
-    period: "2021 — 2025",
-    status: "Formación principal",
-    description:
-      "Etapa centrada en programación, diseño de videojuegos, desarrollo técnico y construcción de sistemas interactivos. Aquí he consolidado mi perfil como developer orientado a gameplay, herramientas y prototipado.",
-    highlights: [
-      "Programación aplicada a videojuegos",
-      "Unity y desarrollo de sistemas interactivos",
-      "Motores de juego y arquitectura técnica",
-      "Gameplay y diseño orientado a prototipos",
-      "Modelado, gráficos 3D y pipelines creativos",
-    ],
-  },
-  {
-    title: "Bachillerato Tecnológico",
-    center: "IES Palau Ausit",
-    period: "2019 — 2021",
-    status: "Base técnica",
-    description:
-      "Formación orientada al razonamiento lógico, matemático y tecnológico. Fue la etapa en la que reforcé la base analítica que después he aplicado al desarrollo, la informática y la resolución técnica de problemas.",
-    highlights: [
-      "Matemáticas y lógica",
-      "Física y tecnología",
-      "Capacidad analítica",
-      "Base para programación y desarrollo técnico",
-    ],
-  },
-];
+interface Props {
+  lang?: "es" | "en";
+}
 
-const pillars = [
-  "Programación",
-  "Game Dev",
-  "Unity",
-  "Sistemas interactivos",
-  "Tecnología",
-  "3D",
-];
+const { lang = "es" } = Astro.props as Props;
+
+const STUDIES = {
+  es: [
+    {
+      title: "Grado en Diseño y Desarrollo de Videojuegos",
+      center: "Centre de la Imatge i Tecnología Multimèdia - CITM",
+      period: "2021 — 2025",
+      status: "Formación principal",
+      description:
+        "Etapa centrada en programación, diseño de videojuegos, desarrollo técnico y construcción de sistemas interactivos. Aquí he consolidado mi perfil como developer orientado a gameplay, herramientas y prototipado.",
+      highlights: [
+        "Programación aplicada a videojuegos",
+        "Unity y desarrollo de sistemas interactivos",
+        "Motores de juego y arquitectura técnica",
+        "Gameplay y diseño orientado a prototipos",
+        "Modelado, gráficos 3D y pipelines creativos",
+      ],
+    },
+    {
+      title: "Bachillerato Tecnológico",
+      center: "IES Palau Ausit",
+      period: "2019 — 2021",
+      status: "Base técnica",
+      description:
+        "Formación orientada al razonamiento lógico, matemático y tecnológico. Fue la etapa en la que reforcé la base analítica que después he aplicado al desarrollo, la informática y la resolución técnica de problemas.",
+      highlights: [
+        "Matemáticas y lógica",
+        "Física y tecnología",
+        "Capacidad analítica",
+        "Base para programación y desarrollo técnico",
+      ],
+    },
+  ],
+  en: [
+    {
+      title: "BA in Game Design and Development",
+      center: "Centre de la Imatge i Tecnología Multimèdia - CITM",
+      period: "2021 — 2025",
+      status: "Main degree",
+      description:
+        "Game programming, engines and technical architecture, prototype-oriented gameplay, and the 3D pipeline.",
+      highlights: [
+        "Game programming",
+        "Unity and interactive systems development",
+        "Game engines and technical architecture",
+        "Prototype-oriented gameplay design",
+        "3D modelling and creative pipelines",
+      ],
+    },
+    {
+      title: "Technology Baccalaureate",
+      center: "IES Palau Ausit",
+      period: "2019 — 2021",
+      status: "Foundation",
+      description:
+        "Logical, mathematical and technological reasoning: the analytical base I later applied to development, computing and technical problem-solving.",
+      highlights: [
+        "Mathematics and logic",
+        "Physics and technology",
+        "Analytical thinking",
+        "Foundation for programming and technical development",
+      ],
+    },
+  ],
+} as const;
+
+const HEADING = {
+  es: {
+    title: "Estudios",
+    body: "Mi recorrido académico ha estado muy ligado a la tecnología y al desarrollo de videojuegos. Más allá de los títulos, esta etapa me ha servido para construir una base técnica sólida y definir el tipo de developer que quiero ser.",
+  },
+  en: {
+    title: "Education",
+    body: "My academic path has always been tied to technology and game development. Beyond the degrees, this stage helped me build a solid technical foundation and define the kind of developer I want to be.",
+  },
+} as const;
+
+const studies = STUDIES[lang];
+const t = HEADING[lang];
 ---
 
 <section class="studies-section section" id="studies">
   <div class="studies-shell">
     <div class="section-heading studies-heading">
-      <h2>Estudios</h2>
-      <p>
-        Mi recorrido académico ha estado muy ligado a la tecnología y al desarrollo
-        de videojuegos. Más allá de los títulos, esta etapa me ha servido para
-        construir una base técnica sólida y definir el tipo de developer que quiero ser.
-      </p>
+      <h2>{t.title}</h2>
+      <p>{t.body}</p>
     </div>
 <!-- 
     <div class="studies-hero-card">
@@ -126,9 +166,9 @@ const pillars = [
     margin-bottom: 0.85rem;
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
-    border: 1px solid rgba(245, 26, 41, 0.22);
-    background: rgba(245, 26, 41, 0.08);
-    color: #ffd6da;
+    border: 1px solid rgba(145, 132, 217, 0.22);
+    background: rgba(145, 132, 217, 0.08);
+    color: #cfc9f2;
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -145,7 +185,7 @@ const pillars = [
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 28px;
     background:
-      radial-gradient(circle at top right, rgba(245, 26, 41, 0.14), transparent 32%),
+      radial-gradient(circle at top right, rgba(145, 132, 217, 0.14), transparent 32%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
       rgba(10, 10, 12, 0.92);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -159,7 +199,7 @@ const pillars = [
     width: 180px;
     height: 180px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(245, 26, 41, 0.16), transparent 70%);
+    background: radial-gradient(circle, rgba(145, 132, 217, 0.16), transparent 70%);
     z-index: 0;
     pointer-events: none;
   }
@@ -208,7 +248,7 @@ const pillars = [
     min-height: 44px;
     padding: 0 0.95rem;
     border-radius: 999px;
-    border: 1px solid rgba(245, 26, 41, 0.2);
+    border: 1px solid rgba(145, 132, 217, 0.2);
     background: rgba(255, 255, 255, 0.04);
     color: var(--text);
     font-size: 0.88rem;
@@ -233,7 +273,7 @@ const pillars = [
     width: 1px;
     background: linear-gradient(
       to bottom,
-      rgba(245, 26, 41, 0.28),
+      rgba(145, 132, 217, 0.28),
       rgba(255, 255, 255, 0.08)
     );
     pointer-events: none;
@@ -260,8 +300,8 @@ const pillars = [
     border-radius: 999px;
     background: var(--accent);
     box-shadow:
-      0 0 0 6px rgba(245, 26, 41, 0.12),
-      0 0 24px rgba(245, 26, 41, 0.28);
+      0 0 0 6px rgba(145, 132, 217, 0.12),
+      0 0 24px rgba(145, 132, 217, 0.28);
     z-index: 1;
   }
 
@@ -283,16 +323,16 @@ const pillars = [
 
   .study-card:hover .study-card-inner {
     transform: translateY(-4px);
-    border-color: rgba(245, 26, 41, 0.28);
+    border-color: rgba(145, 132, 217, 0.28);
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.028)),
       rgba(10, 10, 12, 0.92);
   }
 
   .study-card--featured .study-card-inner {
-    border-color: rgba(245, 26, 41, 0.22);
+    border-color: rgba(145, 132, 217, 0.22);
     background:
-      linear-gradient(180deg, rgba(245, 26, 41, 0.09), rgba(255, 255, 255, 0.02)),
+      linear-gradient(180deg, rgba(145, 132, 217, 0.09), rgba(255, 255, 255, 0.02)),
       rgba(10, 10, 12, 0.92);
   }
 
@@ -313,9 +353,9 @@ const pillars = [
     margin-bottom: 0.8rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    border: 1px solid rgba(245, 26, 41, 0.18);
-    background: rgba(245, 26, 41, 0.08);
-    color: #ffd7db;
+    border: 1px solid rgba(145, 132, 217, 0.18);
+    background: rgba(145, 132, 217, 0.08);
+    color: #cfc9f2;
     font-size: 0.74rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -347,9 +387,9 @@ const pillars = [
     min-height: 42px;
     padding: 0 0.9rem;
     border-radius: 999px;
-    border: 1px solid rgba(245, 26, 41, 0.2);
-    background: rgba(245, 26, 41, 0.12);
-    color: #ffe1e4;
+    border: 1px solid rgba(145, 132, 217, 0.2);
+    background: rgba(145, 132, 217, 0.12);
+    color: #cfc9f2;
     font-size: 0.84rem;
     font-weight: 700;
     white-space: nowrap;

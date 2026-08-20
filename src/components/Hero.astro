@@ -1,147 +1,340 @@
 ---
-const videos = [
-  "/media/hero/clip1.mp4",
-  "/media/hero/clip2.mp4",
-  "/media/hero/clip3.mp4",
-  "/media/hero/clip4.mp4",
-  "/media/hero/clip5.mp4",
-];
+interface Props {
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props as Props;
+
+const poster = "/media/hero/poster.webp";
+const clips = [1, 2, 3, 4, 5].map((n) => `/media/hero/clip${n}.mp4`);
+
+const COPY = {
+  es: {
+    available: "Disponible para trabajar",
+    kicker: "Game developer · Full-stack · Sistemas interactivos",
+    title: "Toni Romanos",
+    body: "Programo gameplay en Unity y aplicaciones web de principio a fin. Me muevo entre motores, backend y hardware propio, y me interesa el punto donde se cruzan.",
+    cvBtn: "Descargar CV",
+    playBtn: "Jugar mis proyectos",
+    heroLabel: "Clip de proyecto",
+    play: "Reproducir",
+    pause: "Pausar",
+  },
+  en: {
+    available: "Available for work",
+    kicker: "Game developer · Full-stack · Interactive systems",
+    title: "Toni Romanos",
+    body: "I build gameplay in Unity and web applications end to end. I work across engines, backend and custom hardware, and I care about where they meet.",
+    cvBtn: "Download CV",
+    playBtn: "Play my projects",
+    heroLabel: "Project clip",
+    play: "Play",
+    pause: "Pause",
+  },
+} as const;
+
+const t = COPY[lang];
 ---
 
-<section class="hero" id="top">
-  <div class="hero-media" aria-hidden="true">
-    {
-      videos.map((video, index) => (
-        <video
-          class={`hero-video ${index === 0 ? "is-active" : ""}`}
-          src={video}
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="auto"
-          data-hero-video
-        />
-      ))
-    }
-  </div>
-
-  <div class="hero-overlay"></div>
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
 
   <div class="hero-inner">
-    <div class="hero-content hero-content--bottom-left">
-
-      <div class="hero-sticker" aria-label="Disponible para oportunidades">
+    <div class="hero-content">
+      <div class="hero-sticker" aria-label={t.available}>
         <span class="hero-sticker-dot"></span>
-        <span class="hero-sticker-text">¡Disponible para trabajar!</span>
+        <span class="hero-sticker-text">{t.available}</span>
       </div>
 
-      <p class="hero-eyebrow">GAME DEVELOPER · UNITY · INTERACTIVE SYSTEMS</p>
+      <p class="hero-eyebrow">{t.kicker}</p>
 
-      <h1>Toni Romanos</h1>
+      <h1>{t.title}</h1>
+      <div class="hero-rule"></div>
 
-      <p class="hero-description">
-        Me especializo en Unity y disfruto creando proyectos donde se mezclan
-        videojuegos, herramientas, hardware y prototipado.
-      </p>
+      <p class="hero-description">{t.body}</p>
 
       <div class="hero-buttons">
-        <a href="/RomanosToni_CV.pdf" class="button button-primary" target="_blank" rel="noopener noreferrer">Descargar CV</a>
-        <a href="#aboutme" class="button button-ghost">Contacto</a>
+        <a href="/RomanosToni_CV.pdf" class="button button-primary" target="_blank" rel="noopener noreferrer">{t.cvBtn}</a>
+        <a href="#arcade" class="button button-secondary">{t.playBtn}</a>
         <a href="https://github.com/Toto-RR" class="button button-ghost" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
     </div>
+
+    <div class="hero-media-column">
+      <div class="hero-media-card">
+        <img class="hero-poster" src={poster} alt="" data-hero-poster />
+        <video
+          class="hero-video"
+          poster={poster}
+          muted
+          loop
+          playsinline
+          preload="none"
+          data-hero-video></video>
+
+        <button class="hero-play" type="button" data-hero-play aria-label={t.play}>
+          <span class="hero-play-label">{t.heroLabel}</span>
+          <span class="hero-play-action" data-hero-play-label>{t.play}</span>
+        </button>
+      </div>
+
+      <div class="hero-dots" data-hero-dots>
+        {clips.map((_, i) => (
+          <button
+            type="button"
+            class={`hero-dot ${i === 0 ? "is-active" : ""}`}
+            data-hero-dot={i}
+            aria-label={`Clip ${i + 1}`}
+          ></button>
+        ))}
+      </div>
+    </div>
   </div>
-</section>
+</header>
 
-<script>
-  const videos = Array.from(document.querySelectorAll("[data-hero-video]"));
+<script define:vars={{ clips, playLabel: t.play, pauseLabel: t.pause }}>
+  const video = document.querySelector("[data-hero-video]");
+  const play = document.querySelector("[data-hero-play]");
+  const playLabelEl = document.querySelector("[data-hero-play-label]");
+  const posterImg = document.querySelector("[data-hero-poster]");
+  const dots = document.querySelectorAll("[data-hero-dot]");
 
-  if (videos.length > 1) {
-    let activeIndex = 0;
-    const intervalMs = 5000;
+  let activeClip = 0;
+  let playing = false;
 
-    setInterval(() => {
-      const current = videos[activeIndex];
-      activeIndex = (activeIndex + 1) % videos.length;
-      const next = videos[activeIndex];
+  const setActiveDot = (i) => {
+    dots.forEach((d) => d.classList.toggle("is-active", Number(d.dataset.heroDot) === i));
+  };
 
-      current.classList.remove("is-active");
-      next.classList.add("is-active");
-    }, intervalMs);
+  const playClip = async (i) => {
+    activeClip = i;
+    setActiveDot(i);
+    video.src = clips[i];
+    video.load();
+    try {
+      await video.play();
+      playing = true;
+      posterImg?.classList.add("is-hidden");
+      play?.classList.add("is-playing");
+      if (playLabelEl) playLabelEl.textContent = pauseLabel;
+    } catch {}
+  };
+
+  if (video && play) {
+    play.addEventListener("click", async () => {
+      if (!playing) {
+        await playClip(activeClip);
+      } else {
+        video.pause();
+        playing = false;
+        play.classList.remove("is-playing");
+        if (playLabelEl) playLabelEl.textContent = playLabel;
+      }
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => playClip(Number(dot.dataset.heroDot)));
+    });
+
+    video.addEventListener("ended", () => {
+      playing = false;
+      play.classList.remove("is-playing");
+      if (playLabelEl) playLabelEl.textContent = playLabel;
+    });
   }
 </script>
 
 <style>
-  .hero-availability-dot {
-    display: none; /* replaced by sticker */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-divider);
+    padding-top: 5.5rem;
   }
 
-  /* STICKER */
-  .hero-sticker {
+  .hero-bg {
     position: absolute;
-    top: -18px;
-    left: -14px;
-    z-index: 10;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 12% 0%, #2b2741 0%, transparent 62%),
+      radial-gradient(80% 70% at 92% 30%, #232532 0%, transparent 70%);
+  }
 
+  .hero-inner {
+    position: relative;
+    max-width: var(--container, 1180px);
+    margin: 0 auto;
+    padding: 3.5rem 2rem 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 2.8rem;
+    align-items: center;
+  }
+
+  .hero-sticker {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 0.85rem 0.5rem 0.65rem;
-    border-radius: 10px;
-
-    background: #0e0e10;
-    border: 1px solid rgba(245, 26, 41, 0.55);
-    box-shadow:
-      0 4px 16px rgba(0, 0, 0, 0.55),
-      0 1px 0 rgba(255, 255, 255, 0.06) inset,
-      0 0 0 3px rgba(245, 26, 41, 0.08);
-
-    transform: rotate(0deg);
-    transform-origin: top left;
-
-    color: #ffd6da;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-
-    /* subtle worn-sticker feel */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  .hero-sticker::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      transparent 50%
-    );
-    pointer-events: none;
+    margin-bottom: 1.4rem;
   }
 
   .hero-sticker-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 3px rgba(245, 26, 41, 0.25);
-    flex-shrink: 0;
-    animation: pulse-dot 2s ease infinite;
+    background: var(--color-accent);
+    animation: hero-pulse 2.4s ease-in-out infinite;
   }
 
   .hero-sticker-text {
-    position: relative;
-    z-index: 1;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent-300, #b7aeea);
+    font-weight: 700;
   }
 
-  @keyframes pulse-dot {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(245, 26, 41, 0.25); }
-    50%       { box-shadow: 0 0 0 6px rgba(245, 26, 41, 0.08); }
+  @keyframes hero-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .hero-eyebrow {
+    margin: 0 0 1.05rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-neutral-400);
+  }
+
+  .hero h1 {
+    margin: 0 0 1.4rem;
+    font-family: var(--font-heading, inherit);
+    font-weight: 500;
+    font-size: clamp(3rem, 6.2vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-rule {
+    width: 96px;
+    height: 1px;
+    margin-bottom: 1.4rem;
+    background: linear-gradient(90deg, var(--color-accent), transparent);
+  }
+
+  .hero-description {
+    max-width: 46ch;
+    margin: 0 0 1.75rem;
+    font-size: 1.06rem;
+    color: var(--color-neutral-200);
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .hero-media-column {
+    animation: hero-rise 0.9s ease both;
+  }
+
+  @keyframes hero-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .hero-media-card {
+    position: relative;
+    border-radius: var(--radius-lg, 8px);
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+    background: #0f111c;
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero-poster,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-poster {
+    transition: opacity 400ms ease;
+  }
+
+  .hero-poster.is-hidden {
+    opacity: 0;
+  }
+
+  .hero-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 1.05rem;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    color: var(--color-text);
+    background: linear-gradient(0deg, rgba(15, 17, 28, 0.85) 0%, transparent 55%);
+  }
+
+  .hero-play-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-neutral-200);
+  }
+
+  .hero-play-action {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-300, #b7aeea);
+    border: 1px solid var(--color-accent-600, rgba(145, 132, 217, 0.5));
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.25rem 0.55rem;
+  }
+
+  .hero-dots {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.55rem;
+  }
+
+  .hero-dot {
+    flex: 1;
+    height: 3px;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    background: var(--color-divider);
+  }
+
+  .hero-dot.is-active {
+    background: var(--color-accent);
+  }
+
+  @media (max-width: 980px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 4.5rem;
+    }
   }
 </style>

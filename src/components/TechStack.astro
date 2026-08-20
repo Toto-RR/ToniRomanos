@@ -1,6 +1,26 @@
 ---
 import { TAGS } from "../data/tags";
 
+interface Props {
+  items?: unknown;
+  lang?: "es" | "en";
+}
+
+const { lang = "es" } = Astro.props as Props;
+
+const HEADING = {
+  es: {
+    title: "Stack y herramientas",
+    body: "Mi loadout de desarrollo: motores, lenguajes, pipeline 3D, hardware y herramientas que utilizo para construir proyectos.",
+  },
+  en: {
+    title: "Tools I work with",
+    body: "My development loadout: engines, languages, the 3D pipeline, hardware and the tools I use to build projects.",
+  },
+} as const;
+
+const t = HEADING[lang];
+
 const loadoutGroups = [
   {
     title: "Engine & Gameplay",
@@ -65,11 +85,8 @@ const loadoutGroups = [
 
 <section class="section tech-loadout" id="tech">
   <div class="section-heading">
-    <h2>Stack y herramientas</h2>
-    <p>
-      Mi loadout de desarrollo: motores, lenguajes, pipeline 3D, hardware y
-      herramientas que utilizo para construir proyectos.
-    </p>
+    <h2>{t.title}</h2>
+    <p>{t.body}</p>
   </div>
 
   <div class="tech-loadout-grid">
@@ -120,7 +137,7 @@ const loadoutGroups = [
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 24px;
     background:
-      radial-gradient(circle at top right, rgba(245, 26, 41, 0.1), transparent 42%),
+      radial-gradient(circle at top right, rgba(145, 132, 217, 0.1), transparent 42%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
       rgba(10, 10, 12, 0.9);
     box-shadow: var(--shadow-soft);
@@ -138,7 +155,7 @@ const loadoutGroups = [
     width: 180px;
     height: 180px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(245, 26, 41, 0.1), transparent 68%);
+    background: radial-gradient(circle, rgba(145, 132, 217, 0.1), transparent 68%);
     pointer-events: none;
     transition: transform 0.35s ease, opacity 0.35s ease;
     opacity: 0.85;
@@ -146,9 +163,9 @@ const loadoutGroups = [
 
   .tech-group-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(245, 26, 41, 0.24);
+    border-color: rgba(145, 132, 217, 0.24);
     background:
-      radial-gradient(circle at top right, rgba(245, 26, 41, 0.14), transparent 42%),
+      radial-gradient(circle at top right, rgba(145, 132, 217, 0.14), transparent 42%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024)),
       rgba(10, 10, 12, 0.94);
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
@@ -221,7 +238,7 @@ const loadoutGroups = [
     width: 0;
     height: 0;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(245, 26, 41, 0.22), transparent 70%);
+    background: radial-gradient(circle, rgba(145, 132, 217, 0.22), transparent 70%);
     transform: translateX(-50%);
     transition:
       width 0.28s ease,
@@ -251,7 +268,7 @@ const loadoutGroups = [
 
   .tech-item:hover .tech-icon {
     transform: scale(1.04);
-    filter: drop-shadow(0 0 10px rgba(245, 26, 41, 0.18));
+    filter: drop-shadow(0 0 10px rgba(145, 132, 217, 0.18));
   }
 
   .tech-item span {

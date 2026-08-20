@@ -4,20 +4,43 @@ import { featuredProjects } from "../data/projects";
 import GitHub from "../assets/icons/GitHub.astro";
 import Youtube from "../assets/icons/Youtube.astro";
 import Itchio from "./icons/Itchio.astro";
+
+interface Props {
+  items?: typeof featuredProjects;
+  lang?: "es" | "en";
+}
+
+const { items = featuredProjects, lang = "es" } = Astro.props as Props;
+
+const COPY = {
+  es: {
+    kicker: "Proyectos destacados",
+    title: "Selección de trabajos",
+    body: "Una selección de trabajos que definen mejor mi perfil: gameplay, sistemas interactivos, hardware y desarrollo técnico aplicado.",
+    more: "Ver más →",
+    demo: "Ver proyecto",
+  },
+  en: {
+    kicker: "Selected work",
+    title: "Projects that define the profile",
+    body: "Gameplay, interactive systems, hardware and applied engineering.",
+    more: "View project",
+    demo: "View project",
+  },
+} as const;
+
+const t = COPY[lang];
 ---
 
 <section class="section" id="projects">
   <div class="section-heading">
-    <h2>Proyectos destacados</h2>
-    <p>
-      Una selección de trabajos que definen mejor mi perfil: gameplay, sistemas
-      interactivos, hardware y desarrollo técnico aplicado.
-    </p>
+    <h2>{t.title}</h2>
+    <p>{t.body}</p>
   </div>
 
   <div class="featured-projects">
     {
-      featuredProjects.map(
+      items.map(
         (
           {
             title,
@@ -29,9 +52,14 @@ import Itchio from "./icons/Itchio.astro";
             tags,
             links,
             slug,
+            en,
           },
           index,
         ) => {
+          if (lang === "en" && en) {
+            subtitle = en.subtitle ?? subtitle;
+            description = en.description ?? description;
+          }
           const n = index + 1; //Tematizado segun accents
           //const n = 1;
           const cardStyle = `--ca: var(--accent${n}, var(--accent)); --ca-soft: var(--accent${n}-soft, var(--accent-soft)); --ca-light: var(--accent${n}-light, var(--accent-light));`;
@@ -194,7 +222,7 @@ import Itchio from "./icons/Itchio.astro";
               <div class="featured-project-links">
                 {slug && (
                   <a href={`/projects/${slug}`}>
-                    Ver más →
+                    {t.more}
                   </a>
                 )}
 
@@ -204,7 +232,7 @@ import Itchio from "./icons/Itchio.astro";
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Ver proyecto
+                    {t.demo}
                   </a>
                 )}
 

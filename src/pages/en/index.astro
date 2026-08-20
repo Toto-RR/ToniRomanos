@@ -1,0 +1,49 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import Arcade from "../../components/Arcade.astro";
+import FeaturedProjects from "../../components/ProjectCard.astro";
+import Experience from "../../components/Experience.astro";
+import TechStack from "../../components/TechStack.astro";
+import ContactCard from "../../components/ContactCard.astro";
+import Notas from "../../components/Notas.astro";
+import Estudios from "../../components/Estudios.astro";
+
+import { featuredProjects } from "../../data/projects";
+import { experienceByLang } from "../../data/experience";
+import { tech } from "../../data/tech";
+
+const lang = "en" as const;
+---
+
+<Layout
+  lang={lang}
+  title="Toni Romanos | Game & Full-Stack Developer"
+  description="Toni Romanos' portfolio: Unity, gameplay, web and interactive systems. With a playable arcade right on the page."
+>
+  <Hero lang={lang} />
+
+  <main>
+    <div class="container">
+      <Experience items={experienceByLang.en} lang={lang} />
+
+      <FeaturedProjects items={featuredProjects} lang={lang} />
+    </div>
+
+    <Arcade lang={lang} />
+
+    <div class="container">
+      <Estudios lang={lang} />
+
+      <section id="stack" class="section">
+        <TechStack items={tech} lang={lang} />
+      </section>
+
+      <Notas lang={lang} />
+
+      <section class="section">
+        <ContactCard lang={lang} />
+      </section>
+    </div>
+  </main>
+</Layout>

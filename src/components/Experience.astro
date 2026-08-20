@@ -1,15 +1,29 @@
 ---
 import type { ExperienceItem } from "../data/experience";
 
-const { items } = Astro.props as { items: ExperienceItem[] };
+const { items, lang = "es" } = Astro.props as {
+  items: ExperienceItem[];
+  lang?: "es" | "en";
+};
+
+const COPY = {
+  es: {
+    title: "Experiencia",
+    body: "Desarrollo de videojuegos, prototipos y proyectos técnicos aplicados a contextos reales.",
+  },
+  en: {
+    title: "Experience",
+    body: "Game development, prototypes and technical projects applied to real contexts.",
+  },
+} as const;
+
+const t = COPY[lang];
 ---
 
 <section class="section" id="experience">
   <div class="section-heading">
-    <h2>Experiencia</h2>
-    <p>
-      Desarrollo de videojuegos, prototipos y proyectos técnicos aplicados a contextos reales.
-    </p>
+    <h2>{t.title}</h2>
+    <p>{t.body}</p>
   </div>
 
   <div class="experience-grid-alt">
